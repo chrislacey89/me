@@ -11,7 +11,7 @@ const { hero, skills, selectedProjects, softClose } = homeData
 <BaseLayout title="Chris Lacey | Senior Software Engineer">
   <div class="min-h-screen bg-[#0F0F16] text-white selection:bg-teal-400/30 selection:text-teal-200">
     <!-- Background ambient glow -->
-    <div class="fixed inset-0 pointer-events-none overflow-hidden" transition:persist="bg-glow">
+    <div class="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true" transition:persist="bg-glow">
       <div class="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-teal-500/10 blur-[120px]"></div>
       <div class="absolute top-1/2 right-0 h-[600px] w-[600px] rounded-full bg-purple-500/5 blur-[120px]"></div>
     </div>
@@ -25,10 +25,10 @@ const { hero, skills, selectedProjects, softClose } = homeData
         <!-- Left Column: Large Avatar -->
         <div class="shrink-0">
           <div class="relative">
-            <div class="absolute inset-0 -z-10 bg-teal-400/20 blur-[40px] rounded-full"></div>
+            <div class="absolute inset-0 -z-10 bg-teal-400/20 blur-[40px] rounded-full" aria-hidden="true"></div>
             <Image
               src={headshot}
-              alt={hero.name}
+              alt={`Headshot of ${hero.name}`}
               class="h-48 w-48 rounded-full border-4 border-teal-400 object-cover shadow-2xl md:h-64 md:w-64 lg:h-72 lg:w-72"
               width={288}
               height={288}
@@ -71,8 +71,8 @@ const { hero, skills, selectedProjects, softClose } = homeData
       </section>
 
       <!-- Skills Section -->
-      <section class="space-y-5">
-        <h3 class="text-lg font-semibold text-white">Skills & Expertise</h3>
+      <section class="space-y-5" aria-labelledby="skills-heading">
+        <h2 id="skills-heading" class="text-lg font-semibold text-white">Skills & Expertise</h2>
 
         <div class="flex flex-wrap gap-3">
           {skills.map((skill) => (
@@ -90,15 +90,15 @@ const { hero, skills, selectedProjects, softClose } = homeData
 
       <!-- Selected Projects Section -->
       <div class="space-y-12">
-        <section class="space-y-6">
+        <section class="space-y-6" aria-labelledby="projects-heading">
           <div class="flex items-center justify-between">
-            <h3 class="text-xl font-bold text-white">Selected Projects</h3>
+            <h2 id="projects-heading" class="text-xl font-bold text-white">Selected Projects</h2>
             <a
               href="/projects"
               class="group flex items-center gap-2 text-sm font-medium text-teal-400 hover:text-teal-300"
             >
               View all projects
-              <svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </a>
@@ -110,9 +110,9 @@ const { hero, skills, selectedProjects, softClose } = homeData
                 href={project.href}
                 class="group relative overflow-hidden rounded-2xl border-2 border-teal-400/40 bg-[#1a1a2e] p-5 transition-all duration-300 shadow-[0_0_20px_rgba(45,212,191,0.15)] hover:shadow-[0_0_30px_rgba(45,212,191,0.25)] hover:border-teal-400/60 hover:-translate-y-1"
               >
-                <h4 class="text-lg font-bold text-white group-hover:text-teal-400 transition-colors">
+                <h3 class="text-lg font-bold text-white group-hover:text-teal-400 transition-colors">
                   {project.title}
-                </h4>
+                </h3>
                 <p class="mt-3 text-sm leading-relaxed text-[#A0A0B0]">
                   {project.description}
                 </p>
@@ -120,7 +120,7 @@ const { hero, skills, selectedProjects, softClose } = homeData
                 <div class="mt-auto pt-5">
                   <div class="inline-flex items-center gap-2 text-sm font-semibold text-teal-400 transition-colors">
                     Read Case Study
-                    <svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
                   </div>

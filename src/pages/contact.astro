@@ -29,7 +29,7 @@ const glowStyles = {
 <BaseLayout title="Contact | Chris Lacey" description="Get in touch with Chris Lacey.">
   <div class="min-h-screen bg-[#0F0F16] text-white selection:bg-teal-400/30 selection:text-teal-200">
     <!-- Background ambient glow -->
-    <div class="fixed inset-0 pointer-events-none overflow-hidden" transition:persist="bg-glow">
+    <div class="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true" transition:persist="bg-glow">
       <div class="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-teal-500/10 blur-[120px]"></div>
       <div class="absolute top-1/2 right-0 h-[600px] w-[600px] rounded-full bg-purple-500/5 blur-[120px]"></div>
     </div>
@@ -46,6 +46,7 @@ const glowStyles = {
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
+          aria-hidden="true"
         >
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
         </svg>
@@ -63,17 +64,19 @@ const glowStyles = {
       </p>
 
       <!-- Contact Links -->
-      <div class="space-y-6">
+      <div class="space-y-6" role="list">
         {links.map((link) => {
           const glow = glowStyles[link.icon as keyof typeof glowStyles]
+          const isExternal = link.icon !== 'email'
           return (
             <a
               href={link.href}
-              target={link.icon !== 'email' ? '_blank' : undefined}
-              rel={link.icon !== 'email' ? 'noopener noreferrer' : undefined}
+              target={isExternal ? '_blank' : undefined}
+              rel={isExternal ? 'noopener noreferrer' : undefined}
               class={`group flex items-center gap-5 rounded-2xl border-2 bg-[#1a1a2e] p-5 transition-all duration-300 ${glow.border} ${glow.shadow} ${glow.hoverBg}`}
+              role="listitem"
             >
-              <div class={`flex h-12 w-12 items-center justify-center ${glow.iconColor}`}>
+              <div class={`flex h-12 w-12 items-center justify-center ${glow.iconColor}`} aria-hidden="true">
                 {link.icon === 'email' && (
                   <svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
@@ -92,12 +95,14 @@ const glowStyles = {
               </div>
               <span class="text-xl font-semibold text-white">
                 {link.label}
+                {isExternal && <span class="sr-only"> (opens in new tab)</span>}
               </span>
               <svg
                 class={`ml-auto h-6 w-6 ${glow.iconColor} transition-transform duration-200 group-hover:translate-x-1`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>

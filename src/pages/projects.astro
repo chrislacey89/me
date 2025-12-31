@@ -8,7 +8,7 @@ const { projects } = projectsData
 <BaseLayout title="Projects | Chris Lacey" description="Case studies showcasing technical work with context on architecture decisions and tradeoffs.">
   <div class="min-h-screen bg-[#0F0F16] text-white selection:bg-teal-400/30 selection:text-teal-200">
     <!-- Background ambient glow -->
-    <div class="fixed inset-0 pointer-events-none overflow-hidden" transition:persist="bg-glow">
+    <div class="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true" transition:persist="bg-glow">
       <div class="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-teal-500/10 blur-[120px]"></div>
       <div class="absolute top-1/2 right-0 h-[600px] w-[600px] rounded-full bg-purple-500/5 blur-[120px]"></div>
     </div>
@@ -25,6 +25,7 @@ const { projects } = projectsData
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
+          aria-hidden="true"
         >
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
         </svg>
@@ -40,9 +41,9 @@ const { projects } = projectsData
       </div>
 
       <!-- Projects Grid -->
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" role="list">
         {projects.map((project) => (
-          <div class="relative overflow-hidden rounded-2xl border-2 border-teal-400/40 bg-[#1a1a2e] p-5 shadow-[0_0_20px_rgba(45,212,191,0.15)]">
+          <article role="listitem" class="relative overflow-hidden rounded-2xl border-2 border-teal-400/40 bg-[#1a1a2e] p-5 shadow-[0_0_20px_rgba(45,212,191,0.15)]">
             <h2 class="text-lg font-bold text-white">
               {project.title}
             </h2>
@@ -55,7 +56,7 @@ const { projects } = projectsData
                 Case Study Coming Soon
               </span>
             </div>
-          </div>
+          </article>
         ))}
       </div>
     </div>

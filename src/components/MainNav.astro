@@ -25,12 +25,13 @@ function isActive(href: string, current: string): boolean {
     </a>
 
     <!-- Desktop Navigation -->
-    <ul class="nav-desktop">
+    <ul class="nav-desktop" role="list">
       {navItems.map((item) => (
         <li>
           <a
             href={item.href}
             class:list={['nav-link', { active: isActive(item.href, currentPath) }]}
+            aria-current={isActive(item.href, currentPath) ? 'page' : undefined}
             transition:name={`nav-${item.label.toLowerCase()}`}
             data-astro-prefetch="hover"
           >
@@ -44,8 +45,9 @@ function isActive(href: string, current: string): boolean {
     <button
       type="button"
       class="hamburger"
-      aria-label="Toggle menu"
+      aria-label="Open menu"
       aria-expanded="false"
+      aria-controls="mobile-overlay"
       id="hamburger"
     >
       <span class="hamburger-line line-1"></span>
@@ -56,27 +58,28 @@ function isActive(href: string, current: string): boolean {
 </header>
 
 <!-- Full-screen Mobile Menu Overlay -->
-<div class="mobile-overlay" id="mobile-overlay" aria-hidden="true">
-  <div class="mobile-overlay-bg"></div>
+<nav class="mobile-overlay" id="mobile-overlay" aria-hidden="true" aria-label="Mobile navigation">
+  <div class="mobile-overlay-bg" aria-hidden="true"></div>
   <div class="mobile-menu-content">
-    <ul class="mobile-nav-list">
+    <ul class="mobile-nav-list" role="list">
       {navItems.map((item, index) => (
         <li class="mobile-nav-item" style={`--item-index: ${index}`}>
           <a
             href={item.href}
             class:list={['mobile-nav-link', { active: isActive(item.href, currentPath) }]}
+            aria-current={isActive(item.href, currentPath) ? 'page' : undefined}
             data-active={isActive(item.href, currentPath) ? 'true' : undefined}
             data-astro-prefetch="hover"
           >
-            <span class="mobile-nav-number">0{index + 1}</span>
+            <span class="mobile-nav-number" aria-hidden="true">0{index + 1}</span>
             <span class="mobile-nav-text">{item.label}</span>
           </a>
         </li>
       ))}
     </ul>
-    <div class="mobile-menu-accent"></div>
+    <div class="mobile-menu-accent" aria-hidden="true"></div>
   </div>
-</div>
+</nav>
 
 <style>
   .nav-header {
@@ -405,10 +408,17 @@ function isActive(href: string, current: string): boolean {
 
       this.isOpen = true;
       this.hamburger.setAttribute('aria-expanded', 'true');
+      this.hamburger.setAttribute('aria-label', 'Close menu');
       this.overlay.classList.add('open');
       this.overlay.setAttribute('aria-hidden', 'false');
       this.header?.classList.add('menu-open');
       document.body.classList.add('menu-open');
+
+      // Focus the first nav link for keyboard users
+      const firstLink = this.overlay.querySelector('.mobile-nav-link') as HTMLElement;
+      if (firstLink) {
+        setTimeout(() => firstLink.focus(), 100);
+      }
     };
 
     private close = () => {
@@ -416,10 +426,14 @@ function isActive(href: string, current: string): boolean {
 
       this.isOpen = false;
       this.hamburger.setAttribute('aria-expanded', 'false');
+      this.hamburger.setAttribute('aria-label', 'Open menu');
       this.overlay.classList.remove('open');
       this.overlay.setAttribute('aria-hidden', 'true');
       this.header?.classList.remove('menu-open');
       document.body.classList.remove('menu-open');
+
+      // Return focus to hamburger button
+      this.hamburger.focus();
     };
 
     cleanup() {

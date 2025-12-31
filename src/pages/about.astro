@@ -8,7 +8,7 @@ const { intro, principles } = aboutData
 <BaseLayout title="About | Chris Lacey" description="Professional background, approach to building software, and what I'm strong at.">
   <div class="min-h-screen bg-[#0F0F16] text-white selection:bg-teal-400/30 selection:text-teal-200">
     <!-- Background ambient glow -->
-    <div class="fixed inset-0 pointer-events-none overflow-hidden" transition:persist="bg-glow">
+    <div class="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true" transition:persist="bg-glow">
       <div class="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-teal-500/10 blur-[120px]"></div>
       <div class="absolute top-1/2 right-0 h-[600px] w-[600px] rounded-full bg-purple-500/5 blur-[120px]"></div>
     </div>
@@ -25,6 +25,7 @@ const { intro, principles } = aboutData
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
+          aria-hidden="true"
         >
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
         </svg>
