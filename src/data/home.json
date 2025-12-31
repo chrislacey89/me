@@ -2,7 +2,7 @@
   "hero": {
     "name": "Chris Lacey",
     "title": "Software Engineer",
-    "tagline": "I ship products. I care about solving real problems, writing code that lasts, and building things that actually work.",
+    "tagline": "I build complex systems with an emphasis on clarity, correctness, and long-term maintainability.",
     "avatar": "/headshot.jpeg",
     "ctas": [
       {
@@ -53,5 +53,5 @@
     { "id": "prisma", "name": "Prisma", "icon": "prisma" },
     { "id": "drizzle", "name": "Drizzle", "icon": "drizzle" }
   ],
-  "softClose": "Want to see how I work? Check out my projects or grab my resume."
+  "softClose": "For a deeper look at how I think and build, see my projects or resume."
 }

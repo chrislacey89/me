@@ -135,7 +135,7 @@ export const GET: APIRoute = async ({ request }) => {
                           color: '#A0A0B0',
                           lineHeight: '1.5',
                         },
-                        children: 'I ship products. I solve real problems. I build things that work.',
+                        children: 'Building complex systems with clarity, correctness, and long-term maintainability.',
                       },
                     },
                   ],
