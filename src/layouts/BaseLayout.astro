@@ -13,6 +13,33 @@ const { title, description = 'Personal portfolio of Chris Lacey - Senior Softwar
 const currentPath = Astro.url.pathname
 const siteUrl = Astro.site || new URL(Astro.url.origin)
 const ogImageUrl = new URL('/api/og.png', siteUrl)
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl)
+
+// JSON-LD structured data
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}#website`,
+      url: siteUrl.toString(),
+      name: 'Chris Lacey',
+      description: 'Personal portfolio of Chris Lacey - Senior Software Engineer',
+    },
+    {
+      '@type': 'Person',
+      '@id': `${siteUrl}#person`,
+      name: 'Chris Lacey',
+      jobTitle: 'Senior Software Engineer',
+      url: siteUrl.toString(),
+      image: ogImageUrl.toString(),
+      sameAs: [
+        'https://github.com/chrislacey',
+        'https://linkedin.com/in/chrislacey',
+      ],
+    },
+  ],
+}
 
 // Custom page transition animation
 const pageTransition = {
@@ -71,6 +98,12 @@ const pageTransition = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl.toString()} />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalUrl.toString()} />
+
+    <!-- JSON-LD Structured Data -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
     <ClientRouter />
   </head>
