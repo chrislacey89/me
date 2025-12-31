@@ -33,7 +33,7 @@ function isActive(href: string, current: string): boolean {
             class:list={['nav-link', { active: isActive(item.href, currentPath) }]}
             aria-current={isActive(item.href, currentPath) ? 'page' : undefined}
             transition:name={`nav-${item.label.toLowerCase()}`}
-            data-astro-prefetch="hover"
+            data-astro-prefetch="viewport"
           >
             {item.label}
           </a>
@@ -70,7 +70,7 @@ function isActive(href: string, current: string): boolean {
             aria-current={isActive(item.href, currentPath) ? 'page' : undefined}
             aria-label={item.label}
             data-active={isActive(item.href, currentPath) ? 'true' : undefined}
-            data-astro-prefetch="hover"
+            data-astro-prefetch="viewport"
           >
             <span class="mobile-nav-number" aria-hidden="true">0{index + 1}</span>
             <span class="mobile-nav-text" aria-hidden="true">{item.label}</span>
