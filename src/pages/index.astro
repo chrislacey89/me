@@ -1,9 +1,9 @@
 ---
 import { Image } from 'astro:assets'
-import BaseLayout from '../layouts/BaseLayout.astro'
+import headshot from '../assets/headshot.jpeg'
 import SkillIcon from '../components/SkillIcon.astro'
 import homeData from '../data/home.json'
-import headshot from '../assets/headshot.jpeg'
+import BaseLayout from '../layouts/BaseLayout.astro'
 
 const { hero, skills, selectedProjects, softClose } = homeData
 ---
@@ -21,59 +21,59 @@ const { hero, skills, selectedProjects, softClose } = homeData
       <div class="hidden" transition:name="back-link" aria-hidden="true"></div>
 
       <!-- Hero Section -->
-      <section class="flex flex-col items-center gap-10 md:flex-row md:items-start md:gap-16 lg:gap-20 pb-8">
-        <!-- Left Column: Large Avatar -->
-        <div class="shrink-0">
-          <div class="relative">
-            <div class="absolute inset-0 -z-10 bg-teal-400/20 blur-[40px] rounded-full" aria-hidden="true"></div>
-            <Image
-              src={headshot}
-              alt={`Headshot of ${hero.name}`}
-              class="h-48 w-48 rounded-full border-4 border-teal-400 object-cover shadow-2xl md:h-64 md:w-64 lg:h-72 lg:w-72"
-              width={288}
-              height={288}
-              loading="eager"
-            />
+      <section class="pb-8">
+        <div class="flex flex-col items-center gap-10 md:flex-row md:items-start md:gap-16 lg:gap-20" transition:name="intro-text">
+          <!-- Left Column: Large Avatar -->
+          <div class="shrink-0">
+            <div class="relative">
+              <div class="absolute inset-0 -z-10 bg-teal-400/20 blur-[40px] rounded-full" aria-hidden="true"></div>
+              <Image
+                src={headshot}
+                alt={`Headshot of ${hero.name}`}
+                class="h-48 w-48 rounded-full border-4 border-teal-400 object-cover shadow-2xl md:h-64 md:w-64 lg:h-72 lg:w-72"
+                width={288}
+                height={288}
+                loading="eager"
+              />
+            </div>
           </div>
-        </div>
 
-        <!-- Right Column: Text Content -->
-        <div class="flex flex-col text-center md:text-left pt-4">
-          <h1 class="text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl" transition:name="page-title">
-            {hero.name}
-          </h1>
-          <div transition:name="intro-text">
+          <!-- Right Column: Text Content -->
+          <div class="flex flex-col text-center md:text-left pt-4">
+            <h1 class="text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl" transition:name="page-title">
+              {hero.name}
+            </h1>
             <h2 class="text-2xl font-medium text-teal-400 bg-linear-to-r from-teal-400 to-teal-200 bg-clip-text text-transparent md:text-3xl">
               {hero.title}
             </h2>
 
             <!-- Tagline -->
-            <div class="mt-6 max-w-2xl space-y-4 text-lg leading-relaxed text-[#A0A0B0] md:text-xl">
+            <div class="mt-6 max-w-2xl space-y-4 text-lg leading-relaxed text-text-muted md:text-xl">
               <p>{hero.tagline}</p>
             </div>
-          </div>
 
-          <!-- CTA Buttons -->
-          <div class="mt-8 flex flex-wrap justify-center gap-4 md:justify-start">
-            {hero.ctas.map((cta) => (
-              <a
-                href={cta.href}
-                download={cta.download ? '' : undefined}
-                class:list={[
-                  'inline-flex items-center justify-center rounded-lg px-8 py-3 text-base font-semibold transition-all duration-300',
-                  cta.variant === 'primary'
-                    ? 'bg-teal-400 text-[#0F0F16] hover:bg-teal-300 hover:shadow-[0_0_30px_rgba(45,212,191,0.3)] hover:-translate-y-1'
-                    : 'border border-white/10 bg-white/5 text-white hover:border-teal-400/50 hover:bg-white/10 hover:text-teal-400 hover:-translate-y-1'
-                ]}
-              >
-                {cta.label}
-              </a>
-            ))}
+            <!-- CTA Buttons -->
+            <div class="mt-8 flex flex-wrap justify-center gap-4 md:justify-start">
+              {hero.ctas.map((cta) => (
+                <a
+                  href={cta.href}
+                  download={cta.download ? '' : undefined}
+                  class:list={[
+                    'inline-flex items-center justify-center rounded-lg px-8 py-3 text-base font-semibold transition-all duration-300',
+                    cta.variant === 'primary'
+                      ? 'bg-teal-400 text-background-dark hover:bg-teal-300 hover:shadow-[0_0_30px_rgba(45,212,191,0.3)] hover:-translate-y-1'
+                      : 'border border-white/10 bg-white/5 text-white hover:border-teal-400/50 hover:bg-white/10 hover:text-teal-400 hover:-translate-y-1'
+                  ]}
+                >
+                  {cta.label}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      <div transition:name="main-content">
+      <div class="space-y-16" transition:name="main-content">
         <!-- Skills Section -->
         <section class="space-y-5" aria-labelledby="skills-heading">
         <h2 id="skills-heading" class="text-lg font-semibold text-white">Skills & Expertise</h2>
