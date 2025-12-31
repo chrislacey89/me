@@ -11,6 +11,8 @@ interface Props {
 const { title, description = 'Personal portfolio of Chris Lacey - Senior Software Engineer' } =
   Astro.props
 const currentPath = Astro.url.pathname
+const siteUrl = Astro.site || new URL(Astro.url.origin)
+const ogImageUrl = new URL('/api/og.png', siteUrl)
 
 // Custom page transition animation
 const pageTransition = {
@@ -56,6 +58,20 @@ const pageTransition = {
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl.toString()} />
+    <meta property="og:url" content={Astro.url.toString()} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl.toString()} />
+
     <ClientRouter />
   </head>
   <body class="min-h-screen bg-zinc-50 dark:bg-zinc-950">
