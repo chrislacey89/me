@@ -6,25 +6,9 @@ import { ClientRouter } from 'astro:transitions'
 interface Props {
   title: string
   description?: string
-  ogImage?: string
-  ogTitle?: string
-  ogSubtitle?: string
 }
 
-const {
-  title,
-  description = "Chris Lacey - Software Engineer focused on complex systems, clarity, and long-term maintainability.",
-  ogImage,
-  ogTitle,
-  ogSubtitle,
-} = Astro.props
-
-// Generate OG image URL
-const siteUrl = Astro.site?.origin || 'https://chrislacey.dev';
-const ogParams = new URLSearchParams();
-if (ogTitle) ogParams.set('title', ogTitle);
-if (ogSubtitle) ogParams.set('subtitle', ogSubtitle);
-const ogImageUrl = ogImage || `${siteUrl}/api/og.png${ogParams.toString() ? '?' + ogParams.toString() : ''}`;
+const { title, description = "Personal portfolio of Chris Lacey - Senior Software Engineer" } = Astro.props
 const currentPath = Astro.url.pathname
 
 // Custom page transition animation
@@ -71,21 +55,6 @@ const pageTransition = {
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={ogTitle || title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImageUrl} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={ogTitle || title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImageUrl} />
-
     <ClientRouter />
   </head>
   <body class="min-h-screen bg-zinc-50 dark:bg-zinc-950">
@@ -102,10 +71,12 @@ const pageTransition = {
     from {
       opacity: 1;
       transform: translateY(0);
+      filter: blur(0);
     }
     to {
       opacity: 0;
       transform: translateY(-20px);
+      filter: blur(8px);
     }
   }
 
@@ -113,10 +84,12 @@ const pageTransition = {
     from {
       opacity: 0;
       transform: translateY(20px);
+      filter: blur(10px);
     }
     to {
       opacity: 1;
       transform: translateY(0);
+      filter: blur(0);
     }
   }
 
@@ -125,10 +98,12 @@ const pageTransition = {
     from {
       opacity: 1;
       transform: translateY(0);
+      filter: blur(0);
     }
     to {
       opacity: 0;
       transform: translateY(20px);
+      filter: blur(8px);
     }
   }
 
@@ -136,14 +111,20 @@ const pageTransition = {
     from {
       opacity: 0;
       transform: translateY(-20px);
+      filter: blur(10px);
     }
     to {
       opacity: 1;
       transform: translateY(0);
+      filter: blur(0);
     }
   }
 
   /* Staggered Child Entry */
+  /* We use a class to ensure this only applies during page load/transition if we wanted, 
+     but applying it globally to main's children is a simple start for the "wow" factor.
+     Astro's View Transition replaces the whole body or main, re-triggering these animations. */
+  
   main > * {
     animation: staggerReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
   }
