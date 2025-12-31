@@ -64,6 +64,7 @@ function isActive(href: string, current: string): boolean {
           <a
             href={item.href}
             class:list={['mobile-nav-link', { active: isActive(item.href, currentPath) }]}
+            data-active={isActive(item.href, currentPath) ? 'true' : undefined}
           >
             <span class="mobile-nav-number">0{index + 1}</span>
             <span class="mobile-nav-text">{item.label}</span>
@@ -377,7 +378,11 @@ function isActive(href: string, current: string): boolean {
       this.hamburger.addEventListener('click', this.toggle, { signal });
 
       this.overlay.addEventListener('click', (e: MouseEvent) => {
-        if ((e.target as HTMLElement).closest('.mobile-nav-link')) {
+        const link = (e.target as HTMLElement).closest('a.mobile-nav-link');
+        if (link) {
+          if (link.hasAttribute('data-active')) {
+            e.preventDefault();
+          }
           this.close();
         }
       }, { signal });
