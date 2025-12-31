@@ -59,12 +59,12 @@ const glowStyles = {
       </div>
 
       <!-- Intro -->
-      <p class="text-lg leading-relaxed text-[#C0C0C8] mb-12">
+      <p class="text-lg leading-relaxed text-[#C0C0C8] mb-12" transition:name="intro-text">
         {intro}
       </p>
 
       <!-- Contact Links -->
-      <ul class="space-y-6 list-none m-0 p-0">
+      <ul class="space-y-6 list-none m-0 p-0" transition:name="main-content">
         {links.map((link) => {
           const glow = glowStyles[link.icon as keyof typeof glowStyles]
           const isExternal = link.icon !== 'email'
