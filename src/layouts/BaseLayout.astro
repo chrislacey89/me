@@ -102,12 +102,10 @@ const pageTransition = {
     from {
       opacity: 1;
       transform: translateY(0);
-      filter: blur(0);
     }
     to {
       opacity: 0;
       transform: translateY(-20px);
-      filter: blur(8px);
     }
   }
 
@@ -115,12 +113,10 @@ const pageTransition = {
     from {
       opacity: 0;
       transform: translateY(20px);
-      filter: blur(10px);
     }
     to {
       opacity: 1;
       transform: translateY(0);
-      filter: blur(0);
     }
   }
 
@@ -129,12 +125,10 @@ const pageTransition = {
     from {
       opacity: 1;
       transform: translateY(0);
-      filter: blur(0);
     }
     to {
       opacity: 0;
       transform: translateY(20px);
-      filter: blur(8px);
     }
   }
 
@@ -142,20 +136,14 @@ const pageTransition = {
     from {
       opacity: 0;
       transform: translateY(-20px);
-      filter: blur(10px);
     }
     to {
       opacity: 1;
       transform: translateY(0);
-      filter: blur(0);
     }
   }
 
   /* Staggered Child Entry */
-  /* We use a class to ensure this only applies during page load/transition if we wanted, 
-     but applying it globally to main's children is a simple start for the "wow" factor.
-     Astro's View Transition replaces the whole body or main, re-triggering these animations. */
-  
   main > * {
     animation: staggerReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
   }
