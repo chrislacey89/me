@@ -1,0 +1,23 @@
+{
+  "intro": "I'm open to discussing senior frontend roles, interesting technical challenges, or just connecting with others who care about building quality software.",
+  "links": [
+    {
+      "id": "email",
+      "label": "Email",
+      "href": "mailto:chris@chrislacey.dev",
+      "icon": "email"
+    },
+    {
+      "id": "linkedin",
+      "label": "LinkedIn",
+      "href": "https://linkedin.com/in/chrislacey",
+      "icon": "linkedin"
+    },
+    {
+      "id": "github",
+      "label": "GitHub",
+      "href": "https://github.com/chrislacey",
+      "icon": "github"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import aboutData from '../data/about.json'
+
+const { intro, principles } = aboutData
+---
+
+<BaseLayout title="About | Chris Lacey" description="Professional background, approach to building software, and what I'm strong at.">
+  <div class="min-h-screen bg-[#0F0F16] text-white selection:bg-teal-400/30 selection:text-teal-200">
+    <!-- Background ambient glow -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden" transition:persist="bg-glow">
+      <div class="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-teal-500/10 blur-[120px]"></div>
+      <div class="absolute top-1/2 right-0 h-[600px] w-[600px] rounded-full bg-purple-500/5 blur-[120px]"></div>
+    </div>
+
+    <div class="relative mx-auto max-w-3xl px-6 py-12 md:px-12 md:py-20 lg:py-24">
+      <!-- Back Link -->
+      <a
+        href="/"
+        class="group mb-8 inline-flex items-center gap-2 text-sm font-medium text-[#A0A0B0] hover:text-teal-400 transition-colors"
+      >
+        <svg
+          class="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+        </svg>
+        Back to Home
+      </a>
+
+      <!-- Page Header -->
+      <div class="mb-12">
+        <h1 class="text-4xl font-bold text-white md:text-5xl" transition:name="page-title">About</h1>
+      </div>
+
+      <!-- Intro -->
+      <p class="text-lg leading-relaxed text-[#C0C0C8] mb-16">
+        {intro}
+      </p>
+
+      <!-- How I Work -->
+      <section>
+        <h2 class="text-xl font-semibold text-white mb-8">How I Work</h2>
+
+        <div class="space-y-8">
+          {principles.map((principle) => (
+            <div class="group">
+              <h3 class="text-base font-semibold text-teal-400 mb-2">
+                {principle.title}
+              </h3>
+              <p class="text-[#A0A0B0] leading-relaxed">
+                {principle.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

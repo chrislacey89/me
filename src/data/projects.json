@@ -1,0 +1,19 @@
+{
+  "projects": [
+    {
+      "id": "decision-assistant",
+      "title": "Decision Assistant",
+      "description": "AI-assisted decision tool focused on reasoning and tradeoffs"
+    },
+    {
+      "id": "telecom-ecommerce",
+      "title": "Telecommunications E-commerce Platform",
+      "description": "Large-scale Vue 3 application for complex cart and checkout flows"
+    },
+    {
+      "id": "design-system-migration",
+      "title": "Design System Migration",
+      "description": "Production design system migrated from Vue to React"
+    }
+  ]
+}

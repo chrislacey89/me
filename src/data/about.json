@@ -1,0 +1,30 @@
+{
+  "intro": "I'm a Senior Software Engineer focused on architecture, complex UI systems, and long-term maintainability. I've owned complete frontend implementations on multi-person teams and served as the sole frontend developer on large production projects. My work tends to live where product complexity and technical rigor meet.",
+  "principles": [
+    {
+      "id": "accessibility",
+      "title": "Accessibility is a baseline",
+      "description": "Not an enhancement or a nice-to-have. I've implemented extensive ARIA support and full keyboard navigation in production systems because it's foundational to quality software."
+    },
+    {
+      "id": "predictability",
+      "title": "Predictable over clever",
+      "description": "I optimize for correctness and stability first. Explicit state, clear data flow, minimal magic. Code should be easy to understand and maintain six months later."
+    },
+    {
+      "id": "constraints",
+      "title": "Thinking in constraints",
+      "description": "I start by identifying failure modes and second-order effects. Understanding what can go wrong leads to more durable solutions than assuming everything will work."
+    },
+    {
+      "id": "clarity",
+      "title": "Clarity over persuasion",
+      "description": "My teaching background shows up in how I write, explain, and document systems. I care more about being understood than sounding impressive."
+    },
+    {
+      "id": "tradeoffs",
+      "title": "Tradeoffs, not best practices",
+      "description": "Every decision has costs. I prefer discussing real tradeoffs rather than defaulting to dogma. Context matters more than convention."
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+---
+import '../styles/global.css'
+import MainNav from '../components/MainNav.astro'
+import { ClientRouter } from 'astro:transitions'
+
+interface Props {
+  title: string
+  description?: string
+}
+
+const { title, description = "Personal portfolio of Chris Lacey - Senior Software Engineer" } = Astro.props
+const currentPath = Astro.url.pathname
+
+// Custom page transition animation
+const pageTransition = {
+  forwards: {
+    old: {
+      name: 'cinemaOut',
+      duration: '0.4s',
+      easing: 'ease-in',
+      fillMode: 'forwards',
+    },
+    new: {
+      name: 'cinemaIn',
+      duration: '0.6s',
+      delay: '0.1s', 
+      easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+      fillMode: 'backwards',
+    },
+  },
+  backwards: {
+    old: {
+      name: 'cinemaOutBack',
+      duration: '0.4s',
+      easing: 'ease-in',
+      fillMode: 'forwards',
+    },
+    new: {
+      name: 'cinemaInBack',
+      duration: '0.6s',
+      delay: '0.1s',
+      easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+      fillMode: 'backwards',
+    },
+  },
+}
+---
+
+<!doctype html>
+<html lang="en" transition:animate="none">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <ClientRouter />
+  </head>
+  <body class="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+    <MainNav currentPath={currentPath} />
+    <main transition:animate={pageTransition}>
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  /* Forward Transitions */
+  @keyframes cinemaOut {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-20px);
+      filter: blur(8px);
+    }
+  }
+
+  @keyframes cinemaIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+      filter: blur(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  /* Backward Transitions */
+  @keyframes cinemaOutBack {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(20px);
+      filter: blur(8px);
+    }
+  }
+
+  @keyframes cinemaInBack {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+      filter: blur(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  /* Staggered Child Entry */
+  /* We use a class to ensure this only applies during page load/transition if we wanted, 
+     but applying it globally to main's children is a simple start for the "wow" factor.
+     Astro's View Transition replaces the whole body or main, re-triggering these animations. */
+  
+  main > * {
+    animation: staggerReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+
+  main > *:nth-child(1) { animation-delay: 0.1s; }
+  main > *:nth-child(2) { animation-delay: 0.15s; }
+  main > *:nth-child(3) { animation-delay: 0.2s; }
+  main > *:nth-child(4) { animation-delay: 0.25s; }
+  main > *:nth-child(5) { animation-delay: 0.3s; }
+
+  @keyframes staggerReveal {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

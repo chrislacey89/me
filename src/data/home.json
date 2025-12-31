@@ -1,0 +1,57 @@
+{
+  "hero": {
+    "name": "Chris Lacey",
+    "title": "Senior Software Engineer",
+    "tagline": "I build complex, high-quality web interfaces with an emphasis on clarity, performance, and long-term maintainability.",
+    "avatar": "/headshot.jpeg",
+    "ctas": [
+      {
+        "label": "Download Resume",
+        "href": "/resume.pdf",
+        "variant": "primary",
+        "download": true
+      },
+      {
+        "label": "View Projects",
+        "href": "/projects",
+        "variant": "secondary"
+      }
+    ]
+  },
+  "selectedProjects": [
+    {
+      "id": "decision-assistant",
+      "title": "Decision Assistant",
+      "description": "AI-assisted decision tool focused on reasoning and tradeoffs",
+      "href": "/projects"
+    },
+    {
+      "id": "telecom-ecommerce",
+      "title": "Telecommunications E-commerce Platform",
+      "description": "Large-scale Vue 3 application for complex cart and checkout flows",
+      "href": "/projects"
+    },
+    {
+      "id": "design-system-migration",
+      "title": "Design System Migration",
+      "description": "Production design system migrated from Vue to React",
+      "href": "/projects"
+    }
+  ],
+  "skills": [
+    { "id": "react", "name": "React", "icon": "react" },
+    { "id": "typescript", "name": "TypeScript", "icon": "typescript" },
+    { "id": "nextjs", "name": "Next.js", "icon": "nextjs" },
+    { "id": "tanstack", "name": "TanStack Query", "icon": "tanstack" },
+    { "id": "reactrouter", "name": "React Router", "icon": "reactrouter" },
+    { "id": "css", "name": "CSS", "icon": "css" },
+    { "id": "tailwind", "name": "Tailwind", "icon": "tailwind" },
+    { "id": "vitest", "name": "Vitest", "icon": "vitest" },
+    { "id": "playwright", "name": "Playwright", "icon": "playwright" },
+    { "id": "vercel", "name": "Vercel AI SDK", "icon": "vercel" },
+    { "id": "nodejs", "name": "Node.js", "icon": "nodejs" },
+    { "id": "prisma", "name": "Prisma", "icon": "prisma" },
+    { "id": "drizzle", "name": "Drizzle", "icon": "drizzle" }
+  ],
+  "softClose": "For a deeper look at how I think and build, see my projects or resume."
+}

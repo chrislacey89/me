@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import projectsData from '../data/projects.json'
+
+const { projects } = projectsData
+---
+
+<BaseLayout title="Projects | Chris Lacey" description="Case studies showcasing technical work with context on architecture decisions and tradeoffs.">
+  <div class="min-h-screen bg-[#0F0F16] text-white selection:bg-teal-400/30 selection:text-teal-200">
+    <!-- Background ambient glow -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden" transition:persist="bg-glow">
+      <div class="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-teal-500/10 blur-[120px]"></div>
+      <div class="absolute top-1/2 right-0 h-[600px] w-[600px] rounded-full bg-purple-500/5 blur-[120px]"></div>
+    </div>
+
+    <div class="relative mx-auto max-w-7xl px-6 py-12 md:px-12 md:py-20 lg:py-24">
+      <!-- Back Link -->
+      <a
+        href="/"
+        class="group mb-8 inline-flex items-center gap-2 text-sm font-medium text-[#A0A0B0] hover:text-teal-400 transition-colors"
+      >
+        <svg
+          class="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+        </svg>
+        Back to Home
+      </a>
+
+      <!-- Page Header -->
+      <div class="mb-12">
+        <h1 class="text-4xl font-bold text-white md:text-5xl" transition:name="page-title">Projects</h1>
+        <p class="mt-4 text-lg text-[#A0A0B0]">
+          Case studies showcasing technical work with context on architecture decisions and tradeoffs.
+        </p>
+      </div>
+
+      <!-- Projects Grid -->
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {projects.map((project) => (
+          <div class="relative overflow-hidden rounded-2xl border-2 border-teal-400/40 bg-[#1a1a2e] p-5 shadow-[0_0_20px_rgba(45,212,191,0.15)]">
+            <h2 class="text-lg font-bold text-white">
+              {project.title}
+            </h2>
+            <p class="mt-3 text-sm leading-relaxed text-[#A0A0B0]">
+              {project.description}
+            </p>
+
+            <div class="mt-auto pt-5">
+              <span class="inline-flex items-center gap-2 text-sm font-semibold text-teal-400/50">
+                Case Study Coming Soon
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</BaseLayout>

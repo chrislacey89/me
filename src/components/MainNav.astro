@@ -1,0 +1,118 @@
+---
+interface Props {
+  currentPath: string
+}
+
+const { currentPath } = Astro.props
+
+const navItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Projects', href: '/projects' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
+]
+
+function isActive(href: string, current: string): boolean {
+  if (href === '/') return current === '/'
+  return current.startsWith(href)
+}
+---
+
+<header class="sticky top-0 z-50 border-b border-zinc-200 bg-zinc-50/80 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-950/80" transition:animate="none">
+  <nav class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+    <!-- Logo / Name -->
+    <a
+      href="/"
+      class="text-lg font-medium text-zinc-900 transition-colors hover:text-teal-600 dark:text-zinc-100 dark:hover:text-teal-400"
+      transition:name="nav-logo"
+    >
+      Chris Lacey
+    </a>
+
+    <!-- Desktop Navigation -->
+    <ul class="hidden items-center gap-8 md:flex">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class:list={[
+              'text-sm font-medium transition-colors',
+              isActive(item.href, currentPath)
+                ? 'text-teal-600 dark:text-teal-400'
+                : 'text-zinc-600 hover:text-teal-600 dark:text-zinc-400 dark:hover:text-teal-400'
+            ]}
+            transition:name={`nav-${item.label.toLowerCase()}`}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Mobile Hamburger Button -->
+    <button
+      type="button"
+      class="flex items-center justify-center rounded-md p-2 text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 md:hidden dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+      id="menu-button"
+    >
+      <svg
+        class="h-6 w-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        id="menu-icon-open"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+      <svg
+        class="hidden h-6 w-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        id="menu-icon-close"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="hidden border-t border-zinc-200 bg-zinc-50 md:hidden dark:border-zinc-800 dark:bg-zinc-950" id="mobile-menu">
+    <ul class="flex flex-col px-6 py-4">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class:list={[
+              'block py-3 text-base font-medium transition-colors',
+              isActive(item.href, currentPath)
+                ? 'text-teal-600 dark:text-teal-400'
+                : 'text-zinc-600 hover:text-teal-600 dark:text-zinc-400 dark:hover:text-teal-400'
+            ]}
+            transition:name={`nav-mobile-${item.label.toLowerCase()}`}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</header>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const menuButton = document.getElementById('menu-button')
+    const mobileMenu = document.getElementById('mobile-menu')
+    const menuIconOpen = document.getElementById('menu-icon-open')
+    const menuIconClose = document.getElementById('menu-icon-close')
+
+    menuButton?.addEventListener('click', () => {
+      const isOpen = mobileMenu?.classList.toggle('hidden') === false
+      menuButton.setAttribute('aria-expanded', String(isOpen))
+      menuIconOpen?.classList.toggle('hidden', isOpen)
+      menuIconClose?.classList.toggle('hidden', !isOpen)
+    })
+  })
+</script>
