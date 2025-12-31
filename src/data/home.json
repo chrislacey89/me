@@ -1,8 +1,8 @@
 {
   "hero": {
     "name": "Chris Lacey",
-    "title": "Senior Software Engineer",
-    "tagline": "I build complex, high-quality web interfaces with an emphasis on clarity, performance, and long-term maintainability.",
+    "title": "Software Engineer",
+    "tagline": "I ship products. I care about solving real problems, writing code that lasts, and building things that actually work.",
     "avatar": "/headshot.jpeg",
     "ctas": [
       {
@@ -22,19 +22,19 @@
     {
       "id": "decision-assistant",
       "title": "Decision Assistant",
-      "description": "AI-assisted decision tool focused on reasoning and tradeoffs",
+      "description": "AI tool that helps break down complex decisions into clear tradeoffs",
       "href": "/projects"
     },
     {
       "id": "telecom-ecommerce",
       "title": "Telecommunications E-commerce Platform",
-      "description": "Large-scale Vue 3 application for complex cart and checkout flows",
+      "description": "End-to-end e-commerce system handling complex pricing, cart logic, and checkout",
       "href": "/projects"
     },
     {
       "id": "design-system-migration",
       "title": "Design System Migration",
-      "description": "Production design system migrated from Vue to React",
+      "description": "Rebuilt a production design system from scratch, shipping to multiple teams",
       "href": "/projects"
     }
   ],
@@ -53,5 +53,5 @@
     { "id": "prisma", "name": "Prisma", "icon": "prisma" },
     { "id": "drizzle", "name": "Drizzle", "icon": "drizzle" }
   ],
-  "softClose": "For a deeper look at how I think and build, see my projects or resume."
+  "softClose": "Want to see how I work? Check out my projects or grab my resume."
 }

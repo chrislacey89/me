@@ -13,7 +13,10 @@
     "@fontsource/geist-mono": "^5.2.7",
     "@fontsource/geist-sans": "^5.2.5",
     "@tailwindcss/vite": "^4.1.18",
+    "@vercel/og": "^0.8.6",
     "astro": "^5.16.6",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.1.18"
   }

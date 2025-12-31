@@ -1,10 +1,10 @@
 {
-  "intro": "I'm a Senior Software Engineer focused on architecture, complex UI systems, and long-term maintainability. I've owned complete frontend implementations on multi-person teams and served as the sole frontend developer on large production projects. My work tends to live where product complexity and technical rigor meet.",
+  "intro": "I'm a software engineer who ships. I've built production systems end-to-end, owned complex product implementations, and worked across the stack wherever the problem needed solving. I care less about job titles and more about making things that work.",
   "principles": [
     {
       "id": "accessibility",
       "title": "Accessibility is a baseline",
-      "description": "Not an enhancement or a nice-to-have. I've implemented extensive ARIA support and full keyboard navigation in production systems because it's foundational to quality software."
+      "description": "Not a feature or a nice-to-have. I build with ARIA support and keyboard navigation from the start because software should work for everyone."
     },
     {
       "id": "predictability",
