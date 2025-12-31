@@ -18,7 +18,7 @@ function isActive(href: string, current: string): boolean {
 }
 ---
 
-<header class="nav-header" transition:animate="none">
+<header class="nav-header" id="nav-header" transition:animate="none">
   <nav class="nav-container">
     <a href="/" class="nav-logo" transition:name="nav-logo">
       Chris Lacey
@@ -39,23 +39,20 @@ function isActive(href: string, current: string): boolean {
       ))}
     </ul>
 
-    <!-- Spacer for hamburger position -->
-    <div class="hamburger-spacer md:hidden" aria-hidden="true"></div>
+    <!-- Mobile Hamburger Button -->
+    <button
+      type="button"
+      class="hamburger"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+      id="hamburger"
+    >
+      <span class="hamburger-line line-1"></span>
+      <span class="hamburger-line line-2"></span>
+      <span class="hamburger-line line-3"></span>
+    </button>
   </nav>
 </header>
-
-<!-- Mobile Hamburger Button - outside header for z-index control -->
-<button
-  type="button"
-  class="hamburger"
-  aria-label="Toggle menu"
-  aria-expanded="false"
-  id="hamburger"
->
-  <span class="hamburger-line line-1"></span>
-  <span class="hamburger-line line-2"></span>
-  <span class="hamburger-line line-3"></span>
-</button>
 
 <!-- Full-screen Mobile Menu Overlay -->
 <div class="mobile-overlay" id="mobile-overlay" aria-hidden="true">
@@ -86,6 +83,13 @@ function isActive(href: string, current: string): boolean {
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     background: rgba(15, 15, 22, 0.85);
     backdrop-filter: blur(12px);
+    transition: z-index 0s;
+  }
+
+  .nav-header.menu-open {
+    z-index: 200;
+    background: transparent;
+    border-color: transparent;
   }
 
   .nav-container {
@@ -159,17 +163,8 @@ function isActive(href: string, current: string): boolean {
     color: #2dd4bf;
   }
 
-  /* Spacer to reserve space for hamburger in header */
-  .hamburger-spacer {
-    width: 44px;
-    height: 44px;
-  }
-
-  /* Hamburger Button - fixed position outside header */
+  /* Hamburger Button */
   .hamburger {
-    position: fixed;
-    top: 0.5rem;
-    right: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -180,13 +175,11 @@ function isActive(href: string, current: string): boolean {
     border: none;
     background: transparent;
     cursor: pointer;
-    z-index: 200;
     gap: 6px;
   }
 
   @media (min-width: 768px) {
-    .hamburger,
-    .hamburger-spacer {
+    .hamburger {
       display: none;
     }
   }
@@ -198,14 +191,16 @@ function isActive(href: string, current: string): boolean {
     background: #fafafa;
     border-radius: 2px;
     transition:
-      transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
-      opacity 0.2s ease;
+      transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.15s ease;
     transform-origin: center;
   }
 
   /* Hamburger → X morphing animation */
   .hamburger[aria-expanded="true"] .line-1 {
     transform: translateY(8px) rotate(45deg);
+    transition:
+      transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .hamburger[aria-expanded="true"] .line-2 {
@@ -215,6 +210,8 @@ function isActive(href: string, current: string): boolean {
 
   .hamburger[aria-expanded="true"] .line-3 {
     transform: translateY(-8px) rotate(-45deg);
+    transition:
+      transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /* Mobile Overlay */
@@ -357,6 +354,7 @@ function isActive(href: string, current: string): boolean {
   class MobileMenu {
     private hamburger: HTMLElement | null = null;
     private overlay: HTMLElement | null = null;
+    private header: HTMLElement | null = null;
     private abortController: AbortController | null = null;
     private isOpen = false;
 
@@ -369,6 +367,7 @@ function isActive(href: string, current: string): boolean {
 
       this.hamburger = document.getElementById('hamburger');
       this.overlay = document.getElementById('mobile-overlay');
+      this.header = document.getElementById('nav-header');
 
       if (!this.hamburger || !this.overlay) return;
 
@@ -401,6 +400,7 @@ function isActive(href: string, current: string): boolean {
       this.hamburger.setAttribute('aria-expanded', 'true');
       this.overlay.classList.add('open');
       this.overlay.setAttribute('aria-hidden', 'false');
+      this.header?.classList.add('menu-open');
       document.body.classList.add('menu-open');
     };
 
@@ -411,6 +411,7 @@ function isActive(href: string, current: string): boolean {
       this.hamburger.setAttribute('aria-expanded', 'false');
       this.overlay.classList.remove('open');
       this.overlay.setAttribute('aria-hidden', 'true');
+      this.header?.classList.remove('menu-open');
       document.body.classList.remove('menu-open');
     };
 
@@ -418,6 +419,7 @@ function isActive(href: string, current: string): boolean {
       this.abortController?.abort();
       this.abortController = null;
       this.isOpen = false;
+      this.header?.classList.remove('menu-open');
       document.body.classList.remove('menu-open');
     }
   }
