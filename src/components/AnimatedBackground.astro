@@ -1,0 +1,156 @@
+---
+// Animated background with floating gradient orbs
+---
+
+<div class="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true" transition:persist="bg-glow">
+  <div
+    id="orb-1"
+    class="absolute h-[500px] w-[500px] rounded-full bg-teal-500/10 blur-[120px] will-change-transform"
+    style="left: -160px; top: -160px;"
+  ></div>
+  <div
+    id="orb-2"
+    class="absolute h-[600px] w-[600px] rounded-full bg-purple-500/5 blur-[120px] will-change-transform"
+    style="right: 0; top: 50%;"
+  ></div>
+</div>
+
+<script>
+  interface Orb {
+    el: HTMLElement;
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    width: number;
+    height: number;
+  }
+
+  function initOrbAnimation() {
+    const orb1 = document.getElementById('orb-1');
+    const orb2 = document.getElementById('orb-2');
+
+    if (!orb1 || !orb2) return;
+
+    const container = orb1.parentElement;
+    if (!container) return;
+
+    // Get initial positions from current styles
+    const rect1 = orb1.getBoundingClientRect();
+    const rect2 = orb2.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+
+    const orbs: Orb[] = [
+      {
+        el: orb1,
+        x: rect1.left - containerRect.left,
+        y: rect1.top - containerRect.top,
+        vx: 0.4 + Math.random() * 0.2,
+        vy: 0.35 + Math.random() * 0.2,
+        width: 500,
+        height: 500,
+      },
+      {
+        el: orb2,
+        x: rect2.left - containerRect.left,
+        y: rect2.top - containerRect.top,
+        vx: -0.35 - Math.random() * 0.2,
+        vy: 0.3 + Math.random() * 0.2,
+        width: 600,
+        height: 600,
+      },
+    ];
+
+    let animationId: number;
+    let lastTime = performance.now();
+
+    function animate(currentTime: number) {
+      const deltaTime = Math.min(currentTime - lastTime, 32); // Cap delta to avoid jumps
+      lastTime = currentTime;
+
+      const cw = window.innerWidth;
+      const ch = window.innerHeight;
+
+      // Update each orb
+      for (const orb of orbs) {
+        // Update position
+        orb.x += orb.vx * deltaTime * 0.05;
+        orb.y += orb.vy * deltaTime * 0.05;
+
+        // Bounce off walls with some padding (orbs can go partially off-screen)
+        const minX = -orb.width * 0.6;
+        const maxX = cw - orb.width * 0.4;
+        const minY = -orb.height * 0.6;
+        const maxY = ch - orb.height * 0.4;
+
+        if (orb.x <= minX) {
+          orb.x = minX;
+          orb.vx = Math.abs(orb.vx) * (0.8 + Math.random() * 0.4);
+        } else if (orb.x >= maxX) {
+          orb.x = maxX;
+          orb.vx = -Math.abs(orb.vx) * (0.8 + Math.random() * 0.4);
+        }
+
+        if (orb.y <= minY) {
+          orb.y = minY;
+          orb.vy = Math.abs(orb.vy) * (0.8 + Math.random() * 0.4);
+        } else if (orb.y >= maxY) {
+          orb.y = maxY;
+          orb.vy = -Math.abs(orb.vy) * (0.8 + Math.random() * 0.4);
+        }
+
+        // Apply position
+        orb.el.style.transform = `translate(${orb.x}px, ${orb.y}px)`;
+        orb.el.style.left = '0';
+        orb.el.style.top = '0';
+        orb.el.style.right = 'auto';
+      }
+
+      // Simple collision between orbs - soft push apart
+      const dx = orbs[1].x - orbs[0].x;
+      const dy = orbs[1].y - orbs[0].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const minDist = 400; // Minimum distance before they start pushing
+
+      if (dist < minDist && dist > 0) {
+        const pushStrength = 0.008;
+        const nx = dx / dist;
+        const ny = dy / dist;
+
+        orbs[0].vx -= nx * pushStrength;
+        orbs[0].vy -= ny * pushStrength;
+        orbs[1].vx += nx * pushStrength;
+        orbs[1].vy += ny * pushStrength;
+      }
+
+      // Clamp velocities
+      for (const orb of orbs) {
+        const maxVel = 0.7;
+        const minVel = 0.2;
+        const vel = Math.sqrt(orb.vx * orb.vx + orb.vy * orb.vy);
+
+        if (vel > maxVel) {
+          orb.vx = (orb.vx / vel) * maxVel;
+          orb.vy = (orb.vy / vel) * maxVel;
+        } else if (vel < minVel) {
+          orb.vx = (orb.vx / vel) * minVel;
+          orb.vy = (orb.vy / vel) * minVel;
+        }
+      }
+
+      animationId = requestAnimationFrame(animate);
+    }
+
+    // Start animation
+    animationId = requestAnimationFrame(animate);
+
+    // Cleanup on page transition
+    document.addEventListener('astro:before-preparation', () => {
+      cancelAnimationFrame(animationId);
+    }, { once: true });
+  }
+
+  // Initialize on page load and after view transitions
+  initOrbAnimation();
+  document.addEventListener('astro:after-swap', initOrbAnimation);
+</script>

@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets'
 import headshot from '../assets/headshot.jpeg'
+import AnimatedBackground from '../components/AnimatedBackground.astro'
 import SkillIcon from '../components/SkillIcon.astro'
 import homeData from '../data/home.json'
 import BaseLayout from '../layouts/BaseLayout.astro'
@@ -10,11 +11,7 @@ const { hero, skills, selectedProjects } = homeData
 
 <BaseLayout title="Chris Lacey | Senior Software Engineer">
   <div class="min-h-screen bg-[#0F0F16] text-white selection:bg-teal-400/30 selection:text-teal-200">
-    <!-- Background ambient glow -->
-    <div class="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true" transition:persist="bg-glow">
-      <div class="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-teal-500/10 blur-[120px]"></div>
-      <div class="absolute top-1/2 right-0 h-[600px] w-[600px] rounded-full bg-purple-500/5 blur-[120px]"></div>
-    </div>
+    <AnimatedBackground />
 
     <div class="relative mx-auto max-w-7xl px-6 py-12 md:px-12 md:py-20 lg:py-24 space-y-20">
       <!-- Hero Section -->
