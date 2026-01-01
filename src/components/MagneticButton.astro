@@ -13,7 +13,7 @@ interface Props {
 
 const { href, download, variant = 'primary', class: className } = Astro.props;
 
-const baseClasses = 'inline-flex items-center justify-center rounded-lg px-8 py-3 text-base font-semibold transition-colors duration-300';
+const baseClasses = 'inline-flex items-center justify-center rounded-lg px-8 py-3 text-base font-semibold transition-colors duration-300 w-full min-[480px]:w-auto';
 
 const variantClasses = {
   primary: 'gradient-button text-background-dark',
@@ -23,7 +23,7 @@ const variantClasses = {
 const Tag = href ? 'a' : 'button';
 ---
 
-<div class="magnetic-wrapper relative inline-block">
+<div class="magnetic-wrapper relative inline-block w-full min-[480px]:w-auto">
   <Tag
     href={href}
     download={download ? '' : undefined}

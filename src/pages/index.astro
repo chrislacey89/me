@@ -47,7 +47,7 @@ const { hero, skills, selectedProjects } = homeData
             </div>
 
             <!-- CTA Buttons -->
-            <div class="mt-8 flex flex-wrap justify-center gap-4 md:justify-start">
+            <div class="mt-8 flex flex-col gap-4 min-[480px]:flex-row min-[480px]:flex-wrap min-[480px]:justify-center md:justify-start">
               {hero.ctas.map((cta) => (
                 <MagneticButton
                   href={cta.href}
@@ -69,7 +69,7 @@ const { hero, skills, selectedProjects } = homeData
         <section class="space-y-5" aria-labelledby="skills-heading">
         <h2 id="skills-heading" class="text-lg font-semibold text-white">Skills & Expertise</h2>
 
-        <div class="flex flex-wrap gap-3">
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(5.5rem,1fr))] gap-y-4 justify-items-start">
           {skills.map((skill, index) => (
             <InteractiveSkillIcon
               icon={skill.icon}
