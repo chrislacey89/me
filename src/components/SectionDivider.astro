@@ -10,7 +10,7 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<div class:list={['section-divider', className]} aria-hidden="true">
+<div class:list={['section-divider', className]} aria-hidden="true" transition:name="section-divider">
   <div class="divider-line">
     <div class="divider-glow"></div>
   </div>

@@ -200,6 +200,42 @@ body {
 }
 
 /* ==========================================
+   Section Divider View Transition
+   ========================================== */
+
+@keyframes divider-expand-in {
+  0% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@keyframes divider-contract-out {
+  0% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+}
+
+::view-transition-old(section-divider) {
+  animation: divider-contract-out 0.2s ease-in forwards;
+  transform-origin: center;
+}
+
+::view-transition-new(section-divider) {
+  animation: divider-expand-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+  transform-origin: center;
+}
+
+/* ==========================================
    Gradient Text Utilities
    ========================================== */
 
