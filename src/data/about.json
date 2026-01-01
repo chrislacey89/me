@@ -2,11 +2,6 @@
   "intro": "I'm a software engineer focused on architecture, complex systems, and long-term maintainability. I've owned complete implementations on multi-person teams and served as the sole developer on large production projects. My work tends to live where product complexity and technical rigor meet.",
   "principles": [
     {
-      "id": "accessibility",
-      "title": "Accessibility is a baseline",
-      "description": "Not a feature or a nice-to-have. I build with ARIA support and keyboard navigation from the start because software should work for everyone."
-    },
-    {
       "id": "predictability",
       "title": "Predictable over clever",
       "description": "I optimize for correctness and stability first. Explicit state, clear data flow, minimal magic. Code should be easy to understand and maintain six months later."
