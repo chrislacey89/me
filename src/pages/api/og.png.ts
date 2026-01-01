@@ -164,7 +164,7 @@ export const GET: APIRoute = async ({ request }) => {
                         },
                       },
                     },
-                    // Border ring
+                    // Border ring - solid teal like home page
                     {
                       type: 'div',
                       props: {
@@ -175,7 +175,7 @@ export const GET: APIRoute = async ({ request }) => {
                           width: '280px',
                           height: '280px',
                           borderRadius: '140px',
-                          background: 'linear-gradient(135deg, rgba(45, 212, 191, 0.5), rgba(20, 184, 166, 0.25))',
+                          background: '#2dd4bf',
                           padding: '4px',
                         },
                         children: imageSrc ? {
