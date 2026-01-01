@@ -16,7 +16,7 @@ const { href, download, variant = 'primary', class: className } = Astro.props;
 const baseClasses = 'inline-flex items-center justify-center rounded-lg px-8 py-3 text-base font-semibold transition-colors duration-300';
 
 const variantClasses = {
-  primary: 'bg-teal-400 text-background-dark hover:bg-teal-300',
+  primary: 'gradient-button text-background-dark',
   secondary: 'border border-white/10 bg-white/5 text-white hover:border-teal-400/50 hover:bg-white/10 hover:text-teal-400',
 };
 
@@ -46,20 +46,26 @@ const Tag = href ? 'a' : 'button';
     transition: transform 0.1s ease-out;
   }
 
-  /* Glow effect on hover */
+  /* Gradient button style */
+  .gradient-button {
+    background: linear-gradient(to right, #2dd4bf, #38bdf8, #c084fc) !important;
+    transition: filter 0.2s ease !important;
+  }
+
+  /* Glow effect on hover - disabled for gradient buttons */
   [data-magnetic-button] {
     position: relative;
     overflow: visible;
   }
 
-  [data-magnetic-button]::before {
+  [data-magnetic-button]:not(.gradient-button)::before {
     content: '';
     position: absolute;
     inset: -2px;
     border-radius: inherit;
     background: radial-gradient(
       circle at var(--glow-x, 50%) var(--glow-y, 50%),
-      rgba(45, 212, 191, 0.4) 0%,
+      rgba(56, 189, 248, 0.4) 0%,
       transparent 70%
     );
     opacity: 0;
@@ -68,7 +74,7 @@ const Tag = href ? 'a' : 'button';
     z-index: -1;
   }
 
-  .magnetic-wrapper:hover [data-magnetic-button]::before {
+  .magnetic-wrapper:hover [data-magnetic-button]:not(.gradient-button)::before {
     opacity: 1;
   }
 
