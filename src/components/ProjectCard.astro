@@ -1,0 +1,218 @@
+---
+/**
+ * ProjectCard - A card with 3D tilt effect and cursor-tracking gradient
+ * Features realistic lighting with shadow that shifts opposite to tilt
+ */
+
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  comingSoon?: boolean;
+  class?: string;
+}
+
+const { href, title, description, comingSoon = false, class: className } = Astro.props;
+---
+
+<div class:list={['project-card-wrapper h-full', className]} data-project-card>
+  <a
+    href={href}
+    class="project-card group relative flex h-full overflow-hidden rounded-2xl border-2 border-teal-400/40 bg-[#1a1a2e] p-5 transition-shadow duration-300"
+  >
+    <div class="card-gradient" aria-hidden="true"></div>
+    <div class="card-content relative z-10 flex h-full flex-col">
+      <h3 class="text-lg font-bold text-white group-hover:text-teal-400 transition-colors">
+        {title}
+      </h3>
+      <p class="mt-3 flex-1 text-sm leading-relaxed text-[#A0A0B0]">
+        {description}
+      </p>
+
+      <div class="pt-5">
+        {comingSoon ? (
+          <span class="inline-flex items-center gap-2 text-sm font-semibold text-teal-400/50">
+            Case Study Coming Soon
+          </span>
+        ) : (
+          <div class="inline-flex items-center gap-2 text-sm font-semibold text-teal-400 transition-colors card-cta">
+            Read Case Study
+            <svg class="h-4 w-4 transition-transform duration-200 cta-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </div>
+        )}
+      </div>
+    </div>
+  </a>
+</div>
+
+<style>
+  .project-card-wrapper {
+    perspective: 1000px;
+  }
+
+  .project-card {
+    transform-style: preserve-3d;
+    transform: rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg));
+    transition:
+      transform 0.15s ease-out,
+      box-shadow 0.3s ease-out;
+    box-shadow:
+      0 0 20px rgba(45, 212, 191, 0.15),
+      var(--shadow-x, 0px) var(--shadow-y, 4px) 16px rgba(0, 0, 0, 0.3);
+  }
+
+  .project-card:hover {
+    box-shadow:
+      0 0 30px rgba(45, 212, 191, 0.25),
+      var(--shadow-x, 0px) var(--shadow-y, 8px) 24px rgba(0, 0, 0, 0.4);
+  }
+
+  .card-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(45, 212, 191, 0.12) 0%,
+      transparent 50%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .project-card:hover .card-gradient {
+    opacity: 1;
+  }
+
+  .card-content {
+    transform: translateZ(20px);
+  }
+
+  .cta-arrow {
+    transform: translateX(var(--arrow-x, 0));
+    transition: transform 0.2s ease-out;
+  }
+
+  .project-card:hover .cta-arrow {
+    transform: translateX(4px);
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .project-card {
+      transform: none !important;
+      transition: box-shadow 0.3s ease-out;
+    }
+
+    .card-content {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  import { lerp, prefersReducedMotion, getElementCenter } from '../scripts/whimsy-utils';
+
+  const TILT_MAX = 4; // Max degrees of tilt
+  const SHADOW_MAX = 8; // Max pixels shadow can shift
+
+  function initProjectCards() {
+    if (prefersReducedMotion()) return;
+
+    const cards = document.querySelectorAll('[data-project-card]');
+
+    cards.forEach((wrapper) => {
+      const card = wrapper.querySelector('.project-card') as HTMLElement;
+      const gradient = wrapper.querySelector('.card-gradient') as HTMLElement;
+
+      if (!card) return;
+
+      let currentRotateX = 0;
+      let currentRotateY = 0;
+      let targetRotateX = 0;
+      let targetRotateY = 0;
+      let rafId: number | null = null;
+      let isHovering = false;
+
+      function animate() {
+        currentRotateX = lerp(currentRotateX, targetRotateX, 0.12);
+        currentRotateY = lerp(currentRotateY, targetRotateY, 0.12);
+
+        card.style.setProperty('--rotate-x', `${currentRotateX}deg`);
+        card.style.setProperty('--rotate-y', `${currentRotateY}deg`);
+
+        // Shadow shifts opposite to tilt for realistic lighting
+        const shadowX = -currentRotateY * (SHADOW_MAX / TILT_MAX);
+        const shadowY = currentRotateX * (SHADOW_MAX / TILT_MAX) + 4;
+        card.style.setProperty('--shadow-x', `${shadowX}px`);
+        card.style.setProperty('--shadow-y', `${shadowY}px`);
+
+        if (
+          Math.abs(currentRotateX - targetRotateX) > 0.01 ||
+          Math.abs(currentRotateY - targetRotateY) > 0.01
+        ) {
+          rafId = requestAnimationFrame(animate);
+        } else {
+          rafId = null;
+        }
+      }
+
+      function startAnimation() {
+        if (rafId === null) {
+          rafId = requestAnimationFrame(animate);
+        }
+      }
+
+      function handleMouseMove(e: MouseEvent) {
+        if (!isHovering) return;
+
+        const rect = card.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        // Normalized cursor position (-1 to 1)
+        const normalizedX = (e.clientX - centerX) / (rect.width / 2);
+        const normalizedY = (e.clientY - centerY) / (rect.height / 2);
+
+        // Calculate tilt (inverted Y for natural feel)
+        targetRotateY = normalizedX * TILT_MAX;
+        targetRotateX = -normalizedY * TILT_MAX;
+
+        // Update gradient position
+        const mouseX = ((e.clientX - rect.left) / rect.width) * 100;
+        const mouseY = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty('--mouse-x', `${mouseX}%`);
+        card.style.setProperty('--mouse-y', `${mouseY}%`);
+
+        startAnimation();
+      }
+
+      function handleMouseEnter() {
+        isHovering = true;
+        card.classList.add('hovering');
+      }
+
+      function handleMouseLeave() {
+        isHovering = false;
+        card.classList.remove('hovering');
+        targetRotateX = 0;
+        targetRotateY = 0;
+        startAnimation();
+      }
+
+      card.addEventListener('mouseenter', handleMouseEnter);
+      card.addEventListener('mouseleave', handleMouseLeave);
+      card.addEventListener('mousemove', handleMouseMove);
+
+      (wrapper as HTMLElement).dataset.cardInit = 'true';
+    });
+  }
+
+  // Initialize
+  initProjectCards();
+
+  // Re-initialize after view transitions
+  document.addEventListener('astro:after-swap', initProjectCards);
+</script>

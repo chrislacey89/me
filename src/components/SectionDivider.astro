@@ -1,0 +1,74 @@
+---
+/**
+ * SectionDivider - A sleek animated gradient divider
+ */
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['section-divider', className]} aria-hidden="true">
+  <div class="divider-line">
+    <div class="divider-glow"></div>
+  </div>
+</div>
+
+<style>
+  .section-divider {
+    position: relative;
+    width: 100%;
+    height: 1px;
+    margin: 3rem 0;
+  }
+
+  .divider-line {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(45, 212, 191, 0.15) 15%,
+      rgba(45, 212, 191, 0.3) 50%,
+      rgba(45, 212, 191, 0.15) 85%,
+      transparent 100%
+    );
+  }
+
+  .divider-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(45, 212, 191, 0.8),
+      transparent
+    );
+    filter: blur(0.5px);
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 0.5;
+      width: 120px;
+    }
+    50% {
+      opacity: 1;
+      width: 200px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .divider-glow {
+      animation: none;
+      opacity: 0.8;
+    }
+  }
+</style>

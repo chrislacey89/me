@@ -1,5 +1,7 @@
 ---
 import AnimatedBackground from '../components/AnimatedBackground.astro'
+import ProjectCard from '../components/ProjectCard.astro'
+import SectionDivider from '../components/SectionDivider.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import projectsData from '../data/projects.json'
 
@@ -7,39 +9,33 @@ const { projects } = projectsData
 ---
 
 <BaseLayout title="Projects | Chris Lacey" description="Case studies showcasing technical work with context on architecture decisions and tradeoffs.">
-  <div class="min-h-screen bg-[#0F0F16] text-white selection:bg-teal-400/30 selection:text-teal-200">
+  <div class="min-h-[calc(100vh-60px)] bg-[#0F0F16] text-white selection:bg-teal-400/30 selection:text-teal-200">
     <AnimatedBackground />
 
     <div class="relative mx-auto max-w-7xl px-6 py-12 md:px-12 md:py-20 lg:py-24">
       <!-- Page Header -->
-      <div class="mb-12">
-        <h1 class="text-4xl font-bold text-white md:text-5xl" transition:name="page-title">Projects</h1>
+      <div>
+        <h1 class="text-4xl font-bold md:text-5xl gradient-heading" transition:name="page-title">Projects</h1>
         <p class="mt-4 text-lg text-[#A0A0B0]" transition:name="intro-text">
           Case studies showcasing technical work with context on architecture decisions and tradeoffs.
         </p>
       </div>
 
-      <!-- Projects Grid -->
-      <ul class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 list-none m-0 p-0" transition:name="main-content">
-        {projects.map((project) => (
-          <li>
-            <article class="relative overflow-hidden rounded-2xl border-2 border-teal-400/40 bg-[#1a1a2e] p-5 shadow-[0_0_20px_rgba(45,212,191,0.15)] h-full">
-              <h2 class="text-lg font-bold text-white">
-                {project.title}
-              </h2>
-              <p class="mt-3 text-sm leading-relaxed text-[#A0A0B0]">
-                {project.description}
-              </p>
+      <SectionDivider class="my-12" />
 
-              <div class="mt-auto pt-5">
-                <span class="inline-flex items-center gap-2 text-sm font-semibold text-teal-400/50">
-                  Case Study Coming Soon
-                </span>
-              </div>
-            </article>
-          </li>
+      <!-- Projects Grid -->
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" transition:name="main-content">
+        {projects.map((project, index) => (
+          <ProjectCard
+            href={project.href || '#'}
+            title={project.title}
+            description={project.description}
+            comingSoon={true}
+            class="reveal-scale"
+            data-reveal-delay={index * 100}
+          />
         ))}
-      </ul>
+      </div>
     </div>
   </div>
 </BaseLayout>

@@ -1,0 +1,163 @@
+---
+/**
+ * InteractiveSkillIcon - A skill icon with bounce and tilt effects
+ * Features:
+ * - Bounce on hover
+ * - Slight tilt toward cursor
+ * - Glow pulse on hover
+ * - Random idle nudge animation
+ */
+import SkillIcon from './SkillIcon.astro';
+
+interface Props {
+  icon: string;
+  name: string;
+  class?: string;
+  'data-reveal-delay'?: number;
+}
+
+const { icon, name, class: className, 'data-reveal-delay': revealDelay } = Astro.props;
+---
+
+<div class:list={['skill-icon-wrapper', className]} data-skill-icon data-reveal-delay={revealDelay}>
+  <div class="skill-icon-container">
+    <div class="flex h-16 w-16 items-center justify-center rounded-xl bg-[#1a1a2e] border border-teal-400/30 shadow-[0_0_15px_rgba(45,212,191,0.1)] skill-icon-box">
+      <SkillIcon icon={icon} name={name} />
+    </div>
+  </div>
+  <span class="text-xs text-[#A0A0B0] mt-2 block text-center">
+    {name}
+  </span>
+</div>
+
+<style>
+  .skill-icon-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .skill-icon-container {
+    perspective: 500px;
+  }
+
+  .skill-icon-box {
+    transform-style: preserve-3d;
+    transform: rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) translateY(var(--bounce-y, 0px));
+    transition:
+      transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.3s ease,
+      border-color 0.3s ease;
+    will-change: transform;
+  }
+
+  .skill-icon-wrapper:hover .skill-icon-box {
+    border-color: rgba(45, 212, 191, 0.5);
+    box-shadow: 0 0 25px rgba(45, 212, 191, 0.2);
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .skill-icon-box {
+      transform: none !important;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+  }
+</style>
+
+<script>
+  import { lerp, prefersReducedMotion } from '../scripts/whimsy-utils';
+
+  const TILT_MAX = 3; // Max degrees
+  const BOUNCE_AMOUNT = -4; // Pixels to bounce up
+
+  function initSkillIcons() {
+    if (prefersReducedMotion()) return;
+
+    const icons = document.querySelectorAll('[data-skill-icon]');
+
+    icons.forEach((wrapper) => {
+      const box = wrapper.querySelector('.skill-icon-box') as HTMLElement;
+      if (!box) return;
+
+      let currentRotateX = 0;
+      let currentRotateY = 0;
+      let currentBounceY = 0;
+      let targetRotateX = 0;
+      let targetRotateY = 0;
+      let targetBounceY = 0;
+      let rafId: number | null = null;
+      let isHovering = false;
+
+      function animate() {
+        currentRotateX = lerp(currentRotateX, targetRotateX, 0.15);
+        currentRotateY = lerp(currentRotateY, targetRotateY, 0.15);
+        currentBounceY = lerp(currentBounceY, targetBounceY, 0.2);
+
+        box.style.setProperty('--rotate-x', `${currentRotateX}deg`);
+        box.style.setProperty('--rotate-y', `${currentRotateY}deg`);
+        box.style.setProperty('--bounce-y', `${currentBounceY}px`);
+
+        const settled =
+          Math.abs(currentRotateX - targetRotateX) < 0.01 &&
+          Math.abs(currentRotateY - targetRotateY) < 0.01 &&
+          Math.abs(currentBounceY - targetBounceY) < 0.1;
+
+        if (!settled) {
+          rafId = requestAnimationFrame(animate);
+        } else {
+          rafId = null;
+        }
+      }
+
+      function startAnimation() {
+        if (rafId === null) {
+          rafId = requestAnimationFrame(animate);
+        }
+      }
+
+      function handleMouseMove(e: MouseEvent) {
+        if (!isHovering) return;
+
+        const rect = box.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        const normalizedX = (e.clientX - centerX) / (rect.width / 2);
+        const normalizedY = (e.clientY - centerY) / (rect.height / 2);
+
+        targetRotateY = normalizedX * TILT_MAX;
+        targetRotateX = -normalizedY * TILT_MAX;
+
+        startAnimation();
+      }
+
+      function handleMouseEnter() {
+        isHovering = true;
+        targetBounceY = BOUNCE_AMOUNT;
+        startAnimation();
+      }
+
+      function handleMouseLeave() {
+        isHovering = false;
+        targetRotateX = 0;
+        targetRotateY = 0;
+        targetBounceY = 0;
+        startAnimation();
+      }
+
+      (wrapper as HTMLElement).addEventListener('mouseenter', handleMouseEnter);
+      (wrapper as HTMLElement).addEventListener('mouseleave', handleMouseLeave);
+      (wrapper as HTMLElement).addEventListener('mousemove', handleMouseMove);
+
+      (wrapper as HTMLElement).dataset.skillInit = 'true';
+    });
+  }
+
+  // Initialize
+  initSkillIcons();
+
+  // Re-initialize after view transitions
+  document.addEventListener('astro:after-swap', initSkillIcons);
+</script>

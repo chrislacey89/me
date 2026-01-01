@@ -1,0 +1,246 @@
+---
+/**
+ * ContactCard - A contact link card with cursor-tracking glow
+ * The glow follows cursor position and the content has subtle magnetic pull
+ */
+
+interface Props {
+  href: string;
+  label: string;
+  icon: 'email' | 'linkedin' | 'github';
+  class?: string;
+}
+
+const { href, label, icon, class: className } = Astro.props;
+
+const isExternal = icon !== 'email';
+
+const glowStyles = {
+  email: {
+    glow: 'rgba(45, 212, 191, 0.4)',
+    border: 'border-teal-400/40 hover:border-teal-400/60',
+    shadow: 'shadow-[0_0_30px_rgba(45,212,191,0.2)] hover:shadow-[0_0_40px_rgba(45,212,191,0.3)]',
+    iconColor: 'text-teal-400',
+  },
+  linkedin: {
+    glow: 'rgba(56, 189, 248, 0.4)',
+    border: 'border-sky-400/40 hover:border-sky-400/60',
+    shadow: 'shadow-[0_0_30px_rgba(56,189,248,0.2)] hover:shadow-[0_0_40px_rgba(56,189,248,0.3)]',
+    iconColor: 'text-sky-400',
+  },
+  github: {
+    glow: 'rgba(192, 132, 252, 0.4)',
+    border: 'border-purple-400/40 hover:border-purple-400/60',
+    shadow: 'shadow-[0_0_30px_rgba(192,132,252,0.2)] hover:shadow-[0_0_40px_rgba(192,132,252,0.3)]',
+    iconColor: 'text-purple-400',
+  },
+};
+
+const style = glowStyles[icon];
+---
+
+<div class:list={['contact-card-wrapper', className]} data-contact-card data-glow-color={style.glow}>
+  <a
+    href={href}
+    target={isExternal ? '_blank' : undefined}
+    rel={isExternal ? 'noopener noreferrer' : undefined}
+    class={`contact-card group flex flex-col items-center justify-center gap-4 rounded-2xl border-2 bg-[#1a1a2e]/80 p-8 transition-all duration-300 h-full ${style.border} ${style.shadow} hover:bg-[#1a1a2e]`}
+  >
+    <div class="card-glow" aria-hidden="true"></div>
+
+    <div class="card-content relative z-10">
+      <div class={`icon-wrapper flex h-12 w-12 items-center justify-center ${style.iconColor} transition-transform duration-300`} aria-hidden="true">
+        {icon === 'email' && (
+          <svg class="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+          </svg>
+        )}
+        {icon === 'linkedin' && (
+          <svg class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+        )}
+        {icon === 'github' && (
+          <svg class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+        )}
+      </div>
+
+      <span class="label-text mt-4 block text-lg font-semibold text-white">
+        {label}
+        {isExternal && <span class="sr-only"> (opens in new tab)</span>}
+      </span>
+    </div>
+  </a>
+</div>
+
+<style>
+  .contact-card-wrapper {
+    position: relative;
+  }
+
+  .contact-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-glow {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(
+      circle,
+      var(--glow-color, rgba(45, 212, 191, 0.4)) 0%,
+      transparent 70%
+    );
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
+    left: var(--glow-x, 50%);
+    top: var(--glow-y, 50%);
+  }
+
+  .contact-card:hover .card-glow {
+    opacity: 1;
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translate(var(--content-x, 0), var(--content-y, 0));
+    transition: transform 0.15s ease-out;
+  }
+
+  .icon-wrapper {
+    transform: scale(var(--icon-scale, 1));
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .contact-card:hover .icon-wrapper {
+    transform: scale(1.1);
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .card-glow {
+      display: none;
+    }
+
+    .card-content {
+      transform: none !important;
+      transition: none;
+    }
+
+    .icon-wrapper {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { lerp, prefersReducedMotion, getDistanceToElement } from '../scripts/whimsy-utils';
+
+  const MAGNETIC_STRENGTH = 8; // Max pixels content can move
+  const GLOW_SIZE = 200;
+
+  function initContactCards() {
+    if (prefersReducedMotion()) return;
+
+    const cards = document.querySelectorAll('[data-contact-card]');
+
+    cards.forEach((wrapper) => {
+      const card = wrapper.querySelector('.contact-card') as HTMLElement;
+      const glow = wrapper.querySelector('.card-glow') as HTMLElement;
+      const content = wrapper.querySelector('.card-content') as HTMLElement;
+
+      if (!card || !glow || !content) return;
+
+      const glowColor = (wrapper as HTMLElement).dataset.glowColor;
+      if (glowColor) {
+        glow.style.setProperty('--glow-color', glowColor);
+      }
+
+      let contentX = 0;
+      let contentY = 0;
+      let targetContentX = 0;
+      let targetContentY = 0;
+      let rafId: number | null = null;
+      let isHovering = false;
+
+      function animate() {
+        contentX = lerp(contentX, targetContentX, 0.15);
+        contentY = lerp(contentY, targetContentY, 0.15);
+
+        content.style.setProperty('--content-x', `${contentX}px`);
+        content.style.setProperty('--content-y', `${contentY}px`);
+
+        if (
+          Math.abs(contentX - targetContentX) > 0.1 ||
+          Math.abs(contentY - targetContentY) > 0.1
+        ) {
+          rafId = requestAnimationFrame(animate);
+        } else {
+          rafId = null;
+        }
+      }
+
+      function startAnimation() {
+        if (rafId === null) {
+          rafId = requestAnimationFrame(animate);
+        }
+      }
+
+      function handleMouseMove(e: MouseEvent) {
+        if (!isHovering) return;
+
+        const rect = card.getBoundingClientRect();
+
+        // Position glow at cursor
+        const glowX = e.clientX - rect.left;
+        const glowY = e.clientY - rect.top;
+        card.style.setProperty('--glow-x', `${glowX}px`);
+        card.style.setProperty('--glow-y', `${glowY}px`);
+
+        // Calculate magnetic pull on content
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const dx = e.clientX - rect.left - centerX;
+        const dy = e.clientY - rect.top - centerY;
+
+        // Normalize and apply magnetic strength
+        const maxDist = Math.max(rect.width, rect.height) / 2;
+        targetContentX = (dx / maxDist) * MAGNETIC_STRENGTH;
+        targetContentY = (dy / maxDist) * MAGNETIC_STRENGTH;
+
+        startAnimation();
+      }
+
+      function handleMouseEnter() {
+        isHovering = true;
+      }
+
+      function handleMouseLeave() {
+        isHovering = false;
+        targetContentX = 0;
+        targetContentY = 0;
+        startAnimation();
+      }
+
+      card.addEventListener('mouseenter', handleMouseEnter);
+      card.addEventListener('mouseleave', handleMouseLeave);
+      card.addEventListener('mousemove', handleMouseMove);
+
+      (wrapper as HTMLElement).dataset.contactInit = 'true';
+    });
+  }
+
+  // Initialize
+  initContactCards();
+
+  // Re-initialize after view transitions
+  document.addEventListener('astro:after-swap', initContactCards);
+</script>

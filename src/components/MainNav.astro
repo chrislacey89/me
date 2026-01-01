@@ -35,7 +35,7 @@ function isActive(href: string, current: string): boolean {
             transition:name={`nav-${item.label.toLowerCase()}`}
             data-astro-prefetch="viewport"
           >
-            {item.label}
+            <span class="nav-link-text">{item.label}</span>
           </a>
         </li>
       ))}
@@ -119,7 +119,10 @@ function isActive(href: string, current: string): boolean {
     font-weight: 500;
     color: #fafafa;
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition:
+      color 0.2s ease,
+      letter-spacing 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    letter-spacing: 0;
   }
 
   .nav-logo:hover {
@@ -147,6 +150,13 @@ function isActive(href: string, current: string): boolean {
     text-decoration: none;
     transition: color 0.2s ease;
     position: relative;
+    display: inline-block;
+    padding: 0.5rem 0.75rem;
+    margin: -0.5rem -0.75rem;
+  }
+
+  .nav-link-text {
+    display: inline-block;
   }
 
   .nav-link:hover,
@@ -154,16 +164,26 @@ function isActive(href: string, current: string): boolean {
     color: #2dd4bf;
   }
 
+  /* Reduced motion for nav */
+  @media (prefers-reduced-motion: reduce) {
+    .nav-logo {
+      letter-spacing: normal !important;
+      transform: none !important;
+    }
+  }
+
   .nav-link.active::after {
     content: '';
     position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 100%;
+    bottom: 0.25rem;
+    left: 0.75rem;
+    right: 0.75rem;
+    width: auto;
     height: 2px;
     background: #2dd4bf;
     view-transition-name: nav-underline;
   }
+
 
   /* Hamburger Button */
   .hamburger {
@@ -459,3 +479,4 @@ function isActive(href: string, current: string): boolean {
     menuInstance?.cleanup();
   });
 </script>
+

@@ -1,7 +1,10 @@
 ---
 import '../styles/global.css'
 import { ClientRouter } from 'astro:transitions'
+import Confetti from '../components/Confetti.astro'
+import CursorTracker from '../components/CursorTracker.astro'
 import MainNav from '../components/MainNav.astro'
+import ScrollProgress from '../components/ScrollProgress.astro'
 
 interface Props {
   title: string
@@ -33,10 +36,7 @@ const jsonLd = {
       jobTitle: 'Senior Software Engineer',
       url: siteUrl.toString(),
       image: ogImageUrl.toString(),
-      sameAs: [
-        'https://github.com/chrislacey',
-        'https://linkedin.com/in/chrislacey',
-      ],
+      sameAs: ['https://github.com/chrislacey', 'https://linkedin.com/in/chrislacey'],
     },
   ],
 }
@@ -108,11 +108,86 @@ const pageTransition = {
     <ClientRouter />
   </head>
   <body class="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+    <ScrollProgress />
+    <CursorTracker />
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <MainNav currentPath={currentPath} />
     <main id="main-content" transition:animate="none">
       <slot />
     </main>
+    <Confetti />
+    <div id="easter-egg-toast" class="easter-egg-toast" aria-live="polite"></div>
+    <script>
+      import '../scripts/scroll-reveal';
+    </script>
+    <script>
+      import { prefersReducedMotion } from '../scripts/whimsy-utils';
+
+      // Konami Code: ↑↑↓↓←→←→BA
+      const KONAMI_CODE = [
+        'ArrowUp', 'ArrowUp',
+        'ArrowDown', 'ArrowDown',
+        'ArrowLeft', 'ArrowRight',
+        'ArrowLeft', 'ArrowRight',
+        'KeyB', 'KeyA'
+      ];
+
+      let konamiIndex = 0;
+      let konamiTimeout: ReturnType<typeof setTimeout> | null = null;
+
+      function showToast(message: string) {
+        const toast = document.getElementById('easter-egg-toast');
+        if (!toast) return;
+
+        toast.textContent = message;
+        toast.classList.add('visible');
+
+        setTimeout(() => {
+          toast.classList.remove('visible');
+        }, 3000);
+      }
+
+      function triggerKonamiEffect() {
+        if (prefersReducedMotion()) {
+          showToast('You found it! Nice work.');
+          return;
+        }
+
+        // Trigger confetti
+        if (typeof window.triggerConfetti === 'function') {
+          window.triggerConfetti({ count: 120, spread: 360 });
+        }
+
+        showToast('You found it! Nice work.');
+      }
+
+      function handleKeyDown(e: KeyboardEvent) {
+        // Reset timeout
+        if (konamiTimeout) clearTimeout(konamiTimeout);
+        konamiTimeout = setTimeout(() => {
+          konamiIndex = 0;
+        }, 2000);
+
+        if (e.code === KONAMI_CODE[konamiIndex]) {
+          konamiIndex++;
+
+          if (konamiIndex === KONAMI_CODE.length) {
+            konamiIndex = 0;
+            triggerKonamiEffect();
+          }
+        } else {
+          konamiIndex = 0;
+        }
+      }
+
+      // Initialize
+      document.addEventListener('keydown', handleKeyDown);
+
+      // Re-initialize after view transitions (in case listener was lost)
+      document.addEventListener('astro:after-swap', () => {
+        konamiIndex = 0;
+      });
+    </script>
   </body>
 </html>
 
@@ -205,6 +280,33 @@ const pageTransition = {
     top: 0;
     outline: 2px solid #fff;
     outline-offset: 2px;
+  }
+
+  /* Easter Egg Toast */
+  .easter-egg-toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #1a1a2e;
+    color: #2dd4bf;
+    padding: 1rem 2rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(45, 212, 191, 0.3);
+    box-shadow: 0 0 30px rgba(45, 212, 191, 0.2);
+    font-weight: 600;
+    font-size: 0.875rem;
+    z-index: 10000;
+    opacity: 0;
+    transition:
+      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  .easter-egg-toast.visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
   }
 
 

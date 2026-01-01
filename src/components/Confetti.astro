@@ -1,0 +1,67 @@
+---
+/**
+ * Confetti - A reusable confetti burst component
+ * Uses canvas-confetti for high-performance particle effects
+ */
+---
+
+<script>
+  import { prefersReducedMotion } from '../scripts/whimsy-utils';
+
+  interface ConfettiOptions {
+    count?: number;
+    colors?: string[];
+    spread?: number;
+    decay?: number;
+    drift?: number;
+    gravity?: number;
+    origin?: { x: number; y: number };
+  }
+
+  const defaultColors = [
+    '#2dd4bf', // teal
+    '#38bdf8', // sky
+    '#c084fc', // purple
+    '#f472b6', // pink
+    '#fbbf24', // amber
+    '#4ade80', // green
+  ];
+
+  // Lazy-load confetti library only when triggered
+  async function createConfetti(options: ConfettiOptions = {}) {
+    if (prefersReducedMotion()) return;
+
+    const {
+      count = 100,
+      colors = defaultColors,
+      spread = 100,
+      origin = { x: 0.5, y: 0.6 },
+      ...rest
+    } = options;
+
+    // Dynamic import - only loads ~11KB when actually needed
+    const { default: confetti } = await import('../scripts/canvas-confetti');
+
+    confetti({
+      particleCount: count,
+      colors: colors,
+      spread: spread,
+      origin: origin,
+      ...rest
+    });
+  }
+
+  // Expose globally
+  declare global {
+    interface Window {
+      triggerConfetti: (options?: ConfettiOptions) => void;
+    }
+  }
+
+  window.triggerConfetti = createConfetti;
+
+  // Re-expose after view transitions
+  document.addEventListener('astro:after-swap', () => {
+    window.triggerConfetti = createConfetti;
+  });
+</script>

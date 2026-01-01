@@ -1,0 +1,109 @@
+---
+/**
+ * MagneticButton - A button that magnetically pulls toward the cursor
+ * Uses spring physics for natural, satisfying movement
+ */
+
+interface Props {
+  href?: string;
+  download?: boolean;
+  variant?: 'primary' | 'secondary';
+  class?: string;
+}
+
+const { href, download, variant = 'primary', class: className } = Astro.props;
+
+const baseClasses = 'inline-flex items-center justify-center rounded-lg px-8 py-3 text-base font-semibold transition-colors duration-300';
+
+const variantClasses = {
+  primary: 'bg-teal-400 text-background-dark hover:bg-teal-300',
+  secondary: 'border border-white/10 bg-white/5 text-white hover:border-teal-400/50 hover:bg-white/10 hover:text-teal-400',
+};
+
+const Tag = href ? 'a' : 'button';
+---
+
+<div class="magnetic-wrapper relative inline-block">
+  <Tag
+    href={href}
+    download={download ? '' : undefined}
+    class:list={[baseClasses, variantClasses[variant], className]}
+    data-magnetic-button
+  >
+    <span class="magnetic-content inline-flex items-center gap-2">
+      <slot />
+    </span>
+  </Tag>
+</div>
+
+<style>
+  .magnetic-wrapper {
+    perspective: 1000px;
+  }
+
+  .magnetic-content {
+    display: inline-flex;
+    transition: transform 0.1s ease-out;
+  }
+
+  /* Glow effect on hover */
+  [data-magnetic-button] {
+    position: relative;
+    overflow: visible;
+  }
+
+  [data-magnetic-button]::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: radial-gradient(
+      circle at var(--glow-x, 50%) var(--glow-y, 50%),
+      rgba(45, 212, 191, 0.4) 0%,
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .magnetic-wrapper:hover [data-magnetic-button]::before {
+    opacity: 1;
+  }
+
+  /* Reduced motion: disable magnetic movement but keep hover effects */
+  @media (prefers-reduced-motion: reduce) {
+    .magnetic-content {
+      transition: none !important;
+      transform: none !important;
+    }
+  }
+</style>
+
+<script>
+  function initGlowButtons() {
+    const wrappers = document.querySelectorAll('.magnetic-wrapper');
+
+    wrappers.forEach((wrapper) => {
+      const button = wrapper.querySelector('[data-magnetic-button]') as HTMLElement;
+      if (!button) return;
+
+      function handleMouseMove(e: MouseEvent) {
+        const rect = button.getBoundingClientRect();
+        const glowX = ((e.clientX - rect.left) / rect.width) * 100;
+        const glowY = ((e.clientY - rect.top) / rect.height) * 100;
+        button.style.setProperty('--glow-x', `${glowX}%`);
+        button.style.setProperty('--glow-y', `${glowY}%`);
+      }
+
+      button.addEventListener('mousemove', handleMouseMove, { passive: true });
+    });
+  }
+
+  // Initialize on load
+  initGlowButtons();
+
+  // Re-initialize after view transitions
+  document.addEventListener('astro:after-swap', initGlowButtons);
+</script>

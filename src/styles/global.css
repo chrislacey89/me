@@ -34,6 +34,7 @@
 html {
   font-family: var(--font-sans);
   scroll-behavior: smooth;
+  overflow-y: auto;
 }
 
 body {
@@ -70,4 +71,160 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ==========================================
+   Scroll Reveal Animations
+   ========================================== */
+
+/* Reveal Up - fade in with upward motion */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-up.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Reveal Scale - fade in with scale */
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.95);
+  transition:
+    opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-scale.revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Reveal Blur - fade in with blur */
+.reveal-blur {
+  opacity: 0;
+  filter: blur(10px);
+  transition:
+    opacity 0.6s ease-out,
+    filter 0.6s ease-out;
+}
+
+.reveal-blur.revealed {
+  opacity: 1;
+  filter: blur(0);
+}
+
+/* Reveal Fade - simple fade in */
+.reveal-fade {
+  opacity: 0;
+  transition: opacity 0.6s ease-out;
+}
+
+.reveal-fade.revealed {
+  opacity: 1;
+}
+
+/* Reveal Bounce - appear raised then settle down */
+.reveal-bounce {
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    opacity 0.3s ease-out,
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.reveal-bounce.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered reveal delays (applied via JS or inline) */
+[data-reveal-delay] {
+  transition-delay: calc(var(--reveal-delay, 0) * 1ms);
+}
+
+/* Reduced motion: instant reveals */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-up,
+  .reveal-scale,
+  .reveal-blur,
+  .reveal-fade,
+  .reveal-bounce {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}
+
+/* ==========================================
+   Nav Underline View Transition
+   ========================================== */
+
+@keyframes nav-underline-spring-in {
+  0% {
+    transform: scaleX(0.3);
+    opacity: 0;
+  }
+  35% {
+    transform: scaleX(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes nav-underline-spring-out {
+  0% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(0.3);
+    opacity: 0;
+  }
+}
+
+::view-transition-old(nav-underline) {
+  animation: nav-underline-spring-out 0.2s ease-out forwards;
+}
+
+::view-transition-new(nav-underline) {
+  animation: nav-underline-spring-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ==========================================
+   Gradient Text Utilities
+   ========================================== */
+
+/* Primary gradient for main headings - subtle warm-to-cool shift */
+.gradient-heading {
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #e2e8f0 40%,
+    #99f6e4 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hero name gradient - bold teal accent */
+.gradient-hero {
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #ccfbf1 50%,
+    #5eead4 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

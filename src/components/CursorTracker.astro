@@ -1,0 +1,152 @@
+---
+/**
+ * CursorTracker - Global cursor position tracker
+ * Tracks mouse position and velocity, exposing them for other components
+ * Uses transition:persist to maintain state across view transitions
+ */
+---
+
+<div id="cursor-tracker" aria-hidden="true" transition:persist="cursor-tracker"></div>
+
+<script>
+  import { prefersReducedMotion, supportsHover } from '../scripts/whimsy-utils';
+
+  // Module-scoped state persists across view transitions
+  interface CursorState {
+    x: number;
+    y: number;
+    velocityX: number;
+    velocityY: number;
+    lastX: number;
+    lastY: number;
+    lastTime: number;
+    isTracking: boolean;
+  }
+
+  let state: CursorState = {
+    x: 0,
+    y: 0,
+    velocityX: 0,
+    velocityY: 0,
+    lastX: 0,
+    lastY: 0,
+    lastTime: performance.now(),
+    isTracking: false,
+  };
+
+  let rafId: number | null = null;
+  let listeners: Set<(state: CursorState) => void> = new Set();
+
+  // Expose cursor state globally
+  declare global {
+    interface Window {
+      cursorState: CursorState;
+      subscribeToCursor: (callback: (state: CursorState) => void) => () => void;
+    }
+  }
+
+  function updateVelocity() {
+    const now = performance.now();
+    const deltaTime = (now - state.lastTime) / 1000; // Convert to seconds
+
+    if (deltaTime > 0) {
+      // Smooth velocity calculation with decay
+      const rawVelocityX = (state.x - state.lastX) / deltaTime;
+      const rawVelocityY = (state.y - state.lastY) / deltaTime;
+
+      // Exponential smoothing for velocity
+      const smoothFactor = 0.3;
+      state.velocityX = state.velocityX * (1 - smoothFactor) + rawVelocityX * smoothFactor;
+      state.velocityY = state.velocityY * (1 - smoothFactor) + rawVelocityY * smoothFactor;
+    }
+
+    state.lastX = state.x;
+    state.lastY = state.y;
+    state.lastTime = now;
+
+    // Notify all subscribers
+    listeners.forEach((callback) => callback(state));
+  }
+
+  function handleMouseMove(e: MouseEvent) {
+    state.x = e.clientX;
+    state.y = e.clientY;
+
+    // Schedule velocity update on next frame if not already scheduled
+    if (rafId === null) {
+      rafId = requestAnimationFrame(() => {
+        updateVelocity();
+        rafId = null;
+      });
+    }
+  }
+
+  function handleMouseLeave() {
+    // Decay velocity when cursor leaves window
+    state.velocityX = 0;
+    state.velocityY = 0;
+  }
+
+  function startTracking() {
+    if (state.isTracking) return;
+
+    // Skip on touch-only devices or if reduced motion is preferred
+    if (!supportsHover()) return;
+
+    document.addEventListener('mousemove', handleMouseMove, { passive: true });
+    document.addEventListener('mouseleave', handleMouseLeave);
+    state.isTracking = true;
+  }
+
+  function stopTracking() {
+    if (!state.isTracking) return;
+
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mouseleave', handleMouseLeave);
+
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+
+    state.isTracking = false;
+  }
+
+  // Subscribe to cursor updates
+  function subscribeToCursor(callback: (state: CursorState) => void): () => void {
+    listeners.add(callback);
+    // Immediately call with current state
+    callback(state);
+    return () => listeners.delete(callback);
+  }
+
+  // Expose globally
+  window.cursorState = state;
+  window.subscribeToCursor = subscribeToCursor;
+
+  // Initialize
+  function init() {
+    startTracking();
+  }
+
+  // Handle view transitions
+  function handleSwap() {
+    // Re-expose state after swap (in case DOM was replaced)
+    window.cursorState = state;
+    window.subscribeToCursor = subscribeToCursor;
+
+    // Ensure tracking continues
+    if (!state.isTracking) {
+      startTracking();
+    }
+  }
+
+  // Start tracking
+  init();
+
+  // Handle Astro view transitions
+  document.addEventListener('astro:after-swap', handleSwap);
+  document.addEventListener('astro:before-preparation', () => {
+    // Keep tracking during transition - don't stop
+  });
+</script>

@@ -1,5 +1,6 @@
 ---
 import AnimatedBackground from '../components/AnimatedBackground.astro'
+import SectionDivider from '../components/SectionDivider.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import aboutData from '../data/about.json'
 
@@ -7,27 +8,32 @@ const { intro, principles } = aboutData
 ---
 
 <BaseLayout title="About | Chris Lacey" description="Professional background, approach to building software, and what I'm strong at.">
-  <div class="min-h-screen bg-[#0F0F16] text-white selection:bg-teal-400/30 selection:text-teal-200">
+  <div class="min-h-[calc(100vh-60px)] bg-[#0F0F16] text-white selection:bg-teal-400/30 selection:text-teal-200">
     <AnimatedBackground />
 
     <div class="relative mx-auto max-w-7xl px-6 py-12 md:px-12 md:py-20 lg:py-24">
       <!-- Page Header -->
       <div class="mb-12">
-        <h1 class="text-4xl font-bold text-white md:text-5xl" transition:name="page-title">About</h1>
+        <h1 class="text-4xl font-bold md:text-5xl gradient-heading" transition:name="page-title">About</h1>
       </div>
 
       <!-- Intro -->
-      <p class="text-lg leading-relaxed text-[#C0C0C8] max-w-3xl mb-16" transition:name="intro-text">
+      <p class="reveal-blur text-lg leading-relaxed text-[#C0C0C8] max-w-3xl" transition:name="intro-text">
         {intro}
       </p>
+
+      <SectionDivider class="my-12" />
 
       <!-- How I Work -->
       <section transition:name="main-content">
         <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-8">How I Work</h2>
 
         <div class="grid gap-6 sm:grid-cols-2">
-          {principles.map((principle) => (
-            <article class="group rounded-xl border border-white/[0.06] bg-white/[0.02] p-6 transition-all duration-300 hover:border-teal-400/20 hover:bg-white/[0.04]">
+          {principles.map((principle, index) => (
+            <article
+              class="reveal-up group rounded-xl border border-white/[0.06] bg-white/[0.02] p-6 transition-all duration-300 hover:border-teal-400/20 hover:bg-white/[0.04]"
+              data-reveal-delay={index * 100}
+            >
               <h3 class="text-base font-semibold text-teal-400 mb-3">
                 {principle.title}
               </h3>

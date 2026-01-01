@@ -1,0 +1,93 @@
+---
+/**
+ * ScrollProgress - A thin progress bar at the top of the viewport
+ * Shows how far the user has scrolled down the page
+ */
+---
+
+<div class="scroll-progress" aria-hidden="true" transition:persist="scroll-progress">
+  <div class="scroll-progress-bar"></div>
+</div>
+
+<style>
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 9999;
+    pointer-events: none;
+    background: transparent;
+  }
+
+  .scroll-progress-bar {
+    height: 100%;
+    width: var(--scroll-progress, 0%);
+    background: linear-gradient(90deg, #2dd4bf 0%, #38bdf8 50%, #c084fc 100%);
+    box-shadow: 0 0 10px rgba(45, 212, 191, 0.5);
+    transition: width 0.1s ease-out;
+    transform-origin: left;
+  }
+
+  /* Hide when at top */
+  .scroll-progress-bar[data-at-top="true"] {
+    opacity: 0;
+  }
+
+  /* Reduced motion: simpler, no transition */
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-progress-bar {
+      transition: none;
+      box-shadow: none;
+    }
+  }
+</style>
+
+<script>
+  import { prefersReducedMotion } from '../scripts/whimsy-utils';
+
+  let rafId: number | null = null;
+  let lastScrollY = 0;
+
+  function updateScrollProgress() {
+    const bar = document.querySelector('.scroll-progress-bar') as HTMLElement;
+    if (!bar) return;
+
+    const scrollY = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
+
+    bar.style.setProperty('--scroll-progress', `${progress}%`);
+    bar.dataset.atTop = scrollY < 10 ? 'true' : 'false';
+
+    lastScrollY = scrollY;
+  }
+
+  function handleScroll() {
+    if (rafId !== null) return;
+
+    rafId = requestAnimationFrame(() => {
+      updateScrollProgress();
+      rafId = null;
+    });
+  }
+
+  function init() {
+    // Initial update
+    updateScrollProgress();
+
+    // Listen for scroll
+    window.addEventListener('scroll', handleScroll, { passive: true });
+  }
+
+  // Initialize
+  init();
+
+  // Re-initialize after view transitions
+  document.addEventListener('astro:after-swap', () => {
+    // Reset scroll position tracking
+    lastScrollY = window.scrollY;
+    updateScrollProgress();
+  });
+</script>
