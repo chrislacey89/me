@@ -179,8 +179,17 @@
     }
   }
 
+  // Defer initialization until browser is idle (doesn't block critical rendering)
+  const deferInit = () => {
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => initOrbAnimation(), { timeout: 1000 });
+    } else {
+      setTimeout(initOrbAnimation, 100);
+    }
+  };
+
   // Initialize on page load and after view transitions
-  initOrbAnimation();
+  deferInit();
   document.addEventListener('astro:after-swap', initOrbAnimation);
   document.addEventListener('astro:before-preparation', stopAnimation);
 </script>
