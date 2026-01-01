@@ -43,7 +43,7 @@
     { "id": "typescript", "name": "TypeScript", "icon": "typescript" },
     { "id": "nextjs", "name": "Next.js", "icon": "nextjs" },
     { "id": "vercel", "name": "Vercel AI SDK", "icon": "vercel" },
-    { "id": "tanstack", "name": "TanStack Query", "icon": "tanstack" },
+    { "id": "tanstack", "name": "Software Engineer", "icon": "tanstack" },
     { "id": "reactrouter", "name": "React Router", "icon": "reactrouter" },
     { "id": "css", "name": "CSS", "icon": "css" },
     { "id": "tailwind", "name": "Tailwind", "icon": "tailwind" },
