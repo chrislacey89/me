@@ -5,7 +5,7 @@ import SkillIcon from '../components/SkillIcon.astro'
 import homeData from '../data/home.json'
 import BaseLayout from '../layouts/BaseLayout.astro'
 
-const { hero, skills, selectedProjects, softClose } = homeData
+const { hero, skills, selectedProjects } = homeData
 ---
 
 <BaseLayout title="Chris Lacey | Senior Software Engineer">
@@ -131,12 +131,6 @@ const { hero, skills, selectedProjects, softClose } = homeData
           </div>
         </section>
 
-        <!-- Soft Close -->
-        <div class="pt-8 border-t border-white/5">
-          <p class="text-base text-[#A0A0B0]/60 md:text-lg">
-            {softClose}
-          </p>
-        </div>
       </div>
       </div>
 
