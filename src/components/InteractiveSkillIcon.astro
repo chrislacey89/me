@@ -67,91 +67,100 @@ const { icon, name, class: className, 'data-reveal-delay': revealDelay } = Astro
 </style>
 
 <script>
-  import { lerp, prefersReducedMotion } from '../scripts/whimsy-utils';
-
-  const TILT_MAX = 3; // Max degrees
-  const BOUNCE_AMOUNT = -4; // Pixels to bounce up
+  import { lerp, prefersReducedMotion, initInteractiveComponent, sharedAnimationLoop } from '../scripts/whimsy-utils';
+  import { TILT, MOVEMENT, LERP, THRESHOLD } from '../scripts/animation-config';
 
   function initSkillIcons() {
     if (prefersReducedMotion()) return;
 
     const icons = document.querySelectorAll('[data-skill-icon]');
 
-    icons.forEach((wrapper) => {
+    icons.forEach((wrapper, index) => {
       const box = wrapper.querySelector('.skill-icon-box') as HTMLElement;
       if (!box) return;
 
-      let currentRotateX = 0;
-      let currentRotateY = 0;
-      let currentBounceY = 0;
-      let targetRotateX = 0;
-      let targetRotateY = 0;
-      let targetBounceY = 0;
-      let rafId: number | null = null;
-      let isHovering = false;
+      initInteractiveComponent(`skill-icon-${index}`, {
+        onInit: (signal) => {
+          let currentRotateX = 0;
+          let currentRotateY = 0;
+          let currentBounceY = 0;
+          let targetRotateX = 0;
+          let targetRotateY = 0;
+          let targetBounceY = 0;
+          let isHovering = false;
+          let isAnimating = false;
 
-      function animate() {
-        currentRotateX = lerp(currentRotateX, targetRotateX, 0.15);
-        currentRotateY = lerp(currentRotateY, targetRotateY, 0.15);
-        currentBounceY = lerp(currentBounceY, targetBounceY, 0.2);
+          // Cache rect to avoid layout thrashing
+          let cachedRect: DOMRect | null = null;
 
-        box.style.setProperty('--rotate-x', `${currentRotateX}deg`);
-        box.style.setProperty('--rotate-y', `${currentRotateY}deg`);
-        box.style.setProperty('--bounce-y', `${currentBounceY}px`);
+          function updateRect() {
+            cachedRect = box.getBoundingClientRect();
+          }
 
-        const settled =
-          Math.abs(currentRotateX - targetRotateX) < 0.01 &&
-          Math.abs(currentRotateY - targetRotateY) < 0.01 &&
-          Math.abs(currentBounceY - targetBounceY) < 0.1;
+          function animate(): boolean {
+            currentRotateX = lerp(currentRotateX, targetRotateX, LERP.medium);
+            currentRotateY = lerp(currentRotateY, targetRotateY, LERP.medium);
+            currentBounceY = lerp(currentBounceY, targetBounceY, LERP.fast);
 
-        if (!settled) {
-          rafId = requestAnimationFrame(animate);
-        } else {
-          rafId = null;
-        }
-      }
+            box.style.setProperty('--rotate-x', `${currentRotateX}deg`);
+            box.style.setProperty('--rotate-y', `${currentRotateY}deg`);
+            box.style.setProperty('--bounce-y', `${currentBounceY}px`);
 
-      function startAnimation() {
-        if (rafId === null) {
-          rafId = requestAnimationFrame(animate);
-        }
-      }
+            const settled =
+              Math.abs(currentRotateX - targetRotateX) < THRESHOLD.rotation &&
+              Math.abs(currentRotateY - targetRotateY) < THRESHOLD.rotation &&
+              Math.abs(currentBounceY - targetBounceY) < THRESHOLD.position;
 
-      function handleMouseMove(e: MouseEvent) {
-        if (!isHovering) return;
+            if (settled) {
+              isAnimating = false;
+              return false; // Unsubscribe from loop
+            }
+            return true; // Continue animating
+          }
 
-        const rect = box.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
+          function startAnimation() {
+            if (!isAnimating) {
+              isAnimating = true;
+              sharedAnimationLoop.subscribe(animate);
+            }
+          }
 
-        const normalizedX = (e.clientX - centerX) / (rect.width / 2);
-        const normalizedY = (e.clientY - centerY) / (rect.height / 2);
+          function handleMouseMove(e: MouseEvent) {
+            if (!isHovering || !cachedRect) return;
 
-        targetRotateY = normalizedX * TILT_MAX;
-        targetRotateX = -normalizedY * TILT_MAX;
+            const centerX = cachedRect.left + cachedRect.width / 2;
+            const centerY = cachedRect.top + cachedRect.height / 2;
 
-        startAnimation();
-      }
+            const normalizedX = (e.clientX - centerX) / (cachedRect.width / 2);
+            const normalizedY = (e.clientY - centerY) / (cachedRect.height / 2);
 
-      function handleMouseEnter() {
-        isHovering = true;
-        targetBounceY = BOUNCE_AMOUNT;
-        startAnimation();
-      }
+            targetRotateY = normalizedX * TILT.skillIcon;
+            targetRotateX = -normalizedY * TILT.skillIcon;
 
-      function handleMouseLeave() {
-        isHovering = false;
-        targetRotateX = 0;
-        targetRotateY = 0;
-        targetBounceY = 0;
-        startAnimation();
-      }
+            startAnimation();
+          }
 
-      (wrapper as HTMLElement).addEventListener('mouseenter', handleMouseEnter);
-      (wrapper as HTMLElement).addEventListener('mouseleave', handleMouseLeave);
-      (wrapper as HTMLElement).addEventListener('mousemove', handleMouseMove);
+          function handleMouseEnter() {
+            isHovering = true;
+            updateRect();
+            targetBounceY = MOVEMENT.skillBounce;
+            startAnimation();
+          }
 
-      (wrapper as HTMLElement).dataset.skillInit = 'true';
+          function handleMouseLeave() {
+            isHovering = false;
+            cachedRect = null;
+            targetRotateX = 0;
+            targetRotateY = 0;
+            targetBounceY = 0;
+            startAnimation();
+          }
+
+          (wrapper as HTMLElement).addEventListener('mouseenter', handleMouseEnter, { signal });
+          (wrapper as HTMLElement).addEventListener('mouseleave', handleMouseLeave, { signal });
+          (wrapper as HTMLElement).addEventListener('mousemove', handleMouseMove, { signal });
+        },
+      });
     });
   }
 

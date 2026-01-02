@@ -142,99 +142,108 @@ const style = glowStyles[icon];
 </style>
 
 <script>
-  import { lerp, prefersReducedMotion, getDistanceToElement } from '../scripts/whimsy-utils';
-
-  const MAGNETIC_STRENGTH = 8; // Max pixels content can move
-  const GLOW_SIZE = 200;
+  import { lerp, prefersReducedMotion, initInteractiveComponent, sharedAnimationLoop } from '../scripts/whimsy-utils';
+  import { MOVEMENT, LERP, THRESHOLD } from '../scripts/animation-config';
 
   function initContactCards() {
     if (prefersReducedMotion()) return;
 
     const cards = document.querySelectorAll('[data-contact-card]');
 
-    cards.forEach((wrapper) => {
+    cards.forEach((wrapper, index) => {
       const card = wrapper.querySelector('.contact-card') as HTMLElement;
       const glow = wrapper.querySelector('.card-glow') as HTMLElement;
       const content = wrapper.querySelector('.card-content') as HTMLElement;
 
       if (!card || !glow || !content) return;
 
-      const glowColor = (wrapper as HTMLElement).dataset.glowColor;
-      if (glowColor) {
-        glow.style.setProperty('--glow-color', glowColor);
-      }
+      initInteractiveComponent(`contact-card-${index}`, {
+        onInit: (signal) => {
+          const glowColor = (wrapper as HTMLElement).dataset.glowColor;
+          if (glowColor) {
+            glow.style.setProperty('--glow-color', glowColor);
+          }
 
-      let contentX = 0;
-      let contentY = 0;
-      let targetContentX = 0;
-      let targetContentY = 0;
-      let rafId: number | null = null;
-      let isHovering = false;
+          let contentX = 0;
+          let contentY = 0;
+          let targetContentX = 0;
+          let targetContentY = 0;
+          let isHovering = false;
+          let isAnimating = false;
 
-      function animate() {
-        contentX = lerp(contentX, targetContentX, 0.15);
-        contentY = lerp(contentY, targetContentY, 0.15);
+          // Cache rect to avoid layout thrashing
+          let cachedRect: DOMRect | null = null;
 
-        content.style.setProperty('--content-x', `${contentX}px`);
-        content.style.setProperty('--content-y', `${contentY}px`);
+          function updateRect() {
+            cachedRect = card.getBoundingClientRect();
+          }
 
-        if (
-          Math.abs(contentX - targetContentX) > 0.1 ||
-          Math.abs(contentY - targetContentY) > 0.1
-        ) {
-          rafId = requestAnimationFrame(animate);
-        } else {
-          rafId = null;
-        }
-      }
+          function animate(): boolean {
+            contentX = lerp(contentX, targetContentX, LERP.medium);
+            contentY = lerp(contentY, targetContentY, LERP.medium);
 
-      function startAnimation() {
-        if (rafId === null) {
-          rafId = requestAnimationFrame(animate);
-        }
-      }
+            content.style.setProperty('--content-x', `${contentX}px`);
+            content.style.setProperty('--content-y', `${contentY}px`);
 
-      function handleMouseMove(e: MouseEvent) {
-        if (!isHovering) return;
+            const settled =
+              Math.abs(contentX - targetContentX) < THRESHOLD.position &&
+              Math.abs(contentY - targetContentY) < THRESHOLD.position;
 
-        const rect = card.getBoundingClientRect();
+            if (settled) {
+              isAnimating = false;
+              return false; // Unsubscribe from loop
+            }
+            return true; // Continue animating
+          }
 
-        // Position glow at cursor
-        const glowX = e.clientX - rect.left;
-        const glowY = e.clientY - rect.top;
-        card.style.setProperty('--glow-x', `${glowX}px`);
-        card.style.setProperty('--glow-y', `${glowY}px`);
+          function startAnimation() {
+            if (!isAnimating) {
+              isAnimating = true;
+              sharedAnimationLoop.subscribe(animate);
+            }
+          }
 
-        // Calculate magnetic pull on content
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const dx = e.clientX - rect.left - centerX;
-        const dy = e.clientY - rect.top - centerY;
+          function handleMouseMove(e: MouseEvent) {
+            if (!isHovering || !cachedRect) return;
 
-        // Normalize and apply magnetic strength
-        const maxDist = Math.max(rect.width, rect.height) / 2;
-        targetContentX = (dx / maxDist) * MAGNETIC_STRENGTH;
-        targetContentY = (dy / maxDist) * MAGNETIC_STRENGTH;
+            // Position glow at cursor
+            const glowX = e.clientX - cachedRect.left;
+            const glowY = e.clientY - cachedRect.top;
+            card.style.setProperty('--glow-x', `${glowX}px`);
+            card.style.setProperty('--glow-y', `${glowY}px`);
 
-        startAnimation();
-      }
+            // Calculate magnetic pull on content
+            const centerX = cachedRect.width / 2;
+            const centerY = cachedRect.height / 2;
+            const dx = e.clientX - cachedRect.left - centerX;
+            const dy = e.clientY - cachedRect.top - centerY;
 
-      function handleMouseEnter() {
-        isHovering = true;
-      }
+            // Normalize and apply magnetic strength
+            const maxDist = Math.max(cachedRect.width, cachedRect.height) / 2;
+            targetContentX = (dx / maxDist) * MOVEMENT.magneticStrength;
+            targetContentY = (dy / maxDist) * MOVEMENT.magneticStrength;
 
-      function handleMouseLeave() {
-        isHovering = false;
-        targetContentX = 0;
-        targetContentY = 0;
-        startAnimation();
-      }
+            startAnimation();
+          }
 
-      card.addEventListener('mouseenter', handleMouseEnter);
-      card.addEventListener('mouseleave', handleMouseLeave);
-      card.addEventListener('mousemove', handleMouseMove);
+          function handleMouseEnter() {
+            isHovering = true;
+            updateRect();
+          }
 
-      (wrapper as HTMLElement).dataset.contactInit = 'true';
+          function handleMouseLeave() {
+            isHovering = false;
+            cachedRect = null;
+            targetContentX = 0;
+            targetContentY = 0;
+            startAnimation();
+          }
+
+          card.addEventListener('mouseenter', handleMouseEnter, { signal });
+          card.addEventListener('mouseleave', handleMouseLeave, { signal });
+          card.addEventListener('mousemove', handleMouseMove, { signal });
+        },
+      });
     });
   }
 

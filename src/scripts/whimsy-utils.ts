@@ -228,3 +228,108 @@ export function easeOutElastic(t: number): number {
     ? 1
     : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c4) + 1;
 }
+
+/**
+ * Interactive component initialization helper
+ * Provides proper cleanup on view transitions
+ */
+export interface InteractiveComponentOptions {
+  onInit: (abortSignal: AbortSignal) => void;
+  onCleanup?: () => void;
+}
+
+const cleanupRegistry = new Map<string, () => void>();
+
+export function initInteractiveComponent(
+  id: string,
+  options: InteractiveComponentOptions
+): void {
+  // Clean up previous instance if exists
+  const existingCleanup = cleanupRegistry.get(id);
+  if (existingCleanup) {
+    existingCleanup();
+  }
+
+  const controller = new AbortController();
+
+  // Run initialization
+  options.onInit(controller.signal);
+
+  // Store cleanup function
+  const cleanup = () => {
+    controller.abort();
+    options.onCleanup?.();
+    cleanupRegistry.delete(id);
+  };
+
+  cleanupRegistry.set(id, cleanup);
+
+  // Auto-cleanup on view transitions
+  document.addEventListener(
+    'astro:before-swap',
+    () => {
+      cleanup();
+    },
+    { once: true, signal: controller.signal }
+  );
+}
+
+/**
+ * Shared RAF loop for multiple animations
+ * Reduces overhead of multiple independent loops
+ */
+type AnimationCallback = (deltaTime: number) => boolean; // Return false to unsubscribe
+
+class SharedAnimationLoop {
+  private callbacks = new Set<AnimationCallback>();
+  private rafId: number | null = null;
+  private lastTime = 0;
+
+  subscribe(callback: AnimationCallback): () => void {
+    this.callbacks.add(callback);
+    this.start();
+    return () => this.unsubscribe(callback);
+  }
+
+  private unsubscribe(callback: AnimationCallback): void {
+    this.callbacks.delete(callback);
+    if (this.callbacks.size === 0) {
+      this.stop();
+    }
+  }
+
+  private start(): void {
+    if (this.rafId !== null) return;
+    this.lastTime = performance.now();
+    this.tick();
+  }
+
+  private stop(): void {
+    if (this.rafId !== null) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
+  }
+
+  private tick = (): void => {
+    const now = performance.now();
+    const deltaTime = (now - this.lastTime) / 1000; // Convert to seconds
+    this.lastTime = now;
+
+    // Run callbacks and remove those that return false
+    for (const callback of this.callbacks) {
+      const shouldContinue = callback(deltaTime);
+      if (!shouldContinue) {
+        this.callbacks.delete(callback);
+      }
+    }
+
+    if (this.callbacks.size > 0) {
+      this.rafId = requestAnimationFrame(this.tick);
+    } else {
+      this.rafId = null;
+    }
+  };
+}
+
+export const sharedAnimationLoop = new SharedAnimationLoop();
