@@ -468,11 +468,9 @@ function isActive(href: string, current: string): boolean {
     menuInstance = new MobileMenu();
   }
 
-  // Initial load
-  initMenu();
-
-  // Re-initialize on View Transitions navigation
-  document.addEventListener('astro:after-swap', initMenu);
+  // Re-initialize on View Transitions navigation (including initial load)
+  // Using astro:page-load ensures the DOM is fully ready before initializing
+  document.addEventListener('astro:page-load', initMenu);
 
   // Cleanup before swap to prevent stale references
   document.addEventListener('astro:before-swap', () => {
