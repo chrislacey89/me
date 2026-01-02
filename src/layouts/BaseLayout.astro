@@ -6,6 +6,10 @@ import CursorTracker from '../components/CursorTracker.astro'
 import MainNav from '../components/MainNav.astro'
 import ScrollProgress from '../components/ScrollProgress.astro'
 
+// Preload critical fonts
+import geistSans400 from '@fontsource/geist-sans/files/geist-sans-latin-400-normal.woff2?url'
+import geistSans700 from '@fontsource/geist-sans/files/geist-sans-latin-700-normal.woff2?url'
+
 interface Props {
   title: string
   description?: string
@@ -82,6 +86,10 @@ const pageTransition = {
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Preload critical fonts -->
+    <link rel="preload" href={geistSans400} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={geistSans700} as="font" type="font/woff2" crossorigin />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
