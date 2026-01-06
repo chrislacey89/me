@@ -46,6 +46,7 @@
     { "id": "vercel", "name": "Vercel AI SDK", "icon": "vercel" },
     { "id": "tanstack", "name": "TanStack Query", "icon": "tanstack" },
     { "id": "reactrouter", "name": "React Router", "icon": "reactrouter" },
+    { "id": "storybook", "name": "Storybook", "icon": "storybook" },
     { "id": "css", "name": "CSS", "icon": "css" },
     { "id": "sass", "name": "Sass", "icon": "sass" },
     { "id": "tailwind", "name": "Tailwind", "icon": "tailwind" },
