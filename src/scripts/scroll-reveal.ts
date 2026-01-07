@@ -9,13 +9,11 @@ import { prefersReducedMotion } from './whimsy-utils';
 interface RevealOptions {
   threshold?: number;
   rootMargin?: string;
-  staggerDelay?: number;
 }
 
 const DEFAULT_OPTIONS: RevealOptions = {
-  threshold: 0.2,
-  rootMargin: '0px 0px -50px 0px',
-  staggerDelay: 50,
+  threshold: 0.05,
+  rootMargin: '0px 0px 50px 0px',
 };
 
 let observer: IntersectionObserver | null = null;
@@ -46,6 +44,13 @@ export function initScrollReveal(options: RevealOptions = {}) {
         if (entry.isIntersecting) {
           const el = entry.target as HTMLElement;
 
+          // Check if this is a reveal group (parent that triggers children)
+          if (el.hasAttribute('data-reveal-group')) {
+            revealGroupChildren(el);
+            observer?.unobserve(el);
+            return;
+          }
+
           // Apply reveal with any stagger delay
           const delay = el.dataset.revealDelay;
           if (delay) {
@@ -69,11 +74,44 @@ export function initScrollReveal(options: RevealOptions = {}) {
 }
 
 /**
+ * Reveal all children within a reveal group
+ */
+function revealGroupChildren(parent: HTMLElement) {
+  const children = parent.querySelectorAll(
+    '.reveal-up, .reveal-scale, .reveal-blur, .reveal-fade, .reveal-bounce, [data-reveal]'
+  );
+
+  children.forEach((child) => {
+    const el = child as HTMLElement;
+    const delay = el.dataset.revealDelay;
+
+    if (delay) {
+      setTimeout(() => {
+        el.classList.add('revealed');
+      }, parseInt(delay, 10));
+    } else {
+      el.classList.add('revealed');
+    }
+
+    // Unobserve child since it's now handled by the group
+    observer?.unobserve(el);
+  });
+}
+
+/**
  * Observe all reveal elements in the DOM
  */
 function observeElements() {
   if (!observer) return;
 
+  // First, observe reveal groups (parent containers)
+  const revealGroups = document.querySelectorAll('[data-reveal-group]');
+  revealGroups.forEach((group) => {
+    if (group.classList.contains('revealed')) return;
+    observer?.observe(group);
+  });
+
+  // Then observe individual reveal elements that are NOT inside a reveal group
   const revealElements = document.querySelectorAll(
     '.reveal-up, .reveal-scale, .reveal-blur, .reveal-fade, .reveal-bounce, [data-reveal]'
   );
@@ -81,21 +119,9 @@ function observeElements() {
   revealElements.forEach((el) => {
     // Skip already revealed elements
     if (el.classList.contains('revealed')) return;
+    // Skip elements inside a reveal group (they'll be triggered by the parent)
+    if (el.closest('[data-reveal-group]')) return;
     observer?.observe(el);
-  });
-}
-
-/**
- * Apply staggered delays to a group of elements
- */
-export function applyStaggeredDelays(
-  selector: string,
-  baseDelay: number = 0,
-  staggerDelay: number = 50
-) {
-  const elements = document.querySelectorAll(selector);
-  elements.forEach((el, index) => {
-    (el as HTMLElement).dataset.revealDelay = String(baseDelay + index * staggerDelay);
   });
 }
 
@@ -103,6 +129,13 @@ export function applyStaggeredDelays(
  * Immediately reveal all elements (for reduced motion)
  */
 function revealAllImmediately() {
+  // Reveal all reveal groups
+  const revealGroups = document.querySelectorAll('[data-reveal-group]');
+  revealGroups.forEach((el) => {
+    el.classList.add('revealed');
+  });
+
+  // Reveal all individual elements
   const revealElements = document.querySelectorAll(
     '.reveal-up, .reveal-scale, .reveal-blur, .reveal-fade, .reveal-bounce, [data-reveal]'
   );

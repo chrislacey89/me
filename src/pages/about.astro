@@ -28,7 +28,7 @@ const { intro, principles } = aboutData
       <section transition:name="main-content">
         <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-8">How I Work</h2>
 
-        <div class="grid gap-6 sm:grid-cols-2">
+        <div class="grid gap-6 sm:grid-cols-2" data-reveal-group>
           {principles.map((principle, index) => (
             <article
               class="reveal-up group rounded-xl border border-white/[0.06] bg-white/[0.02] p-6 transition-all duration-300 hover:border-teal-400/20 hover:bg-white/[0.04]"

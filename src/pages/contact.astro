@@ -29,7 +29,7 @@ const { intro, links } = contactData
       <section transition:name="main-content">
         <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-8">Get in Touch</h2>
 
-        <div class="grid gap-6 sm:grid-cols-3">
+        <div class="grid gap-6 sm:grid-cols-3" data-reveal-group>
           {links.map((link, index) => (
             <ContactCard
               href={link.href}

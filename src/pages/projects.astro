@@ -24,7 +24,7 @@ const { projects } = projectsData
       <SectionDivider class="my-12" />
 
       <!-- Projects Grid -->
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" transition:name="main-content">
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" transition:name="main-content" data-reveal-group>
         {projects.map((project, index) => (
           <ProjectCard
             href={project.href || '#'}
