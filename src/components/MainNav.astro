@@ -198,6 +198,7 @@ function isActive(href: string, current: string): boolean {
     background: transparent;
     cursor: pointer;
     gap: 6px;
+    touch-action: manipulation;
   }
 
   @media (min-width: 768px) {
@@ -314,6 +315,7 @@ function isActive(href: string, current: string): boolean {
     text-decoration: none;
     color: #fafafa;
     transition: color 0.2s ease, transform 0.2s ease;
+    touch-action: manipulation;
   }
 
   .mobile-nav-link:hover {
