@@ -114,6 +114,31 @@ const pageTransition = {
     <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
     <ClientRouter />
+
+    <!-- Disable View Transitions on touch devices (iOS Safari issues) -->
+    <script is:inline>
+      (function() {
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        if (isTouchDevice) {
+          // Add data-astro-reload to all internal links to force full page loads
+          function disableViewTransitions() {
+            document.querySelectorAll('a[href^="/"]').forEach(function(link) {
+              if (!link.hasAttribute('data-astro-reload')) {
+                link.setAttribute('data-astro-reload', '');
+              }
+            });
+          }
+          // Run immediately and after any DOM changes
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', disableViewTransitions);
+          } else {
+            disableViewTransitions();
+          }
+          // Also run after View Transitions swap (in case it partially works)
+          document.addEventListener('astro:page-load', disableViewTransitions);
+        }
+      })();
+    </script>
   </head>
   <body class="min-h-screen bg-zinc-50 dark:bg-zinc-950">
     <ScrollProgress />

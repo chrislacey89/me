@@ -1,65 +1,121 @@
 ---
-// Animated background with floating gradient orbs using pure CSS
+// Animated background with floating gradient orbs using JavaScript for persistence across navigations
 ---
 
 <div class="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true" transition:persist="bg-glow">
   <div
-    class="orb-1"
+    id="orb-1"
+    class="orb"
     style="position: absolute; width: 250px; height: 250px; border-radius: 50%; filter: blur(50px); background: rgb(20 184 166 / 0.15); top: -5%; left: -2%;"
   ></div>
   <div
-    class="orb-2"
+    id="orb-2"
+    class="orb"
     style="position: absolute; width: 300px; height: 300px; border-radius: 50%; filter: blur(50px); background: rgb(168 85 247 / 0.08); top: 40%; right: -5%;"
   ></div>
 </div>
 
+<script>
+  // Use a persistent start time so animations maintain position across navigations
+  const START_TIME_KEY = 'orb-animation-start';
+
+  function getStartTime(): number {
+    let startTime = sessionStorage.getItem(START_TIME_KEY);
+    if (!startTime) {
+      startTime = String(Date.now());
+      sessionStorage.setItem(START_TIME_KEY, startTime);
+    }
+    return parseInt(startTime, 10);
+  }
+
+  // Keyframe definitions matching the original CSS
+  const orb1Keyframes = [
+    { x: 0, y: 0 },      // 0%
+    { x: 15, y: 10 },    // 20% (vw, vh)
+    { x: 10, y: 25 },    // 40%
+    { x: -5, y: 20 },    // 60%
+    { x: -10, y: 5 },    // 80%
+    { x: 0, y: 0 },      // 100%
+  ];
+
+  const orb2Keyframes = [
+    { x: 0, y: 0 },      // 0%
+    { x: -20, y: -15 },  // 25%
+    { x: -15, y: 10 },   // 50%
+    { x: 5, y: -5 },     // 75%
+    { x: 0, y: 0 },      // 100%
+  ];
+
+  // Eased interpolation between keyframes
+  function easeInOut(t: number): number {
+    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  }
+
+  function interpolateKeyframes(keyframes: { x: number; y: number }[], progress: number): { x: number; y: number } {
+    const segments = keyframes.length - 1;
+    const segmentProgress = progress * segments;
+    const segmentIndex = Math.min(Math.floor(segmentProgress), segments - 1);
+    const localProgress = segmentProgress - segmentIndex;
+    const easedProgress = easeInOut(localProgress);
+
+    const from = keyframes[segmentIndex];
+    const to = keyframes[segmentIndex + 1];
+
+    return {
+      x: from.x + (to.x - from.x) * easedProgress,
+      y: from.y + (to.y - from.y) * easedProgress,
+    };
+  }
+
+  function animateOrbs() {
+    const orb1 = document.getElementById('orb-1');
+    const orb2 = document.getElementById('orb-2');
+
+    if (!orb1 || !orb2) return;
+
+    // Check for reduced motion preference
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    const startTime = getStartTime();
+    const orb1Duration = 45000; // 45s
+    const orb2Duration = 55000; // 55s
+
+    function update() {
+      const elapsed = Date.now() - startTime;
+
+      // Calculate progress (0-1) for each orb
+      const progress1 = (elapsed % orb1Duration) / orb1Duration;
+      const progress2 = (elapsed % orb2Duration) / orb2Duration;
+
+      const pos1 = interpolateKeyframes(orb1Keyframes, progress1);
+      const pos2 = interpolateKeyframes(orb2Keyframes, progress2);
+
+      orb1.style.transform = `translate(${pos1.x}vw, ${pos1.y}vh)`;
+      orb2.style.transform = `translate(${pos2.x}vw, ${pos2.y}vh)`;
+
+      requestAnimationFrame(update);
+    }
+
+    requestAnimationFrame(update);
+  }
+
+  // Run on initial load
+  animateOrbs();
+
+  // Re-run after View Transitions (in case the script needs to re-attach)
+  document.addEventListener('astro:after-swap', animateOrbs);
+</script>
+
 <style>
-  .orb-1 {
-    animation: float1 25s ease-in-out infinite;
+  .orb {
     will-change: transform;
-  }
-
-  .orb-2 {
-    animation: float2 30s ease-in-out infinite;
-    will-change: transform;
-  }
-
-  @keyframes float1 {
-    0%, 100% {
-      transform: translate(0, 0);
-    }
-    20% {
-      transform: translate(15vw, 10vh);
-    }
-    40% {
-      transform: translate(10vw, 25vh);
-    }
-    60% {
-      transform: translate(-5vw, 20vh);
-    }
-    80% {
-      transform: translate(-10vw, 5vh);
-    }
-  }
-
-  @keyframes float2 {
-    0%, 100% {
-      transform: translate(0, 0);
-    }
-    25% {
-      transform: translate(-20vw, -15vh);
-    }
-    50% {
-      transform: translate(-15vw, 10vh);
-    }
-    75% {
-      transform: translate(5vw, -5vh);
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .orb {
-      animation: none;
+      transform: none !important;
     }
   }
 </style>
