@@ -22,20 +22,17 @@
     {
       "id": "decision-assistant",
       "title": "Decision Assistant",
-      "description": "AI tool that helps break down complex decisions into clear tradeoffs",
-      "href": "/projects"
+      "description": "AI tool that helps break down complex decisions into clear tradeoffs"
     },
     {
       "id": "telecom-ecommerce",
       "title": "Telecommunications E-commerce Platform",
-      "description": "End-to-end e-commerce system handling complex pricing, cart logic, and checkout",
-      "href": "/projects"
+      "description": "End-to-end e-commerce system handling complex pricing, cart logic, and checkout"
     },
     {
       "id": "design-system-migration",
       "title": "Design System Migration",
-      "description": "Rebuilt a production design system from scratch, shipping to multiple teams",
-      "href": "/projects"
+      "description": "Rebuilt a production design system from scratch, shipping to multiple teams"
     }
   ],
   "skills": [
