@@ -263,3 +263,45 @@ body {
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+/* ==========================================
+   Headshot Gradient Border
+   ========================================== */
+
+@property --headshot-gradient-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.headshot-wrapper {
+  border-radius: 50%;
+  padding: 4px;
+  background: conic-gradient(
+    from var(--headshot-gradient-angle, 0deg),
+    #2dd4bf,
+    #38bdf8,
+    #c084fc,
+    #38bdf8,
+    #2dd4bf
+  );
+  animation: rotate-headshot-gradient 16s linear infinite;
+}
+
+.headshot-border-gradient {
+  display: none;
+}
+
+@keyframes rotate-headshot-gradient {
+  to {
+    --headshot-gradient-angle: 360deg;
+  }
+}
+
+/* Reduced motion for headshot */
+@media (prefers-reduced-motion: reduce) {
+  .headshot-wrapper {
+    animation: none;
+    background: linear-gradient(135deg, #2dd4bf, #38bdf8, #c084fc);
+  }
+}
