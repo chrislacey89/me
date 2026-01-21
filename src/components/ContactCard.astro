@@ -18,20 +18,17 @@ const isExternal = icon !== 'email';
 const glowStyles = {
   email: {
     glow: 'rgba(45, 212, 191, 0.4)',
-    border: 'border-teal-400/40 hover:border-teal-400/60',
-    shadow: 'shadow-[0_0_30px_rgba(45,212,191,0.2)] hover:shadow-[0_0_40px_rgba(45,212,191,0.3)]',
+    shadow: 'shadow-[0_0_30px_rgba(45,212,191,0.15)] hover:shadow-[0_0_40px_rgba(45,212,191,0.25)]',
     iconColor: 'text-teal-400',
   },
   linkedin: {
     glow: 'rgba(56, 189, 248, 0.4)',
-    border: 'border-sky-400/40 hover:border-sky-400/60',
-    shadow: 'shadow-[0_0_30px_rgba(56,189,248,0.2)] hover:shadow-[0_0_40px_rgba(56,189,248,0.3)]',
+    shadow: 'shadow-[0_0_30px_rgba(56,189,248,0.15)] hover:shadow-[0_0_40px_rgba(56,189,248,0.25)]',
     iconColor: 'text-sky-400',
   },
   github: {
     glow: 'rgba(192, 132, 252, 0.4)',
-    border: 'border-purple-400/40 hover:border-purple-400/60',
-    shadow: 'shadow-[0_0_30px_rgba(192,132,252,0.2)] hover:shadow-[0_0_40px_rgba(192,132,252,0.3)]',
+    shadow: 'shadow-[0_0_30px_rgba(192,132,252,0.15)] hover:shadow-[0_0_40px_rgba(192,132,252,0.25)]',
     iconColor: 'text-purple-400',
   },
 };
@@ -44,7 +41,7 @@ const style = glowStyles[icon];
     href={href}
     target={isExternal ? '_blank' : undefined}
     rel={isExternal ? 'noopener noreferrer' : undefined}
-    class={`contact-card group flex flex-col items-center justify-center gap-4 rounded-2xl border-2 bg-card-dark/80 p-8 transition-all duration-300 min-h-[160px] ${style.border} ${style.shadow} hover:bg-card-dark`}
+    class={`contact-card group flex flex-col items-center justify-center gap-4 rounded-2xl border border-white/[0.06] bg-card-dark/80 p-8 transition-all duration-300 min-h-[160px] ${style.shadow} hover:bg-card-dark hover:border-white/[0.12]`}
   >
     <div class="card-glow" aria-hidden="true"></div>
 

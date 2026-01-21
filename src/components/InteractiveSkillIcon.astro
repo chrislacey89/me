@@ -21,11 +21,11 @@ const { icon, name, class: className, 'data-reveal-delay': revealDelay } = Astro
 
 <div class:list={['skill-icon-wrapper', className]} data-skill-icon data-reveal-delay={revealDelay}>
   <div class="skill-icon-container">
-    <div class="flex h-16 w-16 items-center justify-center rounded-xl bg-card-dark shadow-[0_0_15px_rgba(45,212,191,0.1)] skill-icon-box">
+    <div class="flex h-16 w-16 items-center justify-center rounded-xl bg-card-dark/80 skill-icon-box">
       <SkillIcon icon={icon} name={name} />
     </div>
   </div>
-  <span class="text-xs text-text-muted mt-1 block text-center leading-tight max-w-16">
+  <span class="text-xs text-text-muted/80 mt-1 block text-center leading-tight max-w-16">
     {name}
   </span>
 </div>

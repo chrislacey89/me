@@ -6,15 +6,15 @@
     "avatar": "/headshot.jpeg",
     "ctas": [
       {
-        "label": "Download Resume",
-        "href": "/resume.pdf",
-        "variant": "primary",
-        "download": true
-      },
-      {
         "label": "View Projects",
         "href": "/projects",
-        "variant": "secondary"
+        "variant": "primary"
+      },
+      {
+        "label": "Download Resume",
+        "href": "/resume.pdf",
+        "variant": "secondary",
+        "download": true
       }
     ]
   },

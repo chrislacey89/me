@@ -285,7 +285,7 @@ body {
     #38bdf8,
     #2dd4bf
   );
-  animation: rotate-headshot-gradient 16s linear infinite;
+  animation: rotate-headshot-gradient 8s linear infinite;
 }
 
 .headshot-border-gradient {

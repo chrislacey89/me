@@ -13,11 +13,11 @@ interface Props {
 
 const { href, download, variant = 'primary', class: className } = Astro.props;
 
-const baseClasses = 'inline-flex items-center justify-center rounded-lg px-8 py-3 text-base font-semibold transition-colors duration-300 w-full min-[480px]:w-auto';
+const baseClasses = 'inline-flex items-center justify-center rounded-lg px-8 py-3 text-base transition-colors duration-300 w-full min-[480px]:w-auto';
 
 const variantClasses = {
-  primary: 'gradient-button text-background-dark',
-  secondary: 'border border-white/10 bg-white/5 text-white hover:border-white/30 hover:bg-white/10',
+  primary: 'gradient-button text-background-dark font-semibold',
+  secondary: 'border border-white/10 bg-white/5 text-white font-medium hover:border-white/30 hover:bg-white/10',
 };
 
 const Tag = href ? 'a' : 'button';

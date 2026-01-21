@@ -297,11 +297,6 @@ function isActive(href: string, current: string): boolean {
       opacity 0.15s cubic-bezier(0.22, 1, 0.36, 1),
       transform 0.15s cubic-bezier(0.22, 1, 0.36, 1);
     transition-delay: calc(0.02s + var(--item-index) * 0.03s);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  }
-
-  .mobile-nav-item:first-child {
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
   }
 
   .mobile-overlay.open .mobile-nav-item {
