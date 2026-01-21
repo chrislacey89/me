@@ -37,7 +37,7 @@ const { slug } = Astro.params
       <header class="mb-12">
         <a
           href="/projects"
-          class="group inline-flex items-center gap-2 text-sm font-medium text-[#A0A0B0] hover:text-teal-400 transition-colors mb-8"
+          class="group inline-flex items-center gap-2 text-sm font-medium text-text-muted hover:text-teal-400 transition-colors mb-8"
         >
           <svg class="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
@@ -53,7 +53,7 @@ const { slug } = Astro.params
         </h1>
 
         <p
-          class="mt-6 text-lg leading-relaxed text-[#C0C0C8] max-w-2xl"
+          class="mt-6 text-lg leading-relaxed text-text-muted-light max-w-2xl"
           transition:name="intro-text"
         >
           {project.description}
@@ -68,28 +68,28 @@ const { slug } = Astro.params
           {project.caseStudy.overview && (
             <section>
               <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-6">Overview</h2>
-              <p class="text-[#C0C0C8] leading-relaxed">{project.caseStudy.overview}</p>
+              <p class="max-w-prose text-text-muted-light leading-relaxed">{project.caseStudy.overview}</p>
             </section>
           )}
 
           {project.caseStudy.challenge && (
             <section>
               <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-6">The Challenge</h2>
-              <p class="text-[#C0C0C8] leading-relaxed">{project.caseStudy.challenge}</p>
+              <p class="max-w-prose text-text-muted-light leading-relaxed">{project.caseStudy.challenge}</p>
             </section>
           )}
 
           {project.caseStudy.approach && (
             <section>
               <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-6">Approach</h2>
-              <p class="text-[#C0C0C8] leading-relaxed">{project.caseStudy.approach}</p>
+              <p class="max-w-prose text-text-muted-light leading-relaxed">{project.caseStudy.approach}</p>
             </section>
           )}
 
           {project.caseStudy.outcome && (
             <section>
               <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-6">Outcome</h2>
-              <p class="text-[#C0C0C8] leading-relaxed">{project.caseStudy.outcome}</p>
+              <p class="max-w-prose text-text-muted-light leading-relaxed">{project.caseStudy.outcome}</p>
             </section>
           )}
 
@@ -98,7 +98,7 @@ const { slug } = Astro.params
               <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-6">Tech Stack</h2>
               <div class="flex flex-wrap gap-3">
                 {project.caseStudy.techStack.map((tech) => (
-                  <span class="px-4 py-2 rounded-full border border-white/[0.08] bg-white/[0.02] text-sm text-[#C0C0C8]">
+                  <span class="px-4 py-2 rounded-full border border-white/[0.08] bg-white/[0.02] text-sm text-text-muted-light">
                     {tech}
                   </span>
                 ))}
@@ -116,9 +116,18 @@ const { slug } = Astro.params
             </svg>
           </div>
           <h2 class="text-xl font-semibold text-white mb-3">Case Study Coming Soon</h2>
-          <p class="text-[#A0A0B0] max-w-md">
+          <p class="text-text-muted max-w-md">
             I'm currently documenting the architecture decisions, tradeoffs, and implementation details for this project.
           </p>
+          <a
+            href="/projects"
+            class="group mt-6 inline-flex items-center gap-2 text-sm font-medium text-teal-400 hover:text-teal-300 transition-colors"
+          >
+            View other projects
+            <svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
         </div>
       )}
     </div>

@@ -18,7 +18,7 @@ const { href, title, description, comingSoon = false, class: className } = Astro
 <div class:list={['project-card-wrapper h-full', className]} data-project-card>
   <a
     href={href}
-    class="project-card group relative flex h-full overflow-hidden rounded-2xl bg-[#1a1a2e] p-5 transition-shadow duration-300"
+    class="project-card group relative flex h-full overflow-hidden rounded-2xl bg-card-dark p-6 transition-shadow duration-300"
   >
     <div class="card-border-gradient" aria-hidden="true"></div>
     <div class="card-gradient" aria-hidden="true"></div>
@@ -26,7 +26,7 @@ const { href, title, description, comingSoon = false, class: className } = Astro
       <h3 class="text-lg font-bold text-white group-hover:text-teal-400 transition-colors">
         {title}
       </h3>
-      <p class="mt-3 flex-1 text-sm leading-relaxed text-[#A0A0B0]">
+      <p class="mt-3 flex-1 text-sm leading-relaxed text-text-muted">
         {description}
       </p>
 

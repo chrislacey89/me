@@ -18,7 +18,7 @@ const { intro, principles } = aboutData
       </div>
 
       <!-- Intro -->
-      <p class="text-lg leading-relaxed text-[#C0C0C8] max-w-3xl" transition:name="intro-text">
+      <p class="text-lg leading-relaxed text-text-muted-light max-w-3xl" transition:name="intro-text">
         {intro}
       </p>
 
@@ -31,13 +31,13 @@ const { intro, principles } = aboutData
         <div class="grid gap-6 sm:grid-cols-2" data-reveal-group>
           {principles.map((principle, index) => (
             <article
-              class="reveal-up group rounded-xl border border-white/[0.06] bg-white/[0.02] p-6 transition-all duration-300 hover:border-teal-400/20 hover:bg-white/[0.04]"
+              class="reveal-up group rounded-xl bg-white/[0.02] p-6 transition-all duration-300 hover:bg-white/[0.04]"
               data-reveal-delay={index * 100}
             >
               <h3 class="text-base font-semibold text-teal-400 mb-3">
                 {principle.title}
               </h3>
-              <p class="text-sm text-[#A0A0B0] leading-relaxed">
+              <p class="text-sm text-text-muted leading-relaxed">
                 {principle.description}
               </p>
             </article>
