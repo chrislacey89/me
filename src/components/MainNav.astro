@@ -94,10 +94,6 @@ function isActive(href: string, current: string): boolean {
   }
 
   .nav-header.menu-open {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
     z-index: 200;
     background: transparent;
     border-color: transparent;
@@ -257,6 +253,7 @@ function isActive(href: string, current: string): boolean {
   .mobile-overlay.open {
     pointer-events: auto;
     visibility: visible;
+    touch-action: none;
   }
 
   .mobile-overlay-bg {
@@ -373,12 +370,11 @@ function isActive(href: string, current: string): boolean {
     transform: rotate(-15deg) scale(1);
   }
 
-  /* Lock body scroll when menu is open - iOS Safari fix */
+  /* Lock body scroll when menu is open */
   :global(body.menu-open) {
     overflow: hidden;
-    position: fixed;
-    width: 100%;
-    height: 100%;
+    touch-action: none;
+    overscroll-behavior: none;
   }
 </style>
 
@@ -389,7 +385,6 @@ function isActive(href: string, current: string): boolean {
     private header: HTMLElement | null = null;
     private abortController: AbortController | null = null;
     private isOpen = false;
-    private scrollY = 0;
 
     constructor() {
       this.init();
@@ -434,14 +429,12 @@ function isActive(href: string, current: string): boolean {
       if (!this.hamburger || !this.overlay) return;
 
       this.isOpen = true;
-      this.scrollY = window.scrollY;
       this.hamburger.setAttribute('aria-expanded', 'true');
       this.hamburger.setAttribute('aria-label', 'Close menu');
       this.overlay.classList.add('open');
       this.overlay.setAttribute('aria-hidden', 'false');
       this.header?.classList.add('menu-open');
       document.body.classList.add('menu-open');
-      document.body.style.top = `-${this.scrollY}px`;
 
       // Focus the first nav link for keyboard users
       const firstLink = this.overlay.querySelector('.mobile-nav-link') as HTMLElement;
@@ -460,8 +453,6 @@ function isActive(href: string, current: string): boolean {
       this.overlay.setAttribute('aria-hidden', 'true');
       this.header?.classList.remove('menu-open');
       document.body.classList.remove('menu-open');
-      document.body.style.top = '';
-      window.scrollTo(0, this.scrollY);
 
       // Return focus to hamburger button
       this.hamburger.focus();
@@ -470,12 +461,7 @@ function isActive(href: string, current: string): boolean {
     cleanup() {
       this.abortController?.abort();
       this.abortController = null;
-      if (this.isOpen) {
-        document.body.style.top = '';
-        window.scrollTo(0, this.scrollY);
-      }
       this.isOpen = false;
-      this.scrollY = 0;
       this.header?.classList.remove('menu-open');
       document.body.classList.remove('menu-open');
     }
