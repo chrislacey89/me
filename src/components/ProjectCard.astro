@@ -3,16 +3,20 @@
  * ProjectCard - A card with 3D tilt effect and cursor-tracking gradient
  * Features realistic lighting with shadow that shifts opposite to tilt
  */
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
 
 interface Props {
   href: string;
   title: string;
   description: string;
   comingSoon?: boolean;
+  imageSrc?: ImageMetadata;
+  id?: string;
   class?: string;
 }
 
-const { href, title, description, comingSoon = false, class: className } = Astro.props;
+const { href, title, description, comingSoon = false, imageSrc, id, class: className } = Astro.props;
 ---
 
 <div class:list={['project-card-wrapper h-full', className]} data-project-card>
@@ -23,6 +27,17 @@ const { href, title, description, comingSoon = false, class: className } = Astro
     <div class="card-border-gradient" aria-hidden="true"></div>
     <div class="card-gradient" aria-hidden="true"></div>
     <div class="card-content relative z-10 flex h-full flex-col">
+      {imageSrc && (
+        <div class="card-image mb-4 overflow-hidden" style="margin: calc(-1.5rem + 2px) calc(-1.5rem + 2px) 1rem; margin-bottom: 1rem; border-radius: calc(1rem - 2px) calc(1rem - 2px) 0 0;" transition:name={id ? `project-image-${id}` : undefined}>
+          <Image
+            src={imageSrc}
+            alt=""
+            class="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+            width={400}
+            height={160}
+          />
+        </div>
+      )}
       <h3 class="text-lg font-bold text-white group-hover:text-teal-400 transition-colors">
         {title}
       </h3>
