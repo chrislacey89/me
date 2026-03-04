@@ -33,6 +33,11 @@
       "id": "content-to-skill",
       "title": "Content to Skill",
       "description": "Claude Code plugin that converts books into structured AI agent skills through a multi-stage extraction pipeline"
+    },
+    {
+      "id": "empowerment-brief",
+      "title": "AI Empowerment Brief",
+      "description": "Interactive educational platform teaching structured AI methodology through 25+ visualizations"
     }
   ],
   "skills": [

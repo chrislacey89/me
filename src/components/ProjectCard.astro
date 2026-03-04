@@ -38,10 +38,10 @@ const { href, title, description, comingSoon = false, imageSrc, id, class: class
           />
         </div>
       )}
-      <h3 class="text-lg font-bold text-white group-hover:text-teal-400 transition-colors">
+      <h3 class="text-lg font-bold text-white group-hover:text-teal-400 transition-colors" transition:name={id ? `project-title-${id}` : undefined}>
         {title}
       </h3>
-      <p class="mt-3 flex-1 text-sm leading-relaxed text-text-muted">
+      <p class="mt-3 flex-1 text-sm leading-relaxed text-text-muted" transition:name={id ? `project-desc-${id}` : undefined}>
         {description}
       </p>
 

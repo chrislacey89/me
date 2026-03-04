@@ -40,6 +40,19 @@
         "outcome": "Published as an open-source tool on the Claude Code marketplace. Processes a 400-page book in roughly 42 minutes, producing reusable skill packages that any Claude Code user can install. The companion web app gives users a visual library grid for browsing and managing their converted books.",
         "techStack": ["TypeScript", "Astro", "Node.js", "Vitest", "Biome", "Claude Code"]
       }
+    },
+    {
+      "id": "empowerment-brief",
+      "title": "AI Empowerment Brief",
+      "description": "Interactive educational platform teaching structured AI methodology through 25+ visualizations",
+      "liveUrl": "https://ai-enablement-gamma.vercel.app/",
+      "caseStudy": {
+        "overview": "An interactive educational platform built around a 6-pillar framework covering LLM foundations, prompt engineering, context windows, MCP, skills, and agentic workflows. The brief uses 25+ custom interactive visualizations to make complex AI concepts tangible and actionable for organizations looking to capture real value from AI.",
+        "challenge": "Most AI rollouts fail because they focus on tools, not workflows. The brief needed to make complex concepts  - transformers, attention mechanisms, scaling laws, context degradation  - intuitive and actionable for non-technical audiences, bridging the gap between AI theory and practical organizational adoption.",
+        "approach": "Built as an Astro 5 static site with React islands powering all interactive visualizations. A scroll-snap landing with IntersectionObserver-driven animations guides users through the content. Includes a live tokenizer (js-tiktoken, o200k_base encoding), context rot simulation, attention matrix visualization, and 20+ more custom interactive components. Motion library handles GPU-accelerated animations. All content is structured in a single JSON data source for maintainability.",
+        "outcome": "A cohesive educational product covering the full AI methodology stack  - from transformer architecture to agentic workflows  - with interactive proof points at every stage. Deployed as a static site for instant loads with zero runtime dependencies.",
+        "techStack": ["Astro", "React", "TypeScript", "Tailwind CSS", "Motion", "Radix UI"]
+      }
     }
   ]
 }
