@@ -1,5 +1,4 @@
 ---
-import AnimatedBackground from '../components/AnimatedBackground.astro'
 import ContactCard from '../components/ContactCard.astro'
 import SectionDivider from '../components/SectionDivider.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
@@ -9,9 +8,7 @@ const { intro, links } = contactData
 ---
 
 <BaseLayout title="Contact | Chris Lacey" description="Get in touch with Chris Lacey.">
-  <div class="min-h-[calc(100vh-60px)] bg-[#0F0F16] text-white selection:bg-teal-400/30 selection:text-teal-200">
-    <AnimatedBackground />
-
+  <div class="min-h-[calc(100vh-60px)] text-white selection:bg-teal-400/30 selection:text-teal-200">
     <div class="relative mx-auto max-w-7xl px-6 py-12 md:px-12 md:py-20 lg:py-24">
       <!-- Page Header -->
       <div class="mb-12">

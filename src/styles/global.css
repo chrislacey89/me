@@ -34,6 +34,10 @@ html {
   font-family: var(--font-sans);
   scroll-behavior: smooth;
   overflow-y: auto;
+  background: #0F0F16;
+  background-image:
+    radial-gradient(circle 400px at 10% 20%, rgba(20, 184, 166, 0.12) 0%, transparent 100%),
+    radial-gradient(circle 400px at 90% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 100%);
 }
 
 body {
