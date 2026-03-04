@@ -24,12 +24,14 @@ const projectImages: Record<string, ImageMetadata> = {
 
     <div class="relative mx-auto max-w-7xl px-6 py-12 md:px-12 md:py-20 lg:py-24">
       <!-- Page Header -->
-      <div>
+      <div class="mb-12">
         <h1 class="text-4xl font-bold md:text-5xl gradient-heading" transition:name="page-title">Projects</h1>
-        <p class="mt-4 max-w-2xl text-lg text-text-muted" transition:name="intro-text">
-          Case studies showcasing technical work with context on architecture decisions and tradeoffs.
-        </p>
       </div>
+
+      <!-- Intro -->
+      <p class="text-lg leading-relaxed text-text-muted-light max-w-2xl" transition:name="intro-text">
+        Case studies showcasing technical work with context on architecture decisions and tradeoffs.
+      </p>
 
       <SectionDivider class="my-12" />
 
