@@ -20,6 +20,21 @@
       "id": "tradeoffs",
       "title": "Tradeoffs, not best practices",
       "description": "Every decision has costs. I prefer discussing real tradeoffs rather than defaulting to dogma. Context matters more than convention."
+    },
+    {
+      "id": "trust",
+      "title": "Trust the person closest to the problem",
+      "description": "The operator, the customer, the developer. They know their context better than any system can. I build software that gives people real control and clear information, not interfaces that make decisions for them."
+    },
+    {
+      "id": "respect",
+      "title": "Clarity is a form of respect",
+      "description": "When someone is navigating a complex system under pressure, every moment of confusion is a moment they might lose trust. Clear design isn't a nice-to-have."
+    },
+    {
+      "id": "intent",
+      "title": "Close the gap between intent and outcome",
+      "description": "When someone knows what they want but the tool makes it hard to get there, that's a design failure, not a user failure. I treat that gap as the most important thing to shrink."
     }
   ]
 }
