@@ -1,8 +1,19 @@
 ---
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
 import AnimatedBackground from '../../components/AnimatedBackground.astro'
 import SectionDivider from '../../components/SectionDivider.astro'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import projectsData from '../../data/projects.json'
+import contentToSkillImage from '../../assets/projects/content-to-skill.png'
+import fulcrumImage from '../../assets/projects/fulcrum.png'
+import mikelaceySiteImage from '../../assets/projects/mikelacey-site.png'
+
+const projectImages: Record<string, ImageMetadata> = {
+  'fulcrum': fulcrumImage,
+  'content-to-skill': contentToSkillImage,
+  'mikelacey-site': mikelaceySiteImage,
+}
 
 export function getStaticPaths() {
   return projectsData.projects.map((project) => ({
@@ -15,6 +26,8 @@ interface Project {
   id: string
   title: string
   description: string
+  github?: string
+  liveUrl?: string
   caseStudy?: {
     overview?: string
     challenge?: string
@@ -26,6 +39,7 @@ interface Project {
 
 const { project } = Astro.props as { project: Project }
 const { slug } = Astro.params
+const projectImage = projectImages[project.id]
 ---
 
 <BaseLayout title={`${project.title} | Chris Lacey`} description={project.description}>
@@ -33,82 +47,104 @@ const { slug } = Astro.params
     <AnimatedBackground />
 
     <div class="relative mx-auto max-w-4xl px-6 py-12 md:px-12 md:py-20 lg:py-24">
-      <!-- Project Header -->
-      <header class="mb-12">
-        <a
-          href="/projects"
-          class="group inline-flex items-center gap-2 text-sm font-medium text-text-muted hover:text-teal-400 transition-colors mb-8"
-        >
-          <svg class="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
-          </svg>
-          Back to Projects
-        </a>
+      <!-- Back link -->
+      <a
+        href="/projects"
+        class="group inline-flex items-center gap-2 text-sm font-medium text-text-muted hover:text-teal-400 transition-colors mb-6"
+      >
+        <svg class="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+        </svg>
+        Back to Projects
+      </a>
 
-        <h1
-          class="text-3xl font-bold md:text-4xl lg:text-5xl gradient-heading"
-          transition:name="page-title"
-        >
-          {project.title}
-        </h1>
-
-        <p
-          class="mt-6 text-lg leading-relaxed text-text-muted-light max-w-2xl"
-          transition:name="intro-text"
-        >
-          {project.description}
-        </p>
-      </header>
+      <!-- Hero card -->
+      <div class="hero-card" transition:name={`project-card-${project.id}`}>
+        {projectImage && (
+          <div class="hero-card-image">
+            <Image
+              src={projectImage}
+              alt=""
+              class="w-full h-full object-cover"
+              width={800}
+              height={400}
+            />
+            <div class="hero-card-gradient"></div>
+          </div>
+        )}
+        <div class="hero-card-content">
+          <h1
+            class="text-2xl font-bold md:text-3xl lg:text-4xl gradient-heading"
+          >
+            {project.title}
+          </h1>
+          <p
+            class="mt-3 text-sm leading-relaxed text-text-muted-light max-w-2xl md:text-base"
+          >
+            {project.description}
+          </p>
+          {(project.github || project.liveUrl) && (
+            <div class="mt-4 flex flex-wrap gap-4">
+              {project.github && (
+                <a href={project.github} target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 text-sm font-medium text-text-muted-light hover:text-teal-400 transition-colors">
+                  <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" /></svg>
+                  View on GitHub
+                  <svg class="h-3 w-3 opacity-50 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10" /></svg>
+                </a>
+              )}
+              {project.liveUrl && (
+                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 text-sm font-medium text-text-muted-light hover:text-teal-400 transition-colors">
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" /></svg>
+                  View Project Site
+                  <svg class="h-3 w-3 opacity-50 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10" /></svg>
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
 
       <SectionDivider class="my-12" />
 
-      <!-- Case Study Content Placeholder -->
       {project.caseStudy ? (
-        <article class="space-y-16" transition:name="main-content">
+        <article class="space-y-16">
           {project.caseStudy.overview && (
             <section>
               <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-6">Overview</h2>
               <p class="max-w-prose text-text-muted-light leading-relaxed">{project.caseStudy.overview}</p>
             </section>
           )}
-
           {project.caseStudy.challenge && (
             <section>
               <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-6">The Challenge</h2>
               <p class="max-w-prose text-text-muted-light leading-relaxed">{project.caseStudy.challenge}</p>
             </section>
           )}
-
           {project.caseStudy.approach && (
             <section>
               <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-6">Approach</h2>
               <p class="max-w-prose text-text-muted-light leading-relaxed">{project.caseStudy.approach}</p>
             </section>
           )}
-
           {project.caseStudy.outcome && (
             <section>
               <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-6">Outcome</h2>
               <p class="max-w-prose text-text-muted-light leading-relaxed">{project.caseStudy.outcome}</p>
             </section>
           )}
-
           {project.caseStudy.techStack && project.caseStudy.techStack.length > 0 && (
             <section>
               <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-6">Tech Stack</h2>
               <div class="flex flex-wrap gap-3">
                 {project.caseStudy.techStack.map((tech) => (
-                  <span class="px-4 py-2 rounded-full border border-white/[0.08] bg-white/[0.02] text-sm text-text-muted-light">
-                    {tech}
-                  </span>
+                  <span class="px-4 py-2 rounded-full border border-white/[0.08] bg-white/[0.02] text-sm text-text-muted-light">{tech}</span>
                 ))}
               </div>
             </section>
           )}
         </article>
       ) : (
-        <!-- Coming Soon State -->
-        <div class="flex flex-col items-center justify-center py-16 text-center" transition:name="main-content">
+        <div class="flex flex-col items-center justify-center py-16 text-center">
           <div class="relative mb-8">
             <div class="absolute inset-0 blur-2xl bg-teal-400/10 rounded-full"></div>
             <svg class="relative h-16 w-16 text-teal-400/40" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -119,22 +155,15 @@ const { slug } = Astro.params
           <p class="text-text-muted max-w-md mb-8">
             I'm currently documenting the architecture decisions, tradeoffs, and implementation details for this project.
           </p>
-
           <div class="flex flex-col sm:flex-row gap-4">
-            <a
-              href="/about"
-              class="group inline-flex items-center gap-2 text-sm font-medium text-text-muted-light hover:text-white transition-colors"
-            >
+            <a href="/about" class="group inline-flex items-center gap-2 text-sm font-medium text-text-muted-light hover:text-white transition-colors">
               See how I work
               <svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </a>
             <span class="hidden sm:block text-text-muted/30">|</span>
-            <a
-              href="/projects"
-              class="group inline-flex items-center gap-2 text-sm font-medium text-teal-400 hover:text-teal-300 transition-colors"
-            >
+            <a href="/projects" class="group inline-flex items-center gap-2 text-sm font-medium text-teal-400 hover:text-teal-300 transition-colors">
               View other projects
               <svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -146,3 +175,61 @@ const { slug } = Astro.params
     </div>
   </div>
 </BaseLayout>
+
+<style>
+  .hero-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(26, 26, 46, 0.6);
+    min-height: 14rem;
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .hero-card {
+      min-height: 18rem;
+    }
+  }
+
+  .hero-card:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .hero-card-image {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-card-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(15, 15, 22, 0.9) 0%,
+      rgba(15, 15, 22, 0.3) 50%,
+      transparent 100%
+    );
+  }
+
+  .hero-card-content {
+    position: relative;
+    z-index: 2;
+    padding: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .hero-card-content {
+      padding: 2rem;
+    }
+  }
+</style>

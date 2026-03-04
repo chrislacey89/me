@@ -1,14 +1,13 @@
 ---
 import '../styles/global.css'
 import { ClientRouter } from 'astro:transitions'
+// Preload critical fonts
+import geistSans400 from '@fontsource/geist-sans/files/geist-sans-latin-400-normal.woff2?url'
+import geistSans700 from '@fontsource/geist-sans/files/geist-sans-latin-700-normal.woff2?url'
 import Confetti from '../components/Confetti.astro'
 import CursorTracker from '../components/CursorTracker.astro'
 import MainNav from '../components/MainNav.astro'
 import ScrollProgress from '../components/ScrollProgress.astro'
-
-// Preload critical fonts
-import geistSans400 from '@fontsource/geist-sans/files/geist-sans-latin-400-normal.woff2?url'
-import geistSans700 from '@fontsource/geist-sans/files/geist-sans-latin-700-normal.woff2?url'
 
 interface Props {
   title: string
@@ -81,7 +80,7 @@ const pageTransition = {
 ---
 
 <!doctype html>
-<html lang="en" transition:animate="none">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -145,7 +144,7 @@ const pageTransition = {
     <CursorTracker />
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <MainNav currentPath={currentPath} />
-    <main id="main-content" transition:animate="none">
+    <main id="main-content">
       <slot />
     </main>
     <Confetti />
@@ -284,6 +283,17 @@ const pageTransition = {
      but applying it globally to main's children is a simple start for the "wow" factor.
      Astro's View Transition replaces the whole body or main, re-triggering these animations. */
   
+  @keyframes staggerReveal {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   main > * {
     animation: staggerReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
   }

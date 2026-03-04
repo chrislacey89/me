@@ -19,7 +19,7 @@ interface Props {
 const { href, title, description, comingSoon = false, imageSrc, id, class: className } = Astro.props;
 ---
 
-<div class:list={['project-card-wrapper h-full', className]} data-project-card>
+<div class:list={['project-card-wrapper h-full', className]} data-project-card transition:name={id ? `project-card-${id}` : undefined}>
   <a
     href={href}
     class="project-card group relative flex h-full overflow-hidden rounded-2xl bg-card-dark p-6 transition-shadow duration-300"
@@ -28,7 +28,7 @@ const { href, title, description, comingSoon = false, imageSrc, id, class: class
     <div class="card-gradient" aria-hidden="true"></div>
     <div class="card-content relative z-10 flex h-full flex-col">
       {imageSrc && (
-        <div class="card-image mb-4 overflow-hidden" style="margin: calc(-1.5rem + 2px) calc(-1.5rem + 2px) 1rem; margin-bottom: 1rem; border-radius: calc(1rem - 2px) calc(1rem - 2px) 0 0;" transition:name={id ? `project-image-${id}` : undefined}>
+        <div class="card-image mb-4 overflow-hidden" style="margin: calc(-1.5rem + 2px) calc(-1.5rem + 2px) 1rem; margin-bottom: 1rem; border-radius: calc(1rem - 2px) calc(1rem - 2px) 0 0;">
           <Image
             src={imageSrc}
             alt=""

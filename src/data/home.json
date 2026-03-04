@@ -20,19 +20,19 @@
   },
   "selectedProjects": [
     {
-      "id": "decision-assistant",
-      "title": "Decision Assistant",
-      "description": "AI tool that helps break down complex decisions into clear tradeoffs"
+      "id": "fulcrum",
+      "title": "Fulcrum",
+      "description": "AI advisory platform that applies mental models and structured reasoning to high-stakes decisions"
     },
     {
-      "id": "telecom-ecommerce",
-      "title": "Telecommunications E-commerce Platform",
-      "description": "End-to-end e-commerce system handling complex pricing, cart logic, and checkout"
+      "id": "mikelacey-site",
+      "title": "Mike Lacey Portfolio",
+      "description": "Full-stack portfolio site for a television director, built with Astro and Sanity CMS with live visual editing"
     },
     {
-      "id": "design-system-migration",
-      "title": "Design System Migration",
-      "description": "Rebuilt a production design system from scratch, shipping to multiple teams"
+      "id": "content-to-skill",
+      "title": "Content to Skill",
+      "description": "Claude Code plugin that converts books into structured AI agent skills through a multi-stage extraction pipeline"
     }
   ],
   "skills": [

@@ -1,6 +1,10 @@
 ---
 import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
 import headshot from '../assets/headshot.jpeg'
+import contentToSkillImage from '../assets/projects/content-to-skill.png'
+import fulcrumImage from '../assets/projects/fulcrum.png'
+import mikelaceySiteImage from '../assets/projects/mikelacey-site.png'
 import AnimatedBackground from '../components/AnimatedBackground.astro'
 import InteractiveSkillIcon from '../components/InteractiveSkillIcon.astro'
 import MagneticButton from '../components/MagneticButton.astro'
@@ -10,6 +14,12 @@ import homeData from '../data/home.json'
 import BaseLayout from '../layouts/BaseLayout.astro'
 
 const { hero, skills, selectedProjects } = homeData
+
+const projectImages: Record<string, ImageMetadata> = {
+  'fulcrum': fulcrumImage,
+  'content-to-skill': contentToSkillImage,
+  'mikelacey-site': mikelaceySiteImage,
+}
 ---
 
 <BaseLayout title="Chris Lacey | Senior Software Engineer">
@@ -105,6 +115,8 @@ const { hero, skills, selectedProjects } = homeData
                 href={`/projects/${project.id}`}
                 title={project.title}
                 description={project.description}
+                imageSrc={projectImages[project.id]}
+                id={project.id}
                 class="reveal-scale"
                 data-reveal-delay={index * 100}
               />

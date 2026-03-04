@@ -18,7 +18,7 @@ function isActive(href: string, current: string): boolean {
 }
 ---
 
-<header class="nav-header" id="nav-header" transition:animate="none">
+<header class="nav-header" id="nav-header">
   <nav class="nav-container">
     <a href="/" class="nav-logo" transition:name="nav-logo">
       Chris Lacey
@@ -471,9 +471,35 @@ function isActive(href: string, current: string): boolean {
     menuInstance = new MobileMenu();
   }
 
+  function updateActiveNav() {
+    const path = window.location.pathname;
+    document.querySelectorAll('.nav-link').forEach(link => {
+      const href = link.getAttribute('href');
+      const isActive = href === '/' ? path === '/' : path.startsWith(href!);
+      link.classList.toggle('active', isActive);
+      if (isActive) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      const href = link.getAttribute('href');
+      const isActive = href === '/' ? path === '/' : path.startsWith(href!);
+      link.classList.toggle('active', isActive);
+      if (isActive) {
+        link.setAttribute('aria-current', 'page');
+        (link as HTMLElement).dataset.active = 'true';
+      } else {
+        link.removeAttribute('aria-current');
+        delete (link as HTMLElement).dataset.active;
+      }
+    });
+  }
+
   // Re-initialize on View Transitions navigation (including initial load)
   // Using astro:page-load ensures the DOM is fully ready before initializing
-  document.addEventListener('astro:page-load', initMenu);
+  document.addEventListener('astro:page-load', () => {
+    updateActiveNav();
+    initMenu();
+  });
 
   // Cleanup before swap to prevent stale references
   document.addEventListener('astro:before-swap', () => {

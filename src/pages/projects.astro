@@ -3,9 +3,19 @@ import AnimatedBackground from '../components/AnimatedBackground.astro'
 import ProjectCard from '../components/ProjectCard.astro'
 import SectionDivider from '../components/SectionDivider.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
+import type { ImageMetadata } from 'astro'
 import projectsData from '../data/projects.json'
+import contentToSkillImage from '../assets/projects/content-to-skill.png'
+import fulcrumImage from '../assets/projects/fulcrum.png'
+import mikelaceySiteImage from '../assets/projects/mikelacey-site.png'
 
 const { projects } = projectsData
+
+const projectImages: Record<string, ImageMetadata> = {
+  'fulcrum': fulcrumImage,
+  'content-to-skill': contentToSkillImage,
+  'mikelacey-site': mikelaceySiteImage,
+}
 ---
 
 <BaseLayout title="Projects | Chris Lacey" description="Case studies showcasing technical work with context on architecture decisions and tradeoffs.">
@@ -24,13 +34,15 @@ const { projects } = projectsData
       <SectionDivider class="my-12" />
 
       <!-- Projects Grid -->
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" transition:name="main-content" data-reveal-group>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-reveal-group>
         {projects.map((project, index) => (
           <ProjectCard
             href={`/projects/${project.id}`}
             title={project.title}
             description={project.description}
             comingSoon={!project.caseStudy}
+            imageSrc={projectImages[project.id]}
+            id={project.id}
             class="reveal-scale"
             data-reveal-delay={index * 100}
           />
