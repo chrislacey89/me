@@ -1,33 +1,20 @@
 ---
-/**
- * InteractiveSkillIcon - A skill icon with bounce and tilt effects
- * Features:
- * - Bounce on hover
- * - Slight tilt toward cursor
- * - Glow pulse on hover
- * - Random idle nudge animation
- */
 import SkillIcon from './SkillIcon.astro'
 
 interface Props {
   icon: string
   name: string
   class?: string
-  'data-reveal-delay'?: number
 }
 
-const { icon, name, class: className, 'data-reveal-delay': revealDelay } = Astro.props
+const { icon, name, class: className } = Astro.props
 ---
 
-<div class:list={['skill-icon-wrapper', className]} data-skill-icon data-reveal-delay={revealDelay}>
-  <div class="skill-icon-container">
-    <div class="flex h-16 w-16 items-center justify-center rounded-xl bg-card-dark/80 skill-icon-box">
-      <SkillIcon icon={icon} name={name} />
-    </div>
+<div class:list={['skill-icon-wrapper', className]}>
+  <div class="skill-icon-box">
+    <SkillIcon icon={icon} name={name} />
   </div>
-  <span class="text-xs text-text-muted/80 mt-1 block text-center leading-tight max-w-16">
-    {name}
-  </span>
+  <span class="skill-icon-label">{name}</span>
 </div>
 
 <style>
@@ -35,31 +22,31 @@ const { icon, name, class: className, 'data-reveal-delay': revealDelay } = Astro
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.25rem;
-  }
-
-  .skill-icon-container {
-    perspective: 500px;
+    gap: 0.5rem;
   }
 
   .skill-icon-box {
-    transform-style: preserve-3d;
-    transform: rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) translateY(var(--bounce-y, 0px));
-    transition:
-      transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 0.3s ease;
-    will-change: transform;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border: 1px solid var(--color-rule);
+    color: var(--color-foreground);
+    background: var(--color-background);
+    transition: border-color 0.2s ease;
   }
 
   .skill-icon-wrapper:hover .skill-icon-box {
-    box-shadow: 0 0 25px rgba(45, 212, 191, 0.2);
+    border-color: var(--color-forest-floor);
   }
 
-  /* Reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    .skill-icon-box {
-      transform: none !important;
-      transition: box-shadow 0.3s ease, border-color 0.3s ease;
-    }
+  .skill-icon-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-muted);
+    text-align: center;
+    max-width: 4.5rem;
+    line-height: 1.2;
   }
 </style>

@@ -1,237 +1,226 @@
 ---
 import { Image } from 'astro:assets'
-import type { ImageMetadata } from 'astro'
-import SectionDivider from '../../components/SectionDivider.astro'
+import { type LeadProject, leadProjects } from '../../data/projects'
 import BaseLayout from '../../layouts/BaseLayout.astro'
-import projectsData from '../../data/projects.json'
-import contentToSkillImage from '../../assets/projects/content-to-skill.png'
-import fulcrumImage from '../../assets/projects/fulcrum.png'
-import mikelaceySiteImage from '../../assets/projects/mikelacey-site.png'
-import empowermentBriefImage from '../../assets/projects/empowerment-brief.png'
-
-const projectImages: Record<string, ImageMetadata> = {
-  'fulcrum': fulcrumImage,
-  'content-to-skill': contentToSkillImage,
-  'mikelacey-site': mikelaceySiteImage,
-  'empowerment-brief': empowermentBriefImage,
-}
 
 export function getStaticPaths() {
-  return projectsData.projects.map((project) => ({
+  return leadProjects.map((project) => ({
     params: { slug: project.id },
-    props: { project }
+    props: { project },
   }))
 }
 
-interface Project {
-  id: string
-  title: string
-  description: string
-  github?: string
-  liveUrl?: string
-  caseStudy?: {
-    overview?: string
-    challenge?: string
-    approach?: string
-    outcome?: string
-    techStack?: string[]
-  }
-}
-
-const { project } = Astro.props as { project: Project }
-const { slug } = Astro.params
-const projectImage = projectImages[project.id]
+const { project } = Astro.props as { project: LeadProject }
+const { detail } = project
 ---
 
-<BaseLayout title={`${project.title} | Chris Lacey`} description={project.description}>
-  <div class="min-h-[calc(100vh-60px)] text-white selection:bg-teal-400/30 selection:text-teal-200">
-    <div class="relative mx-auto max-w-4xl px-6 py-12 md:px-12 md:py-20 lg:py-24">
-      <!-- Back link -->
-      <a
-        href="/projects"
-        class="group inline-flex items-center gap-2 text-sm font-medium text-text-muted hover:text-teal-400 transition-colors mb-6"
-      >
-        <svg class="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
-        </svg>
-        Back to Projects
-      </a>
+<BaseLayout title={`${project.title} | Chris Lacey`} description={project.blurb}>
+  <article class="project">
+    <a href="/projects" class="back-link">← Projects</a>
 
-      <!-- Hero card -->
-      <div class="hero-card" transition:name={`project-card-${project.id}`}>
-        {projectImage && (
-          <div class="hero-card-image">
-            <Image
-              src={projectImage}
-              alt=""
-              class="w-full h-full object-cover"
-              width={800}
-              height={400}
-            />
-            <div class="hero-card-gradient"></div>
-          </div>
-        )}
-        <div class="hero-card-content">
-          <h1
-            class="text-2xl font-bold md:text-3xl lg:text-4xl gradient-heading"
-            transition:name={`project-title-${project.id}`}
-          >
-            {project.title}
-          </h1>
-          <p
-            class="mt-3 text-sm leading-relaxed text-text-muted-light max-w-2xl md:text-base"
-            transition:name={`project-desc-${project.id}`}
-          >
-            {project.description}
-          </p>
-          {(project.github || project.liveUrl) && (
-            <div class="mt-4 flex flex-wrap gap-4">
-              {project.github && (
-                <a href={project.github} target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 text-sm font-medium text-text-muted-light hover:text-teal-400 transition-colors">
-                  <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" /></svg>
-                  View on GitHub
-                  <svg class="h-3 w-3 opacity-50 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10" /></svg>
-                </a>
-              )}
-              {project.liveUrl && (
-                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 text-sm font-medium text-text-muted-light hover:text-teal-400 transition-colors">
-                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" /></svg>
-                  View Project Site
-                  <svg class="h-3 w-3 opacity-50 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7v10" /></svg>
-                </a>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-
-      <SectionDivider class="my-12" />
-
-      {project.caseStudy ? (
-        <article class="space-y-16">
-          {project.caseStudy.overview && (
-            <section>
-              <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-6">Overview</h2>
-              <p class="max-w-prose text-text-muted-light leading-relaxed">{project.caseStudy.overview}</p>
-            </section>
-          )}
-          {project.caseStudy.challenge && (
-            <section>
-              <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-6">The Challenge</h2>
-              <p class="max-w-prose text-text-muted-light leading-relaxed">{project.caseStudy.challenge}</p>
-            </section>
-          )}
-          {project.caseStudy.approach && (
-            <section>
-              <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-6">Approach</h2>
-              <p class="max-w-prose text-text-muted-light leading-relaxed">{project.caseStudy.approach}</p>
-            </section>
-          )}
-          {project.caseStudy.outcome && (
-            <section>
-              <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-6">Outcome</h2>
-              <p class="max-w-prose text-text-muted-light leading-relaxed">{project.caseStudy.outcome}</p>
-            </section>
-          )}
-          {project.caseStudy.techStack && project.caseStudy.techStack.length > 0 && (
-            <section>
-              <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-6">Tech Stack</h2>
-              <div class="flex flex-wrap gap-3">
-                {project.caseStudy.techStack.map((tech) => (
-                  <span class="px-4 py-2 rounded-full border border-white/[0.08] bg-white/[0.02] text-sm text-text-muted-light">{tech}</span>
-                ))}
-              </div>
-            </section>
-          )}
-        </article>
-      ) : (
-        <div class="flex flex-col items-center justify-center py-16 text-center">
-          <div class="relative mb-8">
-            <div class="absolute inset-0 blur-2xl bg-teal-400/10 rounded-full"></div>
-            <svg class="relative h-16 w-16 text-teal-400/40" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-            </svg>
-          </div>
-          <h2 class="text-xl font-semibold text-white mb-3">Case Study Coming Soon</h2>
-          <p class="text-text-muted max-w-md mb-8">
-            I'm currently documenting the architecture decisions, tradeoffs, and implementation details for this project.
-          </p>
-          <div class="flex flex-col sm:flex-row gap-4">
-            <a href="/about" class="group inline-flex items-center gap-2 text-sm font-medium text-text-muted-light hover:text-white transition-colors">
-              See how I work
-              <svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-            <span class="hidden sm:block text-text-muted/30">|</span>
-            <a href="/projects" class="group inline-flex items-center gap-2 text-sm font-medium text-teal-400 hover:text-teal-300 transition-colors">
-              View other projects
-              <svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-          </div>
+    <header class="project-header">
+      {project.image && (
+        <div class="project-image">
+          <Image src={project.image} alt="" width={1200} height={600} />
         </div>
       )}
-    </div>
-  </div>
+      <p class="section-label">Claim</p>
+      <h1 class="claim" transition:name={`project-title-${project.id}`}>{detail.claim}</h1>
+    </header>
+
+    <section class="section">
+      <h2 class="section-label">Context</h2>
+      <p class="prose">{detail.context}</p>
+    </section>
+
+    <section class="section section--move">
+      <h2 class="section-label">The move</h2>
+      <p class="prose prose--lead">{detail.move}</p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-label">Artifact</h2>
+      <p class="prose">{detail.artifact}</p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-label">Cost / return</h2>
+      <p class="prose">{detail.costReturn}</p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-label">Receipts</h2>
+      <ul class="receipts">
+        {detail.receipts.map((line) => <li>{line}</li>)}
+      </ul>
+      {(project.github || project.liveUrl) && (
+        <ul class="receipts receipts--links">
+          {project.github && (
+            <li>
+              <a href={project.github} target="_blank" rel="noopener noreferrer">
+                {project.github.replace(/^https?:\/\//, '')}
+              </a>
+            </li>
+          )}
+          {project.liveUrl && (
+            <li>
+              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                {project.liveUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+              </a>
+            </li>
+          )}
+        </ul>
+      )}
+    </section>
+
+    <aside class="pull-quote">
+      <p>{detail.pullQuote}</p>
+    </aside>
+  </article>
 </BaseLayout>
 
 <style>
-  .hero-card {
-    position: relative;
-    overflow: hidden;
-    border-radius: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    background: rgba(26, 26, 46, 0.6);
-    min-height: 14rem;
-    display: flex;
-    align-items: flex-end;
-    margin-bottom: 3rem;
+  .project {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+    color: var(--color-foreground);
   }
 
   @media (min-width: 768px) {
-    .hero-card {
-      min-height: 18rem;
+    .project {
+      padding: 4.5rem 2rem 8rem;
     }
   }
 
-  .hero-card:hover {
-    border-color: rgba(255, 255, 255, 0.1);
+  .back-link {
+    display: inline-block;
+    margin-bottom: 2.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+    text-decoration: none;
+    letter-spacing: 0.02em;
   }
 
-  .hero-card-image {
-    position: absolute;
-    inset: 0;
+  .back-link:hover {
+    color: var(--color-accent);
   }
 
-  .hero-card-image img {
+  .project-header {
+    margin-bottom: 3.5rem;
+  }
+
+  .project-image {
+    aspect-ratio: 16 / 9;
+    margin-bottom: 2.5rem;
+    overflow: hidden;
+    border: 1px solid var(--color-rule);
+  }
+
+  .project-image :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .hero-card-gradient {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to top,
-      rgba(15, 15, 22, 0.95) 0%,
-      rgba(15, 15, 22, 0.85) 40%,
-      rgba(15, 15, 22, 0.4) 70%,
-      transparent 100%
-    );
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-forest-floor);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 0.75rem;
   }
 
-  .hero-card-content {
+  .claim {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--color-foreground);
+    margin: 0;
+  }
+
+  .section {
+    margin-top: 3rem;
+  }
+
+  .section--move {
+    padding: 2rem 0;
+    border-top: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .prose {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--color-foreground);
+    margin: 0;
+    max-width: 65ch;
+  }
+
+  .prose--lead {
+    font-size: 1.1875rem;
+    line-height: 1.65;
+  }
+
+  .receipts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--color-foreground);
+  }
+
+  .receipts li {
+    padding-left: 1rem;
     position: relative;
-    z-index: 2;
-    padding: 1.5rem;
   }
 
-  @media (min-width: 768px) {
-    .hero-card-content {
-      padding: 2rem;
-    }
+  .receipts li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-forest-floor);
+  }
+
+  .receipts--links {
+    margin-top: 1rem;
+  }
+
+  .receipts--links a {
+    color: var(--color-forest-floor);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .receipts--links a:hover {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+
+  .pull-quote {
+    margin: 4rem 0 0;
+    padding: 2rem 0 0;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .pull-quote p {
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 2.5vw, 1.625rem);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--color-accent);
+    margin: 0;
+    max-width: 38ch;
   }
 </style>
