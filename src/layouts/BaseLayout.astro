@@ -1,21 +1,17 @@
 ---
-import '../styles/global.css'
 import { ClientRouter } from 'astro:transitions'
-// Preload critical fonts
-import geistSans400 from '@fontsource/geist-sans/files/geist-sans-latin-400-normal.woff2?url'
-import geistSans700 from '@fontsource/geist-sans/files/geist-sans-latin-700-normal.woff2?url'
-import Confetti from '../components/Confetti.astro'
-import CursorTracker from '../components/CursorTracker.astro'
 import MainNav from '../components/MainNav.astro'
-import ScrollProgress from '../components/ScrollProgress.astro'
+import '../styles/global.css'
 
 interface Props {
   title: string
   description?: string
 }
 
-const { title, description = 'Personal portfolio of Chris Lacey - Senior Software Engineer' } =
-  Astro.props
+const {
+  title,
+  description = 'Chris Lacey — full-stack AI product engineer. Close the gap between intent and outcome.',
+} = Astro.props
 const currentPath = Astro.url.pathname
 const siteUrl = Astro.site || new URL(Astro.url.origin)
 const ogImageUrl = new URL('/api/og.png', siteUrl)
@@ -30,52 +26,18 @@ const jsonLd = {
       '@id': `${siteUrl}#website`,
       url: siteUrl.toString(),
       name: 'Chris Lacey',
-      description: 'Personal portfolio of Chris Lacey - Senior Software Engineer',
+      description,
     },
     {
       '@type': 'Person',
       '@id': `${siteUrl}#person`,
       name: 'Chris Lacey',
-      jobTitle: 'Senior Software Engineer',
+      jobTitle: 'Full-stack AI product engineer',
       url: siteUrl.toString(),
       image: ogImageUrl.toString(),
       sameAs: ['https://github.com/chrislacey89', 'https://linkedin.com/in/chrislacey'],
     },
   ],
-}
-
-// Custom page transition animation
-const pageTransition = {
-  forwards: {
-    old: {
-      name: 'cinemaOut',
-      duration: '0.4s',
-      easing: 'ease-in',
-      fillMode: 'forwards',
-    },
-    new: {
-      name: 'cinemaIn',
-      duration: '0.6s',
-      delay: '0.1s',
-      easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-      fillMode: 'backwards',
-    },
-  },
-  backwards: {
-    old: {
-      name: 'cinemaOutBack',
-      duration: '0.4s',
-      easing: 'ease-in',
-      fillMode: 'forwards',
-    },
-    new: {
-      name: 'cinemaInBack',
-      duration: '0.6s',
-      delay: '0.1s',
-      easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-      fillMode: 'backwards',
-    },
-  },
 }
 ---
 
@@ -86,9 +48,15 @@ const pageTransition = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Preload critical fonts -->
-    <link rel="preload" href={geistSans400} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={geistSans700} as="font" type="font/woff2" crossorigin />
+    <!-- Preload Switzer variable display face -->
+    <link
+      rel="preload"
+      href="/fonts/Switzer-Variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
@@ -114,204 +82,45 @@ const pageTransition = {
 
     <ClientRouter />
 
-    <!-- Disable View Transitions on touch devices (iOS Safari issues) -->
+    <!-- Disable View Transitions on touch devices (iOS Safari workaround) -->
     <script is:inline>
-      (function() {
-        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      (function () {
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
         if (isTouchDevice) {
-          // Add data-astro-reload to all internal links to force full page loads
           function disableViewTransitions() {
-            document.querySelectorAll('a[href^="/"]').forEach(function(link) {
+            document.querySelectorAll('a[href^="/"]').forEach(function (link) {
               if (!link.hasAttribute('data-astro-reload')) {
-                link.setAttribute('data-astro-reload', '');
+                link.setAttribute('data-astro-reload', '')
               }
-            });
+            })
           }
-          // Run immediately and after any DOM changes
           if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', disableViewTransitions);
+            document.addEventListener('DOMContentLoaded', disableViewTransitions)
           } else {
-            disableViewTransitions();
+            disableViewTransitions()
           }
-          // Also run after View Transitions swap (in case it partially works)
-          document.addEventListener('astro:page-load', disableViewTransitions);
+          document.addEventListener('astro:page-load', disableViewTransitions)
         }
-      })();
+      })()
     </script>
   </head>
   <body class="min-h-screen">
-    <ScrollProgress />
-    <CursorTracker />
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <MainNav currentPath={currentPath} />
     <main id="main-content">
       <slot />
     </main>
-    <Confetti />
-    <div id="easter-egg-toast" class="easter-egg-toast" aria-live="polite"></div>
-    <script>
-      import '../scripts/scroll-reveal';
-    </script>
-    <script>
-      import { prefersReducedMotion } from '../scripts/whimsy-utils';
-
-      // Konami Code: ↑↑↓↓←→←→BA
-      const KONAMI_CODE = [
-        'ArrowUp', 'ArrowUp',
-        'ArrowDown', 'ArrowDown',
-        'ArrowLeft', 'ArrowRight',
-        'ArrowLeft', 'ArrowRight',
-        'KeyB', 'KeyA'
-      ];
-
-      let konamiIndex = 0;
-      let konamiTimeout: ReturnType<typeof setTimeout> | null = null;
-
-      function showToast(message: string) {
-        const toast = document.getElementById('easter-egg-toast');
-        if (!toast) return;
-
-        toast.textContent = message;
-        toast.classList.add('visible');
-
-        setTimeout(() => {
-          toast.classList.remove('visible');
-        }, 3000);
-      }
-
-      function triggerKonamiEffect() {
-        if (prefersReducedMotion()) {
-          showToast('You found it! Nice work.');
-          return;
-        }
-
-        // Trigger confetti
-        if (typeof window.triggerConfetti === 'function') {
-          window.triggerConfetti({ count: 120, spread: 360 });
-        }
-
-        showToast('You found it! Nice work.');
-      }
-
-      function handleKeyDown(e: KeyboardEvent) {
-        // Reset timeout
-        if (konamiTimeout) clearTimeout(konamiTimeout);
-        konamiTimeout = setTimeout(() => {
-          konamiIndex = 0;
-        }, 2000);
-
-        if (e.code === KONAMI_CODE[konamiIndex]) {
-          konamiIndex++;
-
-          if (konamiIndex === KONAMI_CODE.length) {
-            konamiIndex = 0;
-            triggerKonamiEffect();
-          }
-        } else {
-          konamiIndex = 0;
-        }
-      }
-
-      // Initialize
-      document.addEventListener('keydown', handleKeyDown);
-
-      // Re-initialize after view transitions (in case listener was lost)
-      document.addEventListener('astro:after-swap', () => {
-        konamiIndex = 0;
-      });
-    </script>
   </body>
 </html>
 
 <style is:global>
-  /* Forward Transitions */
-  @keyframes cinemaOut {
-    from {
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0);
-    }
-    to {
-      opacity: 0;
-      transform: translateY(-20px);
-      filter: blur(8px);
-    }
-  }
-
-  @keyframes cinemaIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-      filter: blur(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0);
-    }
-  }
-
-  /* Backward Transitions */
-  @keyframes cinemaOutBack {
-    from {
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0);
-    }
-    to {
-      opacity: 0;
-      transform: translateY(20px);
-      filter: blur(8px);
-    }
-  }
-
-  @keyframes cinemaInBack {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-      filter: blur(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0);
-    }
-  }
-
-  /* Staggered Child Entry */
-  /* We use a class to ensure this only applies during page load/transition if we wanted, 
-     but applying it globally to main's children is a simple start for the "wow" factor.
-     Astro's View Transition replaces the whole body or main, re-triggering these animations. */
-  
-  @keyframes staggerReveal {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  main > * {
-    animation: staggerReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
-  }
-
-  main > *:nth-child(1) { animation-delay: 0.1s; }
-  main > *:nth-child(2) { animation-delay: 0.15s; }
-  main > *:nth-child(3) { animation-delay: 0.2s; }
-  main > *:nth-child(4) { animation-delay: 0.25s; }
-  main > *:nth-child(5) { animation-delay: 0.3s; }
-
-  /* Skip Link */
   .skip-link {
     position: absolute;
     top: -100%;
     left: 50%;
     transform: translateX(-50%);
-    background: #2dd4bf;
-    color: #0F0F16;
+    background: var(--color-foreground);
+    color: var(--color-background);
     padding: 0.75rem 1.5rem;
     border-radius: 0 0 0.5rem 0.5rem;
     font-weight: 600;
@@ -321,82 +130,7 @@ const pageTransition = {
 
   .skip-link:focus {
     top: 0;
-    outline: 2px solid #fff;
+    outline: 2px solid var(--color-accent);
     outline-offset: 2px;
   }
-
-  /* Easter Egg Toast */
-  .easter-egg-toast {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: #1a1a2e;
-    color: #2dd4bf;
-    padding: 1rem 2rem;
-    border-radius: 0.75rem;
-    border: 1px solid rgba(45, 212, 191, 0.3);
-    box-shadow: 0 0 30px rgba(45, 212, 191, 0.2);
-    font-weight: 600;
-    font-size: 0.875rem;
-    z-index: 10000;
-    opacity: 0;
-    transition:
-      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-      opacity 0.4s ease;
-    pointer-events: none;
-  }
-
-  .easter-egg-toast.visible {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
-
-
-
-  /* Reduced Motion */
-  @media (prefers-reduced-motion: reduce) {
-    main > * {
-      animation: none;
-    }
-
-    ::view-transition-old(page-content),
-    ::view-transition-new(page-content) {
-      animation: none;
-    }
-
-    @keyframes cinemaOut {
-      from, to {
-        opacity: 1;
-        transform: none;
-        filter: none;
-      }
-    }
-
-    @keyframes cinemaIn {
-      from, to {
-        opacity: 1;
-        transform: none;
-        filter: none;
-      }
-    }
-
-    @keyframes cinemaOutBack {
-      from, to {
-        opacity: 1;
-        transform: none;
-        filter: none;
-      }
-    }
-
-    @keyframes cinemaInBack {
-      from, to {
-        opacity: 1;
-        transform: none;
-        filter: none;
-      }
-    }
-  }
-
-
 </style>

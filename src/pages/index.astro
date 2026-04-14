@@ -3,11 +3,10 @@ import { Image } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
 import headshot from '../assets/headshot.jpeg'
 import contentToSkillImage from '../assets/projects/content-to-skill.png'
+import empowermentBriefImage from '../assets/projects/empowerment-brief.png'
 import fulcrumImage from '../assets/projects/fulcrum.png'
 import mikelaceySiteImage from '../assets/projects/mikelacey-site.png'
-import empowermentBriefImage from '../assets/projects/empowerment-brief.png'
 import InteractiveSkillIcon from '../components/InteractiveSkillIcon.astro'
-import MagneticButton from '../components/MagneticButton.astro'
 import ProjectCard from '../components/ProjectCard.astro'
 import SectionDivider from '../components/SectionDivider.astro'
 import homeData from '../data/home.json'
@@ -16,7 +15,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 const { hero, skills, selectedProjects } = homeData
 
 const projectImages: Record<string, ImageMetadata> = {
-  'fulcrum': fulcrumImage,
+  fulcrum: fulcrumImage,
   'content-to-skill': contentToSkillImage,
   'mikelacey-site': mikelaceySiteImage,
   'empowerment-brief': empowermentBriefImage,
@@ -61,13 +60,14 @@ const projectImages: Record<string, ImageMetadata> = {
             <!-- CTA Buttons -->
             <div class="mt-8 flex flex-col gap-4 min-[480px]:flex-row min-[480px]:flex-wrap min-[480px]:justify-center md:justify-start">
               {hero.ctas.map((cta) => (
-                <MagneticButton
+                <a
                   href={cta.href}
                   download={cta.download}
-                  variant={cta.variant === 'primary' ? 'primary' : 'secondary'}
+                  data-variant={cta.variant === 'primary' ? 'primary' : 'secondary'}
+                  class="cta-link"
                 >
                   {cta.label}
-                </MagneticButton>
+                </a>
               ))}
             </div>
           </div>

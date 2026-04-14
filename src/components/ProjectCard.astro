@@ -7,16 +7,16 @@ import { Image } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
 
 interface Props {
-  href: string;
-  title: string;
-  description: string;
-  comingSoon?: boolean;
-  imageSrc?: ImageMetadata;
-  id?: string;
-  class?: string;
+  href: string
+  title: string
+  description: string
+  comingSoon?: boolean
+  imageSrc?: ImageMetadata
+  id?: string
+  class?: string
 }
 
-const { href, title, description, comingSoon = false, imageSrc, id, class: className } = Astro.props;
+const { href, title, description, comingSoon = false, imageSrc, id, class: className } = Astro.props
 ---
 
 <div class:list={['project-card-wrapper h-full', className]} data-project-card transition:name={id ? `project-card-${id}` : undefined}>
@@ -183,117 +183,3 @@ const { href, title, description, comingSoon = false, imageSrc, id, class: class
   }
 </style>
 
-<script>
-  import { lerp, prefersReducedMotion, initInteractiveComponent, sharedAnimationLoop } from '../scripts/whimsy-utils';
-  import { TILT, SHADOW, LERP, THRESHOLD } from '../scripts/animation-config';
-
-  function initProjectCards() {
-    if (prefersReducedMotion()) return;
-
-    const cards = document.querySelectorAll('[data-project-card]');
-
-    cards.forEach((wrapper, index) => {
-      const card = wrapper.querySelector('.project-card') as HTMLElement;
-      if (!card) return;
-
-      initInteractiveComponent(`project-card-${index}`, {
-        onInit: (signal) => {
-          let currentRotateX = 0;
-          let currentRotateY = 0;
-          let targetRotateX = 0;
-          let targetRotateY = 0;
-          let isHovering = false;
-          let isAnimating = false;
-          let unsubscribe: (() => void) | null = null;
-
-          // Cache rect to avoid layout thrashing
-          let cachedRect: DOMRect | null = null;
-
-          function updateRect() {
-            cachedRect = card.getBoundingClientRect();
-          }
-
-          function animate(): boolean {
-            currentRotateX = lerp(currentRotateX, targetRotateX, LERP.slow);
-            currentRotateY = lerp(currentRotateY, targetRotateY, LERP.slow);
-
-            card.style.setProperty('--rotate-x', `${currentRotateX}deg`);
-            card.style.setProperty('--rotate-y', `${currentRotateY}deg`);
-
-            // Shadow shifts opposite to tilt for realistic lighting
-            const shadowX = -currentRotateY * (SHADOW.maxShift / TILT.projectCard);
-            const shadowY = currentRotateX * (SHADOW.maxShift / TILT.projectCard) + SHADOW.baseOffset;
-            card.style.setProperty('--shadow-x', `${shadowX}px`);
-            card.style.setProperty('--shadow-y', `${shadowY}px`);
-
-            const settled =
-              Math.abs(currentRotateX - targetRotateX) < THRESHOLD.rotation &&
-              Math.abs(currentRotateY - targetRotateY) < THRESHOLD.rotation;
-
-            if (settled) {
-              isAnimating = false;
-              unsubscribe = null;
-              return false; // Unsubscribe from loop
-            }
-            return true; // Continue animating
-          }
-
-          function startAnimation() {
-            if (!isAnimating) {
-              isAnimating = true;
-              unsubscribe = sharedAnimationLoop.subscribe(animate);
-            }
-          }
-
-          function handleMouseMove(e: MouseEvent) {
-            if (!isHovering || !cachedRect) return;
-
-            const centerX = cachedRect.left + cachedRect.width / 2;
-            const centerY = cachedRect.top + cachedRect.height / 2;
-
-            // Normalized cursor position (-1 to 1)
-            const normalizedX = (e.clientX - centerX) / (cachedRect.width / 2);
-            const normalizedY = (e.clientY - centerY) / (cachedRect.height / 2);
-
-            // Calculate tilt (inverted Y for natural feel)
-            targetRotateY = normalizedX * TILT.projectCard;
-            targetRotateX = -normalizedY * TILT.projectCard;
-
-            // Update gradient position
-            const mouseX = ((e.clientX - cachedRect.left) / cachedRect.width) * 100;
-            const mouseY = ((e.clientY - cachedRect.top) / cachedRect.height) * 100;
-            card.style.setProperty('--mouse-x', `${mouseX}%`);
-            card.style.setProperty('--mouse-y', `${mouseY}%`);
-
-            startAnimation();
-          }
-
-          function handleMouseEnter() {
-            isHovering = true;
-            updateRect();
-            card.classList.add('hovering');
-          }
-
-          function handleMouseLeave() {
-            isHovering = false;
-            cachedRect = null;
-            card.classList.remove('hovering');
-            targetRotateX = 0;
-            targetRotateY = 0;
-            startAnimation();
-          }
-
-          card.addEventListener('mouseenter', handleMouseEnter, { signal });
-          card.addEventListener('mouseleave', handleMouseLeave, { signal });
-          card.addEventListener('mousemove', handleMouseMove, { signal });
-        },
-      });
-    });
-  }
-
-  // Initialize
-  initProjectCards();
-
-  // Re-initialize after view transitions
-  document.addEventListener('astro:after-swap', initProjectCards);
-</script>

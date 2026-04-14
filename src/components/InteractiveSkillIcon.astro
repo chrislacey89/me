@@ -7,16 +7,16 @@
  * - Glow pulse on hover
  * - Random idle nudge animation
  */
-import SkillIcon from './SkillIcon.astro';
+import SkillIcon from './SkillIcon.astro'
 
 interface Props {
-  icon: string;
-  name: string;
-  class?: string;
-  'data-reveal-delay'?: number;
+  icon: string
+  name: string
+  class?: string
+  'data-reveal-delay'?: number
 }
 
-const { icon, name, class: className, 'data-reveal-delay': revealDelay } = Astro.props;
+const { icon, name, class: className, 'data-reveal-delay': revealDelay } = Astro.props
 ---
 
 <div class:list={['skill-icon-wrapper', className]} data-skill-icon data-reveal-delay={revealDelay}>
@@ -63,108 +63,3 @@ const { icon, name, class: className, 'data-reveal-delay': revealDelay } = Astro
     }
   }
 </style>
-
-<script>
-  import { lerp, prefersReducedMotion, initInteractiveComponent, sharedAnimationLoop } from '../scripts/whimsy-utils';
-  import { TILT, MOVEMENT, LERP, THRESHOLD } from '../scripts/animation-config';
-
-  function initSkillIcons() {
-    if (prefersReducedMotion()) return;
-
-    const icons = document.querySelectorAll('[data-skill-icon]');
-
-    icons.forEach((wrapper, index) => {
-      const box = wrapper.querySelector('.skill-icon-box') as HTMLElement;
-      if (!box) return;
-
-      initInteractiveComponent(`skill-icon-${index}`, {
-        onInit: (signal) => {
-          let currentRotateX = 0;
-          let currentRotateY = 0;
-          let currentBounceY = 0;
-          let targetRotateX = 0;
-          let targetRotateY = 0;
-          let targetBounceY = 0;
-          let isHovering = false;
-          let isAnimating = false;
-
-          // Cache rect to avoid layout thrashing
-          let cachedRect: DOMRect | null = null;
-
-          function updateRect() {
-            cachedRect = box.getBoundingClientRect();
-          }
-
-          function animate(): boolean {
-            currentRotateX = lerp(currentRotateX, targetRotateX, LERP.medium);
-            currentRotateY = lerp(currentRotateY, targetRotateY, LERP.medium);
-            currentBounceY = lerp(currentBounceY, targetBounceY, LERP.fast);
-
-            box.style.setProperty('--rotate-x', `${currentRotateX}deg`);
-            box.style.setProperty('--rotate-y', `${currentRotateY}deg`);
-            box.style.setProperty('--bounce-y', `${currentBounceY}px`);
-
-            const settled =
-              Math.abs(currentRotateX - targetRotateX) < THRESHOLD.rotation &&
-              Math.abs(currentRotateY - targetRotateY) < THRESHOLD.rotation &&
-              Math.abs(currentBounceY - targetBounceY) < THRESHOLD.position;
-
-            if (settled) {
-              isAnimating = false;
-              return false; // Unsubscribe from loop
-            }
-            return true; // Continue animating
-          }
-
-          function startAnimation() {
-            if (!isAnimating) {
-              isAnimating = true;
-              sharedAnimationLoop.subscribe(animate);
-            }
-          }
-
-          function handleMouseMove(e: MouseEvent) {
-            if (!isHovering || !cachedRect) return;
-
-            const centerX = cachedRect.left + cachedRect.width / 2;
-            const centerY = cachedRect.top + cachedRect.height / 2;
-
-            const normalizedX = (e.clientX - centerX) / (cachedRect.width / 2);
-            const normalizedY = (e.clientY - centerY) / (cachedRect.height / 2);
-
-            targetRotateY = normalizedX * TILT.skillIcon;
-            targetRotateX = -normalizedY * TILT.skillIcon;
-
-            startAnimation();
-          }
-
-          function handleMouseEnter() {
-            isHovering = true;
-            updateRect();
-            targetBounceY = MOVEMENT.skillBounce;
-            startAnimation();
-          }
-
-          function handleMouseLeave() {
-            isHovering = false;
-            cachedRect = null;
-            targetRotateX = 0;
-            targetRotateY = 0;
-            targetBounceY = 0;
-            startAnimation();
-          }
-
-          (wrapper as HTMLElement).addEventListener('mouseenter', handleMouseEnter, { signal });
-          (wrapper as HTMLElement).addEventListener('mouseleave', handleMouseLeave, { signal });
-          (wrapper as HTMLElement).addEventListener('mousemove', handleMouseMove, { signal });
-        },
-      });
-    });
-  }
-
-  // Initialize
-  initSkillIcons();
-
-  // Re-initialize after view transitions
-  document.addEventListener('astro:after-swap', initSkillIcons);
-</script>

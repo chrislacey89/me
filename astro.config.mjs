@@ -1,20 +1,21 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
 
-import tailwindcss from '@tailwindcss/vite';
-import vercel from '@astrojs/vercel';
-import sitemap from '@astrojs/sitemap';
+import mdx from '@astrojs/mdx'
+import sitemap from '@astrojs/sitemap'
+import vercel from '@astrojs/vercel'
+import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from 'astro/config'
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://chrislacey.dev',
-  integrations: [sitemap()],
+  integrations: [sitemap(), mdx()],
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
   },
   prefetch: {
     prefetchAll: true,
-    defaultStrategy: 'load'
+    defaultStrategy: 'load',
   },
-  adapter: vercel()
-});
+  adapter: vercel(),
+})

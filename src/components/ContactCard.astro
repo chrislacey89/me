@@ -5,15 +5,15 @@
  */
 
 interface Props {
-  href: string;
-  label: string;
-  icon: 'email' | 'linkedin' | 'github';
-  class?: string;
+  href: string
+  label: string
+  icon: 'email' | 'linkedin' | 'github'
+  class?: string
 }
 
-const { href, label, icon, class: className } = Astro.props;
+const { href, label, icon, class: className } = Astro.props
 
-const isExternal = icon !== 'email';
+const isExternal = icon !== 'email'
 
 const glowStyles = {
   email: {
@@ -28,12 +28,13 @@ const glowStyles = {
   },
   github: {
     glow: 'rgba(192, 132, 252, 0.4)',
-    shadow: 'shadow-[0_0_30px_rgba(192,132,252,0.15)] hover:shadow-[0_0_40px_rgba(192,132,252,0.25)]',
+    shadow:
+      'shadow-[0_0_30px_rgba(192,132,252,0.15)] hover:shadow-[0_0_40px_rgba(192,132,252,0.25)]',
     iconColor: 'text-purple-400',
   },
-};
+}
 
-const style = glowStyles[icon];
+const style = glowStyles[icon]
 ---
 
 <div class:list={['contact-card-wrapper', className]} data-contact-card data-glow-color={style.glow}>
@@ -138,116 +139,3 @@ const style = glowStyles[icon];
     }
   }
 </style>
-
-<script>
-  import { lerp, prefersReducedMotion, initInteractiveComponent, sharedAnimationLoop } from '../scripts/whimsy-utils';
-  import { MOVEMENT, LERP, THRESHOLD } from '../scripts/animation-config';
-
-  function initContactCards() {
-    if (prefersReducedMotion()) return;
-
-    const cards = document.querySelectorAll('[data-contact-card]');
-
-    cards.forEach((wrapper, index) => {
-      const card = wrapper.querySelector('.contact-card') as HTMLElement;
-      const glow = wrapper.querySelector('.card-glow') as HTMLElement;
-      const content = wrapper.querySelector('.card-content') as HTMLElement;
-
-      if (!card || !glow || !content) return;
-
-      initInteractiveComponent(`contact-card-${index}`, {
-        onInit: (signal) => {
-          const glowColor = (wrapper as HTMLElement).dataset.glowColor;
-          if (glowColor) {
-            glow.style.setProperty('--glow-color', glowColor);
-          }
-
-          let contentX = 0;
-          let contentY = 0;
-          let targetContentX = 0;
-          let targetContentY = 0;
-          let isHovering = false;
-          let isAnimating = false;
-
-          // Cache rect to avoid layout thrashing
-          let cachedRect: DOMRect | null = null;
-
-          function updateRect() {
-            cachedRect = card.getBoundingClientRect();
-          }
-
-          function animate(): boolean {
-            contentX = lerp(contentX, targetContentX, LERP.medium);
-            contentY = lerp(contentY, targetContentY, LERP.medium);
-
-            content.style.setProperty('--content-x', `${contentX}px`);
-            content.style.setProperty('--content-y', `${contentY}px`);
-
-            const settled =
-              Math.abs(contentX - targetContentX) < THRESHOLD.position &&
-              Math.abs(contentY - targetContentY) < THRESHOLD.position;
-
-            if (settled) {
-              isAnimating = false;
-              return false; // Unsubscribe from loop
-            }
-            return true; // Continue animating
-          }
-
-          function startAnimation() {
-            if (!isAnimating) {
-              isAnimating = true;
-              sharedAnimationLoop.subscribe(animate);
-            }
-          }
-
-          function handleMouseMove(e: MouseEvent) {
-            if (!isHovering || !cachedRect) return;
-
-            // Position glow at cursor
-            const glowX = e.clientX - cachedRect.left;
-            const glowY = e.clientY - cachedRect.top;
-            card.style.setProperty('--glow-x', `${glowX}px`);
-            card.style.setProperty('--glow-y', `${glowY}px`);
-
-            // Calculate magnetic pull on content
-            const centerX = cachedRect.width / 2;
-            const centerY = cachedRect.height / 2;
-            const dx = e.clientX - cachedRect.left - centerX;
-            const dy = e.clientY - cachedRect.top - centerY;
-
-            // Normalize and apply magnetic strength
-            const maxDist = Math.max(cachedRect.width, cachedRect.height) / 2;
-            targetContentX = (dx / maxDist) * MOVEMENT.magneticStrength;
-            targetContentY = (dy / maxDist) * MOVEMENT.magneticStrength;
-
-            startAnimation();
-          }
-
-          function handleMouseEnter() {
-            isHovering = true;
-            updateRect();
-          }
-
-          function handleMouseLeave() {
-            isHovering = false;
-            cachedRect = null;
-            targetContentX = 0;
-            targetContentY = 0;
-            startAnimation();
-          }
-
-          card.addEventListener('mouseenter', handleMouseEnter, { signal });
-          card.addEventListener('mouseleave', handleMouseLeave, { signal });
-          card.addEventListener('mousemove', handleMouseMove, { signal });
-        },
-      });
-    });
-  }
-
-  // Initialize
-  initContactCards();
-
-  // Re-initialize after view transitions
-  document.addEventListener('astro:after-swap', initContactCards);
-</script>
