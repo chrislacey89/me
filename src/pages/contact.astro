@@ -1,8 +1,8 @@
 ---
 import ContactCard from '../components/ContactCard.astro'
 import SectionDivider from '../components/SectionDivider.astro'
-import BaseLayout from '../layouts/BaseLayout.astro'
 import contactData from '../data/contact.json'
+import BaseLayout from '../layouts/BaseLayout.astro'
 
 const { intro, links } = contactData
 ---
@@ -26,14 +26,12 @@ const { intro, links } = contactData
       <section transition:name="main-content">
         <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-8">Get in Touch</h2>
 
-        <div class="grid gap-6 sm:grid-cols-3" data-reveal-group>
-          {links.map((link, index) => (
+        <div class="grid gap-6 sm:grid-cols-3">
+          {links.map((link) => (
             <ContactCard
               href={link.href}
               label={link.label}
               icon={link.icon as 'email' | 'linkedin' | 'github'}
-              class="reveal-up"
-              data-reveal-delay={index * 100}
             />
           ))}
         </div>

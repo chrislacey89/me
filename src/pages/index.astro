@@ -81,14 +81,9 @@ const projectImages: Record<string, ImageMetadata> = {
         <section class="space-y-4" aria-labelledby="skills-heading">
           <h2 id="skills-heading" class="text-sm font-semibold tracking-widest uppercase text-teal-400/60 text-center md:text-left">Skills & Expertise</h2>
 
-          <div class="grid grid-cols-[repeat(auto-fill,minmax(5.5rem,1fr))] gap-y-4 justify-items-center md:justify-items-start" data-reveal-group>
-            {skills.map((skill, index) => (
-              <InteractiveSkillIcon
-                icon={skill.icon}
-                name={skill.name}
-                class="reveal-bounce"
-                data-reveal-delay={index * 40}
-              />
+          <div class="grid grid-cols-[repeat(auto-fill,minmax(5.5rem,1fr))] gap-y-4 justify-items-center md:justify-items-start">
+            {skills.map((skill) => (
+              <InteractiveSkillIcon icon={skill.icon} name={skill.name} />
             ))}
           </div>
         </section>
@@ -108,16 +103,14 @@ const projectImages: Record<string, ImageMetadata> = {
             </a>
           </div>
 
-          <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-reveal-group>
-            {selectedProjects.map((project, index) => (
+          <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {selectedProjects.map((project) => (
               <ProjectCard
                 href={`/projects/${project.id}`}
                 title={project.title}
                 description={project.description}
                 imageSrc={projectImages[project.id]}
                 id={project.id}
-                class="reveal-scale"
-                data-reveal-delay={index * 100}
               />
             ))}
           </div>
