@@ -8,6 +8,7 @@ const { currentPath } = Astro.props
 const navItems = [
   { label: 'Home', href: '/' },
   { label: 'Projects', href: '/projects' },
+  { label: 'Writing', href: '/writing' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ]
@@ -19,84 +20,67 @@ function isActive(href: string, current: string): boolean {
 ---
 
 <header class="nav-header" id="nav-header">
-  <nav class="nav-container">
-    <a href="/" class="nav-logo" transition:name="nav-logo">
-      Chris Lacey
-    </a>
+  <nav class="nav-container" aria-label="Primary">
+    <a href="/" class="nav-logo">Chris Lacey</a>
 
-    <!-- Desktop Navigation -->
+    <!-- Desktop navigation -->
     <ul class="nav-desktop" role="list">
-      {navItems.map((item) => (
-        <li>
-          <a
-            href={item.href}
-            class:list={['nav-link', { active: isActive(item.href, currentPath) }]}
-            aria-current={isActive(item.href, currentPath) ? 'page' : undefined}
-            transition:name={`nav-${item.label.toLowerCase()}`}
-            data-astro-prefetch="viewport"
-          >
-            <span class="nav-link-text">{item.label}</span>
-          </a>
-        </li>
-      ))}
+      {
+        navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={['nav-link', { active: isActive(item.href, currentPath) }]}
+              aria-current={isActive(item.href, currentPath) ? 'page' : undefined}
+              data-astro-prefetch="viewport"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
     </ul>
 
-    <!-- Mobile Hamburger Button -->
-    <button
-      type="button"
-      class="hamburger"
-      aria-label="Open menu"
-      aria-expanded="false"
-      aria-controls="mobile-overlay"
-      id="hamburger"
-    >
-      <span class="hamburger-line line-1"></span>
-      <span class="hamburger-line line-2"></span>
-      <span class="hamburger-line line-3"></span>
-    </button>
+    <!-- Mobile: native <details>/<summary> baseline, progressively enhanced -->
+    <details class="mobile-menu" id="mobile-menu">
+      <summary class="hamburger" aria-label="Menu">
+        <span class="sr-only">Menu</span>
+        <span class="hamburger-icon" aria-hidden="true">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </span>
+      </summary>
+
+      <div class="mobile-overlay">
+        <ul class="mobile-nav-list" role="list">
+          {
+            navItems.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class:list={['mobile-nav-link', { active: isActive(item.href, currentPath) }]}
+                  aria-current={isActive(item.href, currentPath) ? 'page' : undefined}
+                  data-astro-prefetch="viewport"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </details>
   </nav>
 </header>
-
-<!-- Full-screen Mobile Menu Overlay -->
-<nav class="mobile-overlay" id="mobile-overlay" aria-hidden="true" aria-label="Mobile navigation">
-  <div class="mobile-overlay-bg" aria-hidden="true"></div>
-  <div class="mobile-menu-content">
-    <ul class="mobile-nav-list" role="list">
-      {navItems.map((item, index) => (
-        <li class="mobile-nav-item" style={`--item-index: ${index}`}>
-          <a
-            href={item.href}
-            class:list={['mobile-nav-link', { active: isActive(item.href, currentPath) }]}
-            aria-current={isActive(item.href, currentPath) ? 'page' : undefined}
-            aria-label={item.label}
-            data-active={isActive(item.href, currentPath) ? 'true' : undefined}
-            data-astro-prefetch="viewport"
-          >
-            <span class="mobile-nav-number" aria-hidden="true">0{index + 1}</span>
-            <span class="mobile-nav-text" aria-hidden="true">{item.label}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
-    <div class="mobile-menu-accent" aria-hidden="true"></div>
-  </div>
-</nav>
 
 <style>
   .nav-header {
     position: sticky;
     top: 0;
     z-index: 100;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    background: rgba(15, 15, 22, 0.85);
-    backdrop-filter: blur(12px);
-    transition: z-index 0s;
-  }
-
-  .nav-header.menu-open {
-    z-index: 200;
-    background: transparent;
-    border-color: transparent;
+    background: var(--color-background);
+    border-bottom: 1px solid var(--color-rule);
   }
 
   .nav-container {
@@ -115,24 +99,23 @@ function isActive(href: string, current: string): boolean {
   }
 
   .nav-logo {
-    font-size: 1.125rem;
-    font-weight: 500;
-    color: #fafafa;
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--color-foreground);
     text-decoration: none;
-    transition:
-      color 0.2s ease,
-      letter-spacing 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-    letter-spacing: 0;
+    letter-spacing: -0.01em;
   }
 
   .nav-logo:hover {
-    color: #2dd4bf;
+    color: var(--color-accent);
   }
 
+  /* Desktop navigation */
   .nav-desktop {
     display: none;
     list-style: none;
-    gap: 2.5rem;
+    gap: 2rem;
     margin: 0;
     padding: 0;
   }
@@ -144,141 +127,111 @@ function isActive(href: string, current: string): boolean {
   }
 
   .nav-link {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #a1a1aa;
-    text-decoration: none;
-    transition: color 0.2s ease;
     position: relative;
     display: inline-block;
-    padding: 0.5rem 0.75rem;
-    margin: -0.5rem -0.75rem;
+    padding: 0.5rem 0;
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-foreground);
+    text-decoration: none;
+    transition: color 0.2s ease;
   }
 
-  .nav-link-text {
-    display: inline-block;
+  .nav-link:hover {
+    color: var(--color-accent);
   }
 
-  .nav-link:hover,
   .nav-link.active {
-    color: #2dd4bf;
-  }
-
-  /* Reduced motion for nav */
-  @media (prefers-reduced-motion: reduce) {
-    .nav-logo {
-      letter-spacing: normal !important;
-      transform: none !important;
-    }
+    color: var(--color-foreground);
   }
 
   .nav-link.active::after {
     content: '';
     position: absolute;
-    bottom: 0.25rem;
-    left: 0.75rem;
-    right: 0.75rem;
-    width: auto;
-    height: 3px;
-    background: #2dd4bf;
-    border-radius: 1.5px;
-    view-transition-name: nav-underline;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--color-accent);
   }
 
-
-  /* Hamburger Button */
-  .hamburger {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 44px;
-    height: 44px;
-    padding: 0;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    gap: 6px;
-    touch-action: manipulation;
+  /* Mobile menu — <details>/<summary> baseline */
+  .mobile-menu {
+    display: block;
   }
 
   @media (min-width: 768px) {
-    .hamburger {
+    .mobile-menu {
       display: none;
     }
   }
 
+  /* Remove the default disclosure triangle */
+  .mobile-menu > summary {
+    list-style: none;
+  }
+
+  .mobile-menu > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .hamburger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 18px;
+    gap: 6px;
+  }
+
   .hamburger-line {
     display: block;
-    width: 24px;
+    width: 100%;
     height: 2px;
-    background: #fafafa;
-    border-radius: 2px;
-    transition:
-      transform 0.26s cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 0.15s ease;
+    background: var(--color-foreground);
+    transition: transform 0.2s ease, opacity 0.2s ease;
     transform-origin: center;
   }
 
-  /* Hamburger → X morphing animation */
-  .hamburger[aria-expanded="true"] .line-1 {
+  .mobile-menu[open] .hamburger-line:nth-child(1) {
     transform: translateY(8px) rotate(45deg);
-    transition:
-      transform 0.26s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .hamburger[aria-expanded="true"] .line-2 {
+  .mobile-menu[open] .hamburger-line:nth-child(2) {
     opacity: 0;
-    transform: scaleX(0);
   }
 
-  .hamburger[aria-expanded="true"] .line-3 {
+  .mobile-menu[open] .hamburger-line:nth-child(3) {
     transform: translateY(-8px) rotate(-45deg);
-    transition:
-      transform 0.26s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Mobile Overlay */
+  /* The overlay: no-JS baseline positions it absolutely below the header.
+     JS-enhanced path promotes it to a full-screen panel via body scroll lock
+     and a class toggle on <body>. CSS-only still fully reachable. */
   .mobile-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 150;
-    pointer-events: none;
-    visibility: hidden;
-  }
-
-  .mobile-overlay.open {
-    pointer-events: auto;
-    visibility: visible;
-    touch-action: none;
-  }
-
-  .mobile-overlay-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #0F0F16;
-    opacity: 0;
-    transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .mobile-overlay.open .mobile-overlay-bg {
-    opacity: 1;
-  }
-
-  .mobile-menu-content {
-    position: relative;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
     padding: 6rem 2rem 4rem;
-    overflow: hidden;
+    background: var(--color-background);
+    overflow-y: auto;
   }
 
   .mobile-nav-list {
@@ -290,84 +243,23 @@ function isActive(href: string, current: string): boolean {
     gap: 0;
   }
 
-  .mobile-nav-item {
-    opacity: 0;
-    transform: translateX(-40px);
-    transition:
-      opacity 0.15s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.15s cubic-bezier(0.22, 1, 0.36, 1);
-    transition-delay: calc(0.02s + var(--item-index) * 0.03s);
-  }
-
-  .mobile-overlay.open .mobile-nav-item {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
   .mobile-nav-link {
-    display: flex;
-    align-items: baseline;
-    gap: 1.25rem;
-    padding: 1.5rem 0;
-    text-decoration: none;
-    color: #fafafa;
-    transition: color 0.2s ease, transform 0.2s ease;
-    touch-action: manipulation;
-  }
-
-  @media (hover: hover) {
-    .mobile-nav-link:hover {
-      color: #2dd4bf;
-      transform: translateX(8px);
-    }
-  }
-
-  .mobile-nav-link.active {
-    color: #2dd4bf;
-  }
-
-  .mobile-nav-number {
-    font-size: 0.75rem;
-    font-weight: 400;
-    font-family: var(--font-mono, monospace);
-    color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 0.05em;
-  }
-
-  .mobile-nav-link.active .mobile-nav-number {
-    color: #2dd4bf;
-  }
-
-  .mobile-nav-text {
-    font-size: clamp(2rem, 8vw, 3.5rem);
+    display: block;
+    padding: 1.25rem 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
     font-weight: 600;
     letter-spacing: -0.02em;
     line-height: 1.1;
+    color: var(--color-foreground);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-rule);
   }
 
-  /* Geometric accent */
-  .mobile-menu-accent {
-    position: absolute;
-    bottom: -20%;
-    right: -10%;
-    width: 60%;
-    aspect-ratio: 1;
-    background: linear-gradient(135deg, #2dd4bf 0%, transparent 60%);
-    opacity: 0;
-    transform: rotate(-15deg) scale(0.8);
-    transition:
-      opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
-      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
-    border-radius: 20% 0 0 0;
-    pointer-events: none;
+  .mobile-nav-link.active {
+    color: var(--color-accent);
   }
 
-  .mobile-overlay.open .mobile-menu-accent {
-    opacity: 0.1;
-    transform: rotate(-15deg) scale(1);
-  }
-
-  /* Lock body scroll when menu is open */
   :global(body.menu-open) {
     overflow: hidden;
     touch-action: none;
@@ -376,134 +268,79 @@ function isActive(href: string, current: string): boolean {
 </style>
 
 <script>
+  // Progressive enhancement for the native <details>/<summary> baseline.
+  // The menu is fully usable without this script — it just improves focus
+  // handling, body scroll lock, and keyboard close behavior.
   class MobileMenu {
-    private hamburger: HTMLElement | null = null;
-    private overlay: HTMLElement | null = null;
-    private header: HTMLElement | null = null;
-    private abortController: AbortController | null = null;
-    private isOpen = false;
+    private details: HTMLDetailsElement | null = null
+    private abortController: AbortController | null = null
 
     constructor() {
-      this.init();
+      this.init()
     }
 
     private init() {
-      this.cleanup();
+      this.cleanup()
+      this.details = document.getElementById('mobile-menu') as HTMLDetailsElement | null
+      if (!this.details) return
 
-      this.hamburger = document.getElementById('hamburger');
-      this.overlay = document.getElementById('mobile-overlay');
-      this.header = document.getElementById('nav-header');
+      this.abortController = new AbortController()
+      const { signal } = this.abortController
 
-      if (!this.hamburger || !this.overlay) return;
+      this.details.addEventListener('toggle', this.handleToggle, { signal })
 
-      this.abortController = new AbortController();
-      const { signal } = this.abortController;
-
-      this.hamburger.addEventListener('click', this.toggle, { signal });
-
-      this.overlay.addEventListener('click', (e: MouseEvent) => {
-        const link = (e.target as HTMLElement).closest('a.mobile-nav-link');
-        if (link) {
-          if (link.hasAttribute('data-active')) {
-            e.preventDefault();
+      document.addEventListener(
+        'keydown',
+        (e: KeyboardEvent) => {
+          if (e.key === 'Escape' && this.details?.open) {
+            this.close()
           }
-          this.close();
-        }
-      }, { signal });
+        },
+        { signal },
+      )
 
-      document.addEventListener('keydown', (e: KeyboardEvent) => {
-        if (e.key === 'Escape' && this.isOpen) {
-          this.close();
-        }
-      }, { signal });
+      this.details.addEventListener(
+        'click',
+        (e) => {
+          const link = (e.target as HTMLElement).closest('a.mobile-nav-link')
+          if (link) this.close()
+        },
+        { signal },
+      )
     }
 
-    private toggle = () => {
-      this.isOpen ? this.close() : this.open();
-    };
-
-    private open = () => {
-      if (!this.hamburger || !this.overlay) return;
-
-      this.isOpen = true;
-      this.hamburger.setAttribute('aria-expanded', 'true');
-      this.hamburger.setAttribute('aria-label', 'Close menu');
-      this.overlay.classList.add('open');
-      this.overlay.setAttribute('aria-hidden', 'false');
-      this.header?.classList.add('menu-open');
-      document.body.classList.add('menu-open');
-
-      // Focus the first nav link for keyboard users
-      const firstLink = this.overlay.querySelector('.mobile-nav-link') as HTMLElement;
-      if (firstLink) {
-        setTimeout(() => firstLink.focus(), 100);
+    private handleToggle = () => {
+      if (!this.details) return
+      if (this.details.open) {
+        document.body.classList.add('menu-open')
+        const firstLink = this.details.querySelector('.mobile-nav-link') as HTMLElement | null
+        if (firstLink) setTimeout(() => firstLink.focus(), 50)
+      } else {
+        document.body.classList.remove('menu-open')
       }
-    };
+    }
 
-    private close = () => {
-      if (!this.hamburger || !this.overlay) return;
-
-      this.isOpen = false;
-      this.hamburger.setAttribute('aria-expanded', 'false');
-      this.hamburger.setAttribute('aria-label', 'Open menu');
-      this.overlay.classList.remove('open');
-      this.overlay.setAttribute('aria-hidden', 'true');
-      this.header?.classList.remove('menu-open');
-      document.body.classList.remove('menu-open');
-
-      // Return focus to hamburger button
-      this.hamburger.focus();
-    };
+    private close() {
+      if (!this.details) return
+      this.details.open = false
+    }
 
     cleanup() {
-      this.abortController?.abort();
-      this.abortController = null;
-      this.isOpen = false;
-      this.header?.classList.remove('menu-open');
-      document.body.classList.remove('menu-open');
+      this.abortController?.abort()
+      this.abortController = null
+      document.body.classList.remove('menu-open')
     }
   }
 
-  let menuInstance: MobileMenu | null = null;
+  let menuInstance: MobileMenu | null = null
 
   function initMenu() {
-    menuInstance?.cleanup();
-    menuInstance = new MobileMenu();
+    menuInstance?.cleanup()
+    menuInstance = new MobileMenu()
   }
 
-  function updateActiveNav() {
-    const path = window.location.pathname;
-    document.querySelectorAll('.nav-link').forEach(link => {
-      const href = link.getAttribute('href');
-      const isActive = href === '/' ? path === '/' : path.startsWith(href!);
-      link.classList.toggle('active', isActive);
-      if (isActive) link.setAttribute('aria-current', 'page');
-      else link.removeAttribute('aria-current');
-    });
-    document.querySelectorAll('.mobile-nav-link').forEach(link => {
-      const href = link.getAttribute('href');
-      const isActive = href === '/' ? path === '/' : path.startsWith(href!);
-      link.classList.toggle('active', isActive);
-      if (isActive) {
-        link.setAttribute('aria-current', 'page');
-        (link as HTMLElement).dataset.active = 'true';
-      } else {
-        link.removeAttribute('aria-current');
-        delete (link as HTMLElement).dataset.active;
-      }
-    });
-  }
-
-  // Re-initialize on View Transitions navigation (including initial load)
-  // Using astro:page-load ensures the DOM is fully ready before initializing
-  document.addEventListener('astro:page-load', () => {
-    updateActiveNav();
-    initMenu();
-  });
-
-  // Cleanup before swap to prevent stale references
+  document.addEventListener('astro:page-load', initMenu)
   document.addEventListener('astro:before-swap', () => {
-    menuInstance?.cleanup();
-  });
+    menuInstance?.cleanup()
+  })
 </script>
-
