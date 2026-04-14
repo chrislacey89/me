@@ -1,8 +1,6 @@
 import type { ImageMetadata } from 'astro'
-import contentToSkillImage from '../assets/projects/content-to-skill.png'
 import empowermentBriefImage from '../assets/projects/empowerment-brief.png'
 import fulcrumImage from '../assets/projects/fulcrum.png'
-import mikelaceySiteImage from '../assets/projects/mikelacey-site.png'
 
 export interface ProjectDetail {
   /** Serif one-sentence thesis displayed at the top of the detail page. */
@@ -100,8 +98,3 @@ export const supportingProjects: SupportingProject[] = [
     external: true,
   },
 ]
-
-export const supportingImages: Record<string, ImageMetadata> = {
-  'content-to-skill': contentToSkillImage,
-  'mikelacey-site': mikelaceySiteImage,
-}
