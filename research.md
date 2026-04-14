@@ -47,7 +47,7 @@ The downstream PRD work is content-heavy (writing the project pages, the about p
 
 | Problem | Don't Build | Use Instead | Why | Docs |
 |---|---|---|---|---|
-| Loading typography | Custom `@font-face` for every face | `@fontsource-variable/*` for IBM Plex Mono and Source Serif 4 | One install, woff2 + subsetting handled, version-pinnable | [Fontsource](https://fontsource.org/) 🔗 |
+| Loading typography | Custom `@font-face` for every face | `@fontsource-variable/source-serif-4` + `@fontsource/ibm-plex-mono` (static weights — Plex Mono has no variable build upstream) | One install, woff2 + subsetting handled, version-pinnable | [Fontsource](https://fontsource.org/) 🔗 |
 | Loading the display face | npm package | Self-hosted Switzer woff2 from Fontshare download | No Fontsource package exists for Switzer; foundry distribution is the canonical source | [Fontshare: Switzer](https://www.fontshare.com/fonts/switzer) 🔗 |
 | Markdown rendering for essays | A separate parser, custom rehype pipeline, an MDX renderer plug-in | Astro's built-in MDX integration via `@astrojs/mdx`, with content collection Loader API | Built-in, type-safe, supports component embedding for diagrams later | [Astro MDX integration](https://docs.astro.build/en/guides/integrations-guide/mdx/) 🔗 |
 | Reading-time, prev/next navigation, table of contents | Manual computation in each `.astro` page | Defer until the writing surface actually has 6+ posts. At launch (1–4 posts) these add visual noise without information. | "Motion earns its place by carrying information" applies to chrome too. | — |
@@ -127,7 +127,7 @@ The downstream PRD work is content-heavy (writing the project pages, the about p
 #### Mono slot
 
 ##### IBM Plex Mono (recommended)
-- **Distribution:** `@fontsource-variable/ibm-plex-mono` ([Fontsource](https://fontsource.org/fonts/ibm-plex-mono) 🔗)
+- **Distribution:** `@fontsource/ibm-plex-mono` ([Fontsource](https://fontsource.org/fonts/ibm-plex-mono) 🔗) — static weights (400/500/600). IBM Plex Mono has no variable-font build upstream, so Fontsource ships the static package only.
 - **License:** OFL.
 - **Pros:** Free; OFL; designed by IBM for technical contexts; reads as "the proof is in the terminal" (Frame 4) without being precious; pairs well with both Switzer and Source Serif.
 - **Cons:** None significant. The realistic alternative would be Berkeley Mono (paid, ~$75) which is out of scope.
@@ -318,7 +318,7 @@ For the PRD to slice against:
 - [Tailwind v4 Theme docs](https://tailwindcss.com/docs/theme) — `@theme` CSS-first configuration
 - [Tailwind v4 dark mode reference](https://tailwindcss.com/docs/dark-mode) — confirms light-mode-only path
 - [Fontsource: Source Serif 4](https://fontsource.org/fonts/source-serif-4) — OFL, variable, optical-size axis
-- [Fontsource: IBM Plex Mono](https://fontsource.org/fonts/ibm-plex-mono) — OFL, variable
+- [Fontsource: IBM Plex Mono](https://fontsource.org/fonts/ibm-plex-mono) — OFL, static weights (no variable build upstream)
 - [Vercel OG documentation](https://vercel.com/docs/og-image-generation)
 
 **⚠️ Partially verified (could not fetch primary doc; verified by reputation/community consensus):**
