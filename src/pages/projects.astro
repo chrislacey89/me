@@ -1,54 +1,208 @@
 ---
 import ProjectCard from '../components/ProjectCard.astro'
-import SectionDivider from '../components/SectionDivider.astro'
+import { leadProjects, supportingProjects } from '../data/projects'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import type { ImageMetadata } from 'astro'
-import projectsData from '../data/projects.json'
-import contentToSkillImage from '../assets/projects/content-to-skill.png'
-import fulcrumImage from '../assets/projects/fulcrum.png'
-import mikelaceySiteImage from '../assets/projects/mikelacey-site.png'
-import empowermentBriefImage from '../assets/projects/empowerment-brief.png'
-
-const { projects } = projectsData
-
-const projectImages: Record<string, ImageMetadata> = {
-  'fulcrum': fulcrumImage,
-  'content-to-skill': contentToSkillImage,
-  'mikelacey-site': mikelaceySiteImage,
-  'empowerment-brief': empowermentBriefImage,
-}
 ---
 
-<BaseLayout title="Projects | Chris Lacey" description="Case studies showcasing technical work with context on architecture decisions and tradeoffs.">
-  <div class="min-h-[calc(100vh-60px)] text-white selection:bg-teal-400/30 selection:text-teal-200">
-    <div class="relative mx-auto max-w-7xl px-6 py-12 md:px-12 md:py-20 lg:py-24">
-      <!-- Page Header -->
-      <div class="mb-12">
-        <h1 class="text-4xl font-bold md:text-5xl gradient-heading" transition:name="page-title">Projects</h1>
-      </div>
-
-      <!-- Intro -->
-      <p class="text-lg leading-relaxed text-text-muted-light max-w-2xl" transition:name="intro-text">
-        Case studies showcasing technical work with context on architecture decisions and tradeoffs.
+<BaseLayout
+  title="Projects | Chris Lacey"
+  description="Three lead projects and a supporting strip — each case study frames the claim, the move, and what it cost."
+>
+  <div class="projects-page">
+    <header class="page-header">
+      <p class="eyebrow">Projects</p>
+      <h1 class="lede">Three lead projects, one supporting strip.</h1>
+      <p class="sub">
+        Each lead page works through the same seven-part structure. Supporting entries are claim
+        plus link — no detail route.
       </p>
+    </header>
 
-      <SectionDivider class="my-12" />
-
-      <!-- Projects Grid -->
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-reveal-group>
-        {projects.map((project, index) => (
+    <section aria-labelledby="lead-heading" class="lead">
+      <h2 id="lead-heading" class="sr-only">Lead projects</h2>
+      <div class="lead-grid">
+        {leadProjects.map((project) => (
           <ProjectCard
             href={`/projects/${project.id}`}
             title={project.title}
-            description={project.description}
-            comingSoon={!project.caseStudy}
-            imageSrc={projectImages[project.id]}
+            description={project.blurb}
+            imageSrc={project.image}
             id={project.id}
-            class="reveal-scale"
-            data-reveal-delay={index * 100}
           />
         ))}
       </div>
-    </div>
+    </section>
+
+    <section aria-labelledby="supporting-heading" class="supporting">
+      <h2 id="supporting-heading" class="supporting-heading">Supporting work</h2>
+      <ul class="supporting-strip">
+        {supportingProjects.map((project) => (
+          <li class="supporting-item">
+            <a
+              href={project.href}
+              target={project.external ? '_blank' : undefined}
+              rel={project.external ? 'noopener noreferrer' : undefined}
+              class="supporting-link"
+            >
+              <span class="supporting-title">{project.title}</span>
+              <span class="supporting-claim">{project.claim}</span>
+              <span class="supporting-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
   </div>
 </BaseLayout>
+
+<style>
+  .projects-page {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  @media (min-width: 768px) {
+    .projects-page {
+      padding: 4.5rem 2rem 8rem;
+    }
+  }
+
+  .page-header {
+    max-width: 44rem;
+    margin-bottom: 4rem;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-forest-floor);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 1rem;
+  }
+
+  .lede {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--color-foreground);
+    margin: 0 0 1.25rem;
+  }
+
+  .sub {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--color-muted);
+    margin: 0;
+    max-width: 38rem;
+  }
+
+  .lead-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 720px) {
+    .lead-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .lead-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .supporting {
+    margin-top: 5rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .supporting-heading {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-forest-floor);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 1.5rem;
+  }
+
+  .supporting-strip {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .supporting-item {
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .supporting-item:first-child {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .supporting-link {
+    display: grid;
+    grid-template-columns: minmax(10rem, 14rem) 1fr auto;
+    gap: 1.5rem;
+    align-items: baseline;
+    padding: 1.25rem 0;
+    text-decoration: none;
+    color: var(--color-foreground);
+    transition: color 0.2s ease;
+  }
+
+  @media (max-width: 639px) {
+    .supporting-link {
+      grid-template-columns: 1fr auto;
+      gap: 0.5rem 1rem;
+    }
+
+    .supporting-title {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .supporting-link:hover {
+    color: var(--color-accent);
+  }
+
+  .supporting-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+
+  .supporting-claim {
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    color: var(--color-muted);
+    line-height: 1.45;
+  }
+
+  .supporting-link:hover .supporting-claim {
+    color: inherit;
+  }
+
+  .supporting-arrow {
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    color: var(--color-forest-floor);
+  }
+
+  .supporting-link:hover .supporting-arrow {
+    color: var(--color-accent);
+  }
+</style>
