@@ -22,3 +22,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# claude code pipeline markers
+.claude/.tdd-active
+.claude/.tdd-skipped
+.claude/.ralph-checked
