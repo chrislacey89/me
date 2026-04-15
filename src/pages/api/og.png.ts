@@ -6,11 +6,11 @@ import type { APIRoute } from 'astro'
 export const prerender = false
 
 // Brand palette (mirrors src/styles/global.css @theme tokens)
-const COLOR_BACKGROUND = '#F4EEE1' // Legal Pad
-const COLOR_FOREGROUND = '#1A1F2E' // Ink Well
-const COLOR_ACCENT = '#C1502E' // Terracotta Signal
-const COLOR_FOREST = '#2F5D50' // Forest Floor
-const COLOR_MUTED = 'rgba(26, 31, 46, 0.55)'
+const COLOR_BACKGROUND = 'hsl(40, 52%, 92%)' // Legal Pad
+const COLOR_FOREGROUND = 'hsl(224, 27%, 14%)' // Ink Well
+const COLOR_ACCENT = 'hsl(16, 61%, 47%)' // Terracotta Signal
+const COLOR_FOREST = 'hsl(166, 33%, 27%)' // Forest Floor
+const COLOR_MUTED = 'hsla(224, 27%, 14%, 0.55)'
 
 // Satori supports TTF, OTF, WOFF — not WOFF2. The brand WOFF files are committed to
 // public/fonts/ so we can read them synchronously at request time without a network
