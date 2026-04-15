@@ -1,6 +1,4 @@
 ---
-import ContactCard from '../components/ContactCard.astro'
-import SectionDivider from '../components/SectionDivider.astro'
 import contactData from '../data/contact.json'
 import BaseLayout from '../layouts/BaseLayout.astro'
 
@@ -8,34 +6,176 @@ const { intro, links } = contactData
 ---
 
 <BaseLayout title="Contact | Chris Lacey" description="Get in touch with Chris Lacey.">
-  <div class="min-h-[calc(100vh-60px)] text-white selection:bg-teal-400/30 selection:text-teal-200">
-    <div class="relative mx-auto max-w-7xl px-6 py-12 md:px-12 md:py-20 lg:py-24">
-      <!-- Page Header -->
-      <div class="mb-12">
-        <h1 class="text-4xl font-bold md:text-5xl gradient-heading" transition:name="page-title">Contact</h1>
-      </div>
+  <div class="contact-page">
+    <header class="page-header">
+      <p class="eyebrow">Contact</p>
+      <h1 class="lede">{intro}</h1>
+    </header>
 
-      <!-- Intro -->
-      <p class="text-lg leading-relaxed text-text-muted-light max-w-3xl" transition:name="intro-text">
-        {intro}
+    <section class="contact-card" aria-labelledby="contact-heading">
+      <h2 id="contact-heading" class="sr-only">Ways to reach me</h2>
+      <ul class="contact-list">
+        {
+          links.map((link) => {
+            const isExternal = link.icon !== 'email'
+            return (
+              <li class="contact-item">
+                <a
+                  class="contact-link"
+                  href={link.href}
+                  target={isExternal ? '_blank' : undefined}
+                  rel={isExternal ? 'noopener noreferrer' : undefined}
+                >
+                  <span class="contact-label">{link.label}</span>
+                  <span class="contact-value">
+                    {link.icon === 'email' && 'chrislacey89@gmail.com'}
+                    {link.icon === 'linkedin' && 'linkedin.com/in/chrislacey89'}
+                    {link.icon === 'github' && 'github.com/chrislacey89'}
+                    {isExternal && <span class="sr-only"> (opens in new tab)</span>}
+                  </span>
+                </a>
+              </li>
+            )
+          })
+        }
+      </ul>
+      <p class="response-note">
+        <span class="response-label">Response</span>
+        <span>I'll respond within two business days.</span>
       </p>
-
-      <SectionDivider class="my-12" />
-
-      <!-- Contact Links -->
-      <section transition:name="main-content">
-        <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-8">Get in Touch</h2>
-
-        <div class="grid gap-6 sm:grid-cols-3">
-          {links.map((link) => (
-            <ContactCard
-              href={link.href}
-              label={link.label}
-              icon={link.icon as 'email' | 'linkedin' | 'github'}
-            />
-          ))}
-        </div>
-      </section>
-    </div>
+    </section>
   </div>
 </BaseLayout>
+
+<style>
+  .contact-page {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  @media (min-width: 768px) {
+    .contact-page {
+      padding: 4.5rem 2rem 8rem;
+    }
+  }
+
+  .page-header {
+    max-width: 44rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-forest-floor);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 1rem;
+  }
+
+  .lede {
+    font-family: var(--font-serif);
+    font-size: clamp(1.625rem, 4vw, 2.25rem);
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    color: var(--color-foreground);
+    margin: 0;
+  }
+
+  .contact-card {
+    border: 1px solid var(--color-rule);
+    padding: 0 1.5rem;
+    max-width: 42rem;
+  }
+
+  @media (min-width: 768px) {
+    .contact-card {
+      padding: 0 2rem;
+    }
+  }
+
+  .contact-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .contact-item {
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .contact-item:last-child {
+    border-bottom: none;
+  }
+
+  .contact-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1.25rem 0;
+    text-decoration: none;
+    color: var(--color-foreground);
+    transition: color 0.2s ease;
+  }
+
+  @media (min-width: 640px) {
+    .contact-link {
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+  }
+
+  .contact-link:hover {
+    color: var(--color-accent);
+  }
+
+  .contact-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-forest-floor);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .contact-value {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+  }
+
+  .response-note {
+    border-top: 1px solid var(--color-rule);
+    padding: 1.25rem 0;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    color: var(--color-muted);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .response-note {
+      flex-direction: row;
+      align-items: baseline;
+      gap: 1.5rem;
+    }
+  }
+
+  .response-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-forest-floor);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+</style>
