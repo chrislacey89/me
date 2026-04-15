@@ -1,6 +1,7 @@
 import type { ImageMetadata } from 'astro'
 import empowermentBriefImage from '../assets/projects/empowerment-brief.png'
 import fulcrumImage from '../assets/projects/fulcrum.png'
+import skillsImage from '../assets/projects/skills.png'
 
 export interface ProjectDetail {
   /** Serif one-sentence thesis displayed at the top of the detail page. */
@@ -67,6 +68,7 @@ export const leadProjects: LeadProject[] = [
     title: 'skills',
     blurb:
       'A Claude Code skill pipeline that turns shaped engineering work into reusable, invocable skills.',
+    image: skillsImage,
     github: 'https://github.com/chrislacey89/skills',
     detail: PLACEHOLDER,
   },

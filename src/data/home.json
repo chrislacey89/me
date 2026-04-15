@@ -1,8 +1,14 @@
 {
   "hero": {
     "name": "Chris Lacey",
-    "title": "Software Engineer",
-    "tagline": "I build complex systems with an emphasis on clarity, correctness, and long-term maintainability.",
+    "role": "Full-stack AI product engineer",
+    "tagline": "Close the gap between intent and outcome.",
+    "lede": "I work on the seams — where intent, data, and interface usually disagree.",
+    "availability": {
+      "status": "Available",
+      "focus": "senior AI product roles",
+      "location": "Bloomington IN · remote"
+    },
     "avatar": "/headshot.jpeg",
     "ctas": [
       {
@@ -18,28 +24,6 @@
       }
     ]
   },
-  "selectedProjects": [
-    {
-      "id": "fulcrum",
-      "title": "Fulcrum",
-      "description": "AI advisory platform that applies mental models and structured reasoning to high-stakes decisions"
-    },
-    {
-      "id": "mikelacey-site",
-      "title": "Mike Lacey Portfolio",
-      "description": "Full-stack portfolio site for a television director, built with Astro and Sanity CMS with live visual editing"
-    },
-    {
-      "id": "content-to-skill",
-      "title": "Content to Skill",
-      "description": "Claude Code plugin that converts books into structured AI agent skills through a multi-stage extraction pipeline"
-    },
-    {
-      "id": "empowerment-brief",
-      "title": "AI Empowerment Brief",
-      "description": "Interactive educational platform teaching structured AI methodology through 25+ visualizations"
-    }
-  ],
   "skills": [
     { "id": "react", "name": "React", "icon": "react" },
     { "id": "vue", "name": "Vue", "icon": "vue" },

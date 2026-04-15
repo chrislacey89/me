@@ -62,10 +62,12 @@ The teaching animal. Herds chaos into order with eye contact, not barking. Restl
 
 ## Frame 4 — The Typography
 
-- **Display:** Söhne or Inter Display — Swiss, modern, unshowy, very "I respect your time"
+- **Display:** Söhne, Inter Display, or Switzer — Swiss, modern, unshowy, very "I respect your time"
 - **Body:** Source Serif or Fraunces at low optical — the teacher in the room
 - **Code & receipts:** Berkeley Mono or IBM Plex Mono — because the proof is in the terminal
 - **One rule:** every heading is a promise the paragraph keeps
+
+**Canonical implementation on chrislacey.dev:** Switzer (display, self-hosted variable from Fontshare) · Source Serif 4 Variable (body serif, Fontsource) · IBM Plex Mono (code & receipts, Fontsource). Switzer stands in for Söhne; IBM Plex Mono stands in for Berkeley Mono. Both substitutions are licenses-clean and read as the same voice.
 
 ---
 
