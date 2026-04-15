@@ -7,8 +7,9 @@
 /* Switzer (self-hosted from Fontshare) — drop Switzer-Variable.woff2 into public/fonts/ */
 @font-face {
   font-family: "Switzer";
-  src: url("/fonts/Switzer-Variable.woff2") format("woff2-variations"),
-       url("/fonts/Switzer-Variable.woff2") format("woff2");
+  src:
+    url("/fonts/Switzer-Variable.woff2") format("woff2-variations"),
+    url("/fonts/Switzer-Variable.woff2") format("woff2");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -16,8 +17,9 @@
 
 @font-face {
   font-family: "Switzer";
-  src: url("/fonts/Switzer-Variable-Italic.woff2") format("woff2-variations"),
-       url("/fonts/Switzer-Variable-Italic.woff2") format("woff2");
+  src:
+    url("/fonts/Switzer-Variable-Italic.woff2") format("woff2-variations"),
+    url("/fonts/Switzer-Variable-Italic.woff2") format("woff2");
   font-weight: 100 900;
   font-style: italic;
   font-display: swap;
@@ -25,11 +27,11 @@
 
 @theme {
   /* Brand palette */
-  --color-ink-well: #0B1221;
-  --color-legal-pad: #F4EEE1;
-  --color-terracotta: #C1502E;
-  --color-forest-floor: #2F5D50;
-  --color-terminal-green: #7AE582;
+  --color-ink-well: #0b1221;
+  --color-legal-pad: #f4eee1;
+  --color-terracotta: #c1502e;
+  --color-forest-floor: #2f5d50;
+  --color-terminal-green: #7ae582;
 
   /* Semantic aliases — prefer these in components over raw palette names */
   --color-background: var(--color-legal-pad);
