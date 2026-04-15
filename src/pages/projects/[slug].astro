@@ -21,7 +21,7 @@ const { detail } = project
     <header class="project-header">
       {project.image && (
         <div class="project-image">
-          <Image src={project.image} alt="" width={1200} height={600} />
+          <Image src={project.image} alt={project.imageAlt ?? ''} width={1200} height={600} />
         </div>
       )}
       <p class="section-label">Claim</p>

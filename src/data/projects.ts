@@ -26,6 +26,7 @@ export interface LeadProject {
   /** Short card blurb on the projects index and evidence strip. */
   blurb: string
   image?: ImageMetadata
+  imageAlt?: string
   github?: string
   liveUrl?: string
   detail: ProjectDetail
@@ -60,6 +61,8 @@ export const leadProjects: LeadProject[] = [
     blurb:
       'AI advisory platform that applies mental models and structured reasoning to high-stakes decisions.',
     image: fulcrumImage,
+    imageAlt:
+      'Stylized hexagonal network — a central terracotta hex surrounded by six outlined hexes holding lines of code, suggesting structured reasoning pulled from many models.',
     github: 'https://github.com/chrislacey89/fulcrum',
     detail: PLACEHOLDER,
   },
@@ -69,6 +72,8 @@ export const leadProjects: LeadProject[] = [
     blurb:
       'A Claude Code skill pipeline that turns shaped engineering work into reusable, invocable skills.',
     image: skillsImage,
+    imageAlt:
+      'A vertical list of slash-command skills — /shape and /research checked off, /write-a-prd highlighted in terracotta, with /execute and /compound still queued below.',
     github: 'https://github.com/chrislacey89/skills',
     detail: PLACEHOLDER,
   },
@@ -78,6 +83,8 @@ export const leadProjects: LeadProject[] = [
     blurb:
       'Interactive educational platform teaching a structured AI methodology through 25+ custom visualizations.',
     image: empowermentBriefImage,
+    imageAlt:
+      'Six labeled framework tiles arranged in a grid — foundation, prompt, context, mcp, skills, and agents — each with a small line-art glyph; the agents tile is filled terracotta with a checkmark.',
     liveUrl: 'https://ai-enablement-gamma.vercel.app/',
     detail: PLACEHOLDER,
   },

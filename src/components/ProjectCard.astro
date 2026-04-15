@@ -8,11 +8,21 @@ interface Props {
   description: string
   comingSoon?: boolean
   imageSrc?: ImageMetadata
+  imageAlt?: string
   id?: string
   class?: string
 }
 
-const { href, title, description, comingSoon = false, imageSrc, id, class: className } = Astro.props
+const {
+  href,
+  title,
+  description,
+  comingSoon = false,
+  imageSrc,
+  imageAlt = '',
+  id,
+  class: className,
+} = Astro.props
 ---
 
 <article class:list={['project-card-wrapper h-full', className]} transition:name={id ? `project-card-${id}` : undefined}>
@@ -21,7 +31,7 @@ const { href, title, description, comingSoon = false, imageSrc, id, class: class
       <div class="card-image">
         <Image
           src={imageSrc}
-          alt=""
+          alt={imageAlt}
           class="w-full h-full object-cover"
           widths={[500, 800, 1100, 1400]}
           sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 100vw"
