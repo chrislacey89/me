@@ -10,8 +10,7 @@ const COLOR_BACKGROUND = '#F4EEE1' // Legal Pad
 const COLOR_FOREGROUND = '#1A1F2E' // Ink Well
 const COLOR_ACCENT = '#C1502E' // Terracotta Signal
 const COLOR_FOREST = '#2F5D50' // Forest Floor
-const COLOR_RULE = 'rgba(47, 93, 80, 0.25)'
-const COLOR_MUTED = 'rgba(11, 18, 33, 0.6)'
+const COLOR_MUTED = 'rgba(26, 31, 46, 0.55)'
 
 // Satori supports TTF, OTF, WOFF — not WOFF2. The brand WOFF files are committed to
 // public/fonts/ so we can read them synchronously at request time without a network
@@ -90,8 +89,8 @@ async function loadFonts(): Promise<Record<FontKey, FontBuffer>> {
 
 export const GET: APIRoute = async ({ request }) => {
   const url = new URL(request.url)
-  const title = url.searchParams.get('title') || 'Chris Lacey'
-  const subtitle = url.searchParams.get('subtitle') || 'Full-stack AI product engineer'
+  const title = url.searchParams.get('title') || 'The quiet part, written down.'
+  const subtitle = url.searchParams.get('subtitle') || ''
 
   const cached = await loadFonts()
   const fonts = (Object.keys(FONT_META) as FontKey[]).map((k) => ({
@@ -109,51 +108,21 @@ export const GET: APIRoute = async ({ request }) => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        alignItems: 'flex-start',
         background: COLOR_BACKGROUND,
-        padding: '80px 96px',
+        padding: '96px',
         fontFamily: 'Source Serif 4',
         color: COLOR_FOREGROUND,
       },
       children: [
-        // Eyebrow (mono)
-        {
-          type: 'div',
-          props: {
-            style: {
-              display: 'flex',
-              alignItems: 'center',
-              gap: '16px',
-              fontFamily: 'IBM Plex Mono',
-              fontSize: '22px',
-              fontWeight: 500,
-              color: COLOR_FOREST,
-              textTransform: 'uppercase',
-              letterSpacing: '0.16em',
-            },
-            children: [
-              {
-                type: 'div',
-                props: {
-                  style: {
-                    width: '36px',
-                    height: '2px',
-                    background: COLOR_ACCENT,
-                  },
-                },
-              },
-              { type: 'div', props: { children: 'Chris Lacey' } },
-            ],
-          },
-        },
-        // Title (serif lede) + subtitle
+        // Lede — serif statement + terracotta underbar
         {
           type: 'div',
           props: {
             style: {
               display: 'flex',
               flexDirection: 'column',
-              maxWidth: '960px',
+              maxWidth: '1000px',
+              marginTop: '40px',
             },
             children: [
               {
@@ -162,9 +131,9 @@ export const GET: APIRoute = async ({ request }) => {
                   style: {
                     fontFamily: 'Source Serif 4',
                     fontWeight: 400,
-                    fontSize: '92px',
-                    lineHeight: 1.05,
-                    letterSpacing: '-0.02em',
+                    fontSize: '104px',
+                    lineHeight: 1.02,
+                    letterSpacing: '-0.025em',
                     color: COLOR_FOREGROUND,
                   },
                   children: title,
@@ -174,61 +143,47 @@ export const GET: APIRoute = async ({ request }) => {
                 type: 'div',
                 props: {
                   style: {
-                    marginTop: '28px',
-                    fontFamily: 'Source Serif 4',
-                    fontWeight: 500,
-                    fontSize: '34px',
-                    lineHeight: 1.3,
-                    color: COLOR_MUTED,
+                    marginTop: '40px',
+                    width: '96px',
+                    height: '4px',
+                    background: COLOR_ACCENT,
                   },
-                  children: subtitle,
                 },
               },
+              subtitle
+                ? {
+                    type: 'div',
+                    props: {
+                      style: {
+                        marginTop: '32px',
+                        fontFamily: 'Source Serif 4',
+                        fontWeight: 400,
+                        fontSize: '32px',
+                        lineHeight: 1.35,
+                        color: COLOR_MUTED,
+                      },
+                      children: subtitle,
+                    },
+                  }
+                : null,
             ],
           },
         },
-        // Footer — thin rule + domain and tag
+        // Signature — bottom-right, mono, small
         {
           type: 'div',
           props: {
             style: {
               display: 'flex',
-              flexDirection: 'column',
+              justifyContent: 'flex-end',
               width: '100%',
-              gap: '20px',
+              fontFamily: 'IBM Plex Mono',
+              fontSize: '22px',
+              fontWeight: 400,
+              color: COLOR_FOREST,
+              letterSpacing: '0.02em',
             },
-            children: [
-              {
-                type: 'div',
-                props: {
-                  style: {
-                    width: '100%',
-                    height: '1px',
-                    background: COLOR_RULE,
-                  },
-                },
-              },
-              {
-                type: 'div',
-                props: {
-                  style: {
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    width: '100%',
-                    fontFamily: 'IBM Plex Mono',
-                    fontSize: '20px',
-                    fontWeight: 400,
-                    color: COLOR_FOREST,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.12em',
-                  },
-                  children: [
-                    { type: 'div', props: { children: 'chrislacey.dev' } },
-                    { type: 'div', props: { children: 'Close the gap' } },
-                  ],
-                },
-              },
-            ],
+            children: 'Chris Lacey · chrislacey.dev',
           },
         },
       ],
