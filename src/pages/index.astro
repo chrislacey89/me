@@ -336,15 +336,26 @@ const { hero, skills } = homeData
 
   .stack-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
-    gap: 1.75rem 1rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
     justify-items: center;
+  }
+
+  @media (min-width: 480px) {
+    .stack-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 
   @media (min-width: 768px) {
     .stack-grid {
-      grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
-      justify-items: start;
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .stack-grid {
+      grid-template-columns: repeat(9, 1fr);
     }
   }
 </style>
