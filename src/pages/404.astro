@@ -1,0 +1,143 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout
+  title="Not found | Chris Lacey"
+  description="The page you're looking for doesn't exist."
+>
+  <div class="not-found-page">
+    <header class="page-header">
+      <p class="eyebrow">404 — Not found</p>
+      <h1 class="lede">This page doesn't exist.</h1>
+      <p class="sub">
+        The link you followed may be broken, or the page may have been moved.
+      </p>
+    </header>
+
+    <nav class="back-links" aria-label="Elsewhere on this site">
+      <ul class="back-list">
+        <li class="back-item">
+          <a class="back-link" href="/">
+            <span class="back-label">Home</span>
+            <span class="back-value">Return to the front page</span>
+          </a>
+        </li>
+        <li class="back-item">
+          <a class="back-link" href="/writing">
+            <span class="back-label">Writing</span>
+            <span class="back-value">Essays on intent and outcome</span>
+          </a>
+        </li>
+        <li class="back-item">
+          <a class="back-link" href="/contact">
+            <span class="back-label">Contact</span>
+            <span class="back-value">Get in touch</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</BaseLayout>
+
+<style>
+  .not-found-page {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  @media (min-width: 768px) {
+    .not-found-page {
+      padding: 4.5rem 2rem 8rem;
+    }
+  }
+
+  .page-header {
+    max-width: 44rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-forest-floor);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 1rem;
+  }
+
+  .lede {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--color-foreground);
+    margin: 0 0 1rem;
+  }
+
+  .sub {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    color: var(--color-muted);
+    margin: 0;
+    max-width: 36rem;
+  }
+
+  .back-links {
+    max-width: 42rem;
+  }
+
+  .back-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .back-item {
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .back-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1.25rem 0;
+    text-decoration: none;
+    color: var(--color-foreground);
+    transition: color 0.2s ease;
+  }
+
+  @media (min-width: 640px) {
+    .back-link {
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+  }
+
+  .back-link:hover {
+    color: var(--color-accent);
+  }
+
+  .back-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-forest-floor);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .back-value {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+  }
+</style>
