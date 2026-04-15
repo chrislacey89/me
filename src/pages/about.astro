@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets'
 import headshot from '../assets/headshot.jpeg'
+import contactData from '../data/contact.json'
 import BaseLayout from '../layouts/BaseLayout.astro'
 
 const principles = [
@@ -26,6 +27,12 @@ const deskObjects = [
   'A field notebook whose first page is an index.',
   'Dieter Rams’ ten principles, printed on cardstock, pinned above the desk.',
 ]
+
+const contactById = Object.fromEntries(contactData.links.map((link) => [link.id, link]))
+const emailHref = contactById.email.href
+const emailLabel = emailHref.replace(/^mailto:/, '')
+const linkedinHref = contactById.linkedin.href
+const githubHref = contactById.github.href
 ---
 
 <BaseLayout
@@ -40,25 +47,13 @@ const deskObjects = [
       </h1>
     </header>
 
-    <section class="lede-row" aria-labelledby="lede-heading">
+    <section class="prose-section lede-section" aria-labelledby="lede-heading">
       <h2 id="lede-heading" class="sr-only">Introduction</h2>
-      <div class="lede-prose">
-        <p>
-          I am a full-stack AI product engineer. I spend my time on the seams — the places where
-          intent, data, and interface meet and usually disagree. My instinct is to slow down long
-          enough to name the tradeoff, then ship the smallest honest thing.
-        </p>
-      </div>
-      <figure class="portrait">
-        <Image
-          src={headshot}
-          alt="Portrait of Chris Lacey"
-          class="portrait-img"
-          width={320}
-          height={320}
-          loading="eager"
-        />
-      </figure>
+      <p class="lede-prose">
+        I am a full-stack AI product engineer. I spend my time on the seams — the places where
+        intent, data, and interface meet and usually disagree. My instinct is to slow down long
+        enough to name the tradeoff, then ship the smallest honest thing.
+      </p>
     </section>
 
     <section class="prose-section" aria-labelledby="how-i-work">
@@ -82,7 +77,7 @@ const deskObjects = [
         production builds. The specifics are on the resume.
       </p>
       <p class="prose">
-        <a class="inline-link" href="/resume.pdf" download>Read the resume (PDF) ↗</a>
+        <a class="inline-link" href="/resume.pdf">Read the resume (PDF) ↗</a>
       </p>
     </section>
 
@@ -104,24 +99,31 @@ const deskObjects = [
       </ul>
     </section>
 
-    <section class="contact-line" aria-labelledby="contact-heading">
-      <h2 id="contact-heading" class="sr-only">Contact</h2>
+    <section class="prose-section" aria-labelledby="contact-heading">
+      <h2 id="contact-heading" class="section-label">Contact</h2>
       <p class="prose">
         Reach me at
-        {' '}<a class="inline-link" href="mailto:chrislacey89@gmail.com">chrislacey89@gmail.com</a>,
+        {' '}<a class="inline-link" href={emailHref}>{emailLabel}</a>,
         or find me on{' '}
-        <a
-          class="inline-link"
-          href="https://www.linkedin.com/in/chrislacey89/"
-          rel="noopener noreferrer"
-          target="_blank">LinkedIn</a>{' '}/
-        {' '}<a
-          class="inline-link"
-          href="https://github.com/chrislacey89"
-          rel="noopener noreferrer"
-          target="_blank">GitHub</a>.
+        <a class="inline-link" href={linkedinHref} rel="noopener noreferrer" target="_blank">
+          LinkedIn
+        </a>{' '}/{' '}
+        <a class="inline-link" href={githubHref} rel="noopener noreferrer" target="_blank">
+          GitHub
+        </a>.
       </p>
     </section>
+
+    <figure class="portrait">
+      <Image
+        src={headshot}
+        alt="Portrait of Chris Lacey"
+        class="portrait-img"
+        width={320}
+        height={320}
+        loading="lazy"
+      />
+    </figure>
   </div>
 </BaseLayout>
 
@@ -140,7 +142,7 @@ const deskObjects = [
 
   .page-header {
     max-width: 48rem;
-    margin-bottom: 3rem;
+    margin-bottom: 1rem;
   }
 
   .eyebrow {
@@ -163,19 +165,16 @@ const deskObjects = [
     margin: 0;
   }
 
-  .lede-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    align-items: start;
-    margin-bottom: 4rem;
+  .prose-section {
+    border-top: 1px solid var(--color-rule);
+    padding-top: 2.5rem;
+    margin-top: 2.5rem;
   }
 
-  @media (min-width: 720px) {
-    .lede-row {
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 3rem;
-    }
+  .lede-section {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 2.5rem;
   }
 
   .lede-prose {
@@ -183,44 +182,8 @@ const deskObjects = [
     font-size: 1.1875rem;
     line-height: 1.6;
     color: var(--color-foreground);
-    max-width: 36rem;
-  }
-
-  .lede-prose p {
+    max-width: 38rem;
     margin: 0;
-  }
-
-  .portrait {
-    margin: 0;
-    justify-self: start;
-  }
-
-  @media (min-width: 720px) {
-    .portrait {
-      justify-self: end;
-    }
-  }
-
-  .portrait-img {
-    display: block;
-    width: 10rem;
-    height: 10rem;
-    object-fit: cover;
-    border-radius: 2px;
-    border: 1px solid var(--color-rule);
-  }
-
-  @media (min-width: 720px) {
-    .portrait-img {
-      width: 12rem;
-      height: 12rem;
-    }
-  }
-
-  .prose-section {
-    border-top: 1px solid var(--color-rule);
-    padding-top: 2.5rem;
-    margin-top: 2.5rem;
   }
 
   .section-label {
@@ -317,9 +280,23 @@ const deskObjects = [
     color: var(--color-forest-floor);
   }
 
-  .contact-line {
-    border-top: 1px solid var(--color-rule);
-    padding-top: 2.5rem;
-    margin-top: 2.5rem;
+  .portrait {
+    margin: 4rem 0 0;
+  }
+
+  .portrait-img {
+    display: block;
+    width: 10rem;
+    height: 10rem;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 1px solid var(--color-rule);
+  }
+
+  @media (min-width: 720px) {
+    .portrait-img {
+      width: 12rem;
+      height: 12rem;
+    }
   }
 </style>
