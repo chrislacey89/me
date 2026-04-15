@@ -1,0 +1,233 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { resolveWritingIndexState } from '../../lib/writing-index-state'
+
+const essays = await getCollection('essays', ({ data }) => data.draft === false)
+const state = resolveWritingIndexState(essays)
+
+const dateFormatter = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+})
+
+const lastUpdated = dateFormatter.format(new Date())
+---
+
+<BaseLayout
+  title="Writing | Chris Lacey"
+  description="Essays on building AI product — intent, outcomes, and the gap between them."
+>
+  <div class="writing-page">
+    <header class="page-header">
+      <p class="eyebrow">Writing</p>
+      <h1 class="lede">Essays on closing the gap between intent and outcome.</h1>
+    </header>
+
+    {state.mode === 'empty' && (
+      <section class="empty-state" aria-labelledby="empty-heading">
+        <h2 id="empty-heading" class="sr-only">Status</h2>
+        <p class="empty-lede">First essay arriving this quarter.</p>
+        <p class="empty-sub">Cadence floor is one per quarter.</p>
+        <p class="empty-stamp">
+          <span class="empty-stamp-label">As of</span>
+          <time datetime={new Date().toISOString()}>{lastUpdated}</time>
+        </p>
+      </section>
+    )}
+
+    {state.mode === 'flat' && (
+      <section aria-labelledby="flat-heading">
+        <h2 id="flat-heading" class="sr-only">Essays</h2>
+        <ul class="post-list">
+          {state.posts.map((post) => (
+            <li class="post-item">
+              <a href={`/writing/${post.id}`} class="post-link">
+                <time class="post-date" datetime={post.data.pubDate.toISOString()}>
+                  {dateFormatter.format(post.data.pubDate)}
+                </time>
+                <h3 class="post-title">{post.data.title}</h3>
+                <p class="post-annotation">{post.data.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {state.mode === 'year-grouped' && (
+      <section aria-labelledby="grouped-heading">
+        <h2 id="grouped-heading" class="sr-only">Essays by year</h2>
+        {state.groups.map((group) => (
+          <div class="year-group">
+            <h3 class="year-heading">{group.year}</h3>
+            <ul class="post-list">
+              {group.posts.map((post) => (
+                <li class="post-item">
+                  <a href={`/writing/${post.id}`} class="post-link">
+                    <time class="post-date" datetime={post.data.pubDate.toISOString()}>
+                      {dateFormatter.format(post.data.pubDate)}
+                    </time>
+                    <h4 class="post-title">{post.data.title}</h4>
+                    <p class="post-annotation">{post.data.description}</p>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </section>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .writing-page {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  @media (min-width: 768px) {
+    .writing-page {
+      padding: 4.5rem 2rem 8rem;
+    }
+  }
+
+  .page-header {
+    max-width: 44rem;
+    margin-bottom: 4rem;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-forest-floor);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 1rem;
+  }
+
+  .lede {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--color-foreground);
+    margin: 0;
+  }
+
+  .empty-state {
+    border-top: 1px solid var(--color-rule);
+    padding-top: 2.5rem;
+  }
+
+  .empty-lede {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    line-height: 1.35;
+    color: var(--color-foreground);
+    margin: 0 0 0.5rem;
+  }
+
+  .empty-sub {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--color-muted);
+    margin: 0 0 2rem;
+  }
+
+  .empty-stamp {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-forest-floor);
+    margin: 0;
+  }
+
+  .empty-stamp-label {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-right: 0.5rem;
+  }
+
+  .post-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .post-item {
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .post-item:first-child {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .post-link {
+    display: block;
+    padding: 1.75rem 0;
+    text-decoration: none;
+    color: var(--color-foreground);
+    transition: color 0.2s ease;
+  }
+
+  .post-link:hover {
+    color: var(--color-accent);
+  }
+
+  .post-date {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-forest-floor);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .post-title {
+    font-family: var(--font-serif);
+    font-size: 1.375rem;
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.5rem;
+  }
+
+  .post-annotation {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--color-muted);
+    margin: 0;
+    max-width: 42rem;
+  }
+
+  .post-link:hover .post-annotation {
+    color: inherit;
+  }
+
+  .year-group {
+    margin-bottom: 3.5rem;
+  }
+
+  .year-group:last-child {
+    margin-bottom: 0;
+  }
+
+  .year-heading {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-forest-floor);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 1rem;
+  }
+</style>
