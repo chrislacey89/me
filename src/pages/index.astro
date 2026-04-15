@@ -23,15 +23,14 @@ const projectImages: Record<string, ImageMetadata> = {
 ---
 
 <BaseLayout title="Chris Lacey | Senior Software Engineer">
-  <div class="min-h-[calc(100vh-60px)] text-white selection:bg-teal-400/30 selection:text-teal-200">
+  <div class="min-h-[calc(100vh-60px)]">
     <div class="relative mx-auto max-w-7xl px-6 py-12 md:px-12 md:py-20 lg:py-24 space-y-20">
       <!-- Hero Section -->
       <section>
         <div class="flex flex-col items-center gap-12 md:flex-row md:items-start md:gap-16 lg:gap-20" transition:name="intro-text">
           <!-- Left Column: Avatar -->
           <div class="shrink-0">
-            <div class="headshot-wrapper relative h-48 w-48 md:h-64 md:w-64 lg:h-72 lg:w-72">
-              <div class="headshot-border-gradient" aria-hidden="true"></div>
+            <div class="relative h-48 w-48 md:h-64 md:w-64 lg:h-72 lg:w-72">
               <Image
                 src={headshot}
                 alt={`Headshot of ${hero.name}`}
@@ -45,15 +44,15 @@ const projectImages: Record<string, ImageMetadata> = {
 
           <!-- Right Column: Text Content -->
           <div class="flex flex-col text-center md:text-left pt-4">
-            <h1 class="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl gradient-hero" transition:name="page-title">
+            <h1 class="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl" transition:name="page-title">
               {hero.name}
             </h1>
-            <h2 class="text-2xl font-medium text-teal-400/80 md:text-3xl">
+            <h2 class="text-2xl font-medium md:text-3xl text-[color:var(--color-forest-floor)]">
               {hero.title}
             </h2>
 
             <!-- Tagline -->
-            <div class="mt-6 max-w-2xl space-y-4 text-lg leading-relaxed text-text-muted md:text-xl">
+            <div class="mt-6 max-w-2xl space-y-4 text-lg leading-relaxed md:text-xl text-[color:var(--color-muted)]">
               <p>{hero.tagline}</p>
             </div>
 
@@ -79,7 +78,7 @@ const projectImages: Record<string, ImageMetadata> = {
       <div class="space-y-12" transition:name="main-content">
         <!-- Skills Section -->
         <section class="space-y-4" aria-labelledby="skills-heading">
-          <h2 id="skills-heading" class="text-sm font-semibold tracking-widest uppercase text-teal-400/60 text-center md:text-left">Skills & Expertise</h2>
+          <h2 id="skills-heading" class="text-sm font-semibold tracking-widest uppercase text-center md:text-left text-[color:var(--color-muted)]">Skills & Expertise</h2>
 
           <div class="grid grid-cols-[repeat(auto-fill,minmax(5.5rem,1fr))] gap-y-4 justify-items-center md:justify-items-start">
             {skills.map((skill) => (
@@ -91,10 +90,10 @@ const projectImages: Record<string, ImageMetadata> = {
         <!-- Selected Projects Section -->
         <section class="space-y-6" aria-labelledby="projects-heading">
           <div class="flex items-center justify-between">
-            <h2 id="projects-heading" class="text-sm font-semibold tracking-widest uppercase text-teal-400">Selected Projects</h2>
+            <h2 id="projects-heading" class="text-sm font-semibold tracking-widest uppercase text-[color:var(--color-muted)]">Selected Projects</h2>
             <a
               href="/projects"
-              class="group flex items-center gap-2 text-sm font-medium text-teal-400 hover:text-teal-300"
+              class="projects-link group flex items-center gap-2 text-sm font-medium"
             >
               View all projects
               <svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -120,3 +119,51 @@ const projectImages: Record<string, ImageMetadata> = {
     </div>
   </div>
 </BaseLayout>
+
+<style>
+  .cta-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .cta-link[data-variant="primary"] {
+    background: var(--color-accent);
+    color: var(--color-legal-pad);
+    border-color: var(--color-accent);
+  }
+
+  .cta-link[data-variant="primary"]:hover {
+    background: var(--color-ink-well);
+    border-color: var(--color-ink-well);
+  }
+
+  .cta-link[data-variant="secondary"] {
+    background: transparent;
+    color: var(--color-foreground);
+    border-color: var(--color-foreground);
+  }
+
+  .cta-link[data-variant="secondary"]:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .projects-link {
+    color: var(--color-foreground);
+    transition: color 0.2s ease;
+  }
+
+  .projects-link:hover {
+    color: var(--color-accent);
+  }
+</style>
