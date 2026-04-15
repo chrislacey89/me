@@ -27,3 +27,12 @@ pnpm-debug.log*
 .claude/.tdd-active
 .claude/.tdd-skipped
 .claude/.ralph-checked
+
+# playwright MCP browser cache + session artifacts
+.playwright-mcp/
+
+# verification screenshots produced during agent sessions
+# (root-level only — real product assets live in src/assets/ and public/)
+/*.png
+/*.jpg
+/*.jpeg
