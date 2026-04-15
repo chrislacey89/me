@@ -23,8 +23,11 @@ const { href, title, description, comingSoon = false, imageSrc, id, class: class
           src={imageSrc}
           alt=""
           class="w-full h-full object-cover"
-          width={480}
-          height={200}
+          widths={[500, 800, 1100, 1400]}
+          sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 100vw"
+          width={1400}
+          height={787}
+          quality={90}
         />
       </div>
     )}
