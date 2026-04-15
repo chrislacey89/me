@@ -1,43 +1,325 @@
 ---
-import SectionDivider from '../components/SectionDivider.astro'
-import aboutData from '../data/about.json'
+import { Image } from 'astro:assets'
+import headshot from '../assets/headshot.jpeg'
 import BaseLayout from '../layouts/BaseLayout.astro'
 
-const { intro, principles } = aboutData
+const principles = [
+  {
+    title: 'Predictable over clever',
+    body: 'Explicit state, clear data flow, minimal magic. Code that is easy to read at 9pm six months from now.',
+  },
+  {
+    title: 'Tradeoffs, not best practices',
+    body: 'Every decision has a cost. I would rather name the tradeoff than default to dogma.',
+  },
+  {
+    title: 'Clarity is a form of respect',
+    body: 'When someone is navigating a complex system under pressure, every moment of confusion is a moment they lose trust.',
+  },
+  {
+    title: 'Close the gap between intent and outcome',
+    body: 'When a person knows what they want but the tool makes it hard to get there, that is the gap worth shrinking.',
+  },
+]
+
+const deskObjects = [
+  'A field notebook whose first page is an index.',
+  'Dieter Rams’ ten principles, printed on cardstock, pinned above the desk.',
+]
 ---
 
-<BaseLayout title="About | Chris Lacey" description="Professional background, approach to building software, and what I'm strong at.">
-  <div class="min-h-[calc(100vh-60px)] text-white selection:bg-teal-400/30 selection:text-teal-200">
-    <div class="relative mx-auto max-w-7xl px-6 py-12 md:px-12 md:py-20 lg:py-24">
-      <!-- Page Header -->
-      <div class="mb-12">
-        <h1 class="text-4xl font-bold md:text-5xl gradient-heading" transition:name="page-title">About</h1>
+<BaseLayout
+  title="About | Chris Lacey"
+  description="Full-stack AI product engineer working from Bloomington, Indiana. Load-bearing minimalism, in practice."
+>
+  <div class="about-page">
+    <header class="page-header">
+      <p class="eyebrow">About</p>
+      <h1 class="lede">
+        I close the gap between what a system is supposed to do and what it actually does.
+      </h1>
+    </header>
+
+    <section class="lede-row" aria-labelledby="lede-heading">
+      <h2 id="lede-heading" class="sr-only">Introduction</h2>
+      <div class="lede-prose">
+        <p>
+          I am a full-stack AI product engineer. I spend my time on the seams — the places where
+          intent, data, and interface meet and usually disagree. My instinct is to slow down long
+          enough to name the tradeoff, then ship the smallest honest thing.
+        </p>
       </div>
+      <figure class="portrait">
+        <Image
+          src={headshot}
+          alt="Portrait of Chris Lacey"
+          class="portrait-img"
+          width={320}
+          height={320}
+          loading="eager"
+        />
+      </figure>
+    </section>
 
-      <!-- Intro -->
-      <p class="text-lg leading-relaxed text-text-muted-light max-w-2xl" transition:name="intro-text">
-        {intro}
+    <section class="prose-section" aria-labelledby="how-i-work">
+      <h2 id="how-i-work" class="section-label">How I work</h2>
+      <ol class="principles">
+        {principles.map((p) => (
+          <li class="principle">
+            <h3 class="principle-title">{p.title}</h3>
+            <p class="principle-body">{p.body}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="prose-section" aria-labelledby="where-ive-been">
+      <h2 id="where-ive-been" class="section-label">Where I’ve been</h2>
+      <p class="prose">
+        A decade in the front end, with the past few years moving end-to-end into AI product work —
+        product shape, system design, and the load-bearing parts of the stack. I have owned
+        complete implementations on multi-person teams and served as the sole developer on larger
+        production builds. The specifics are on the resume.
       </p>
+      <p class="prose">
+        <a class="inline-link" href="/resume.pdf" download>Read the resume (PDF) ↗</a>
+      </p>
+    </section>
 
-      <SectionDivider class="my-12" />
+    <section class="prose-section" aria-labelledby="where-i-am">
+      <h2 id="where-i-am" class="section-label">Where I am</h2>
+      <p class="prose">
+        Bloomington, Indiana. A deliberate choice, not a fallback — quiet enough to think, close
+        enough to a good coffee shop, and built for the kind of long-arc work I want to keep doing.
+        I work remote and I am not relocating.
+      </p>
+    </section>
 
-      <!-- How I Work -->
-      <section transition:name="main-content">
-        <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-teal-400/70 mb-8">How I Work</h2>
+    <section class="prose-section" aria-labelledby="at-the-desk">
+      <h2 id="at-the-desk" class="section-label">At the desk</h2>
+      <ul class="desk-objects">
+        {deskObjects.map((item) => (
+          <li class="desk-object">{item}</li>
+        ))}
+      </ul>
+    </section>
 
-        <div class="grid gap-6 sm:grid-cols-2">
-          {principles.map((principle) => (
-            <article class="group rounded-xl border border-white/[0.04] bg-white/[0.02] p-6 transition-all duration-300 hover:border-white/[0.08] hover:bg-white/[0.04]">
-              <h3 class="text-base font-semibold text-teal-400 mb-3">
-                {principle.title}
-              </h3>
-              <p class="text-sm text-text-muted leading-relaxed">
-                {principle.description}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
-    </div>
+    <section class="contact-line" aria-labelledby="contact-heading">
+      <h2 id="contact-heading" class="sr-only">Contact</h2>
+      <p class="prose">
+        Reach me at
+        {' '}<a class="inline-link" href="mailto:chrislacey89@gmail.com">chrislacey89@gmail.com</a>,
+        or find me on{' '}
+        <a
+          class="inline-link"
+          href="https://www.linkedin.com/in/chrislacey89/"
+          rel="noopener noreferrer"
+          target="_blank">LinkedIn</a>{' '}/
+        {' '}<a
+          class="inline-link"
+          href="https://github.com/chrislacey89"
+          rel="noopener noreferrer"
+          target="_blank">GitHub</a>.
+      </p>
+    </section>
   </div>
 </BaseLayout>
+
+<style>
+  .about-page {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  @media (min-width: 768px) {
+    .about-page {
+      padding: 4.5rem 2rem 8rem;
+    }
+  }
+
+  .page-header {
+    max-width: 48rem;
+    margin-bottom: 3rem;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-forest-floor);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 1rem;
+  }
+
+  .lede {
+    font-family: var(--font-serif);
+    font-size: clamp(1.875rem, 4.5vw, 2.75rem);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--color-foreground);
+    margin: 0;
+  }
+
+  .lede-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: start;
+    margin-bottom: 4rem;
+  }
+
+  @media (min-width: 720px) {
+    .lede-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 3rem;
+    }
+  }
+
+  .lede-prose {
+    font-family: var(--font-serif);
+    font-size: 1.1875rem;
+    line-height: 1.6;
+    color: var(--color-foreground);
+    max-width: 36rem;
+  }
+
+  .lede-prose p {
+    margin: 0;
+  }
+
+  .portrait {
+    margin: 0;
+    justify-self: start;
+  }
+
+  @media (min-width: 720px) {
+    .portrait {
+      justify-self: end;
+    }
+  }
+
+  .portrait-img {
+    display: block;
+    width: 10rem;
+    height: 10rem;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 1px solid var(--color-rule);
+  }
+
+  @media (min-width: 720px) {
+    .portrait-img {
+      width: 12rem;
+      height: 12rem;
+    }
+  }
+
+  .prose-section {
+    border-top: 1px solid var(--color-rule);
+    padding-top: 2.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-forest-floor);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 1.5rem;
+  }
+
+  .prose {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--color-foreground);
+    margin: 0 0 1rem;
+    max-width: 42rem;
+  }
+
+  .prose:last-child {
+    margin-bottom: 0;
+  }
+
+  .inline-link {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    transition: color 0.2s ease;
+  }
+
+  .inline-link:hover {
+    color: var(--color-foreground);
+  }
+
+  .principles {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem 2rem;
+  }
+
+  @media (min-width: 720px) {
+    .principles {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .principle {
+    max-width: 28rem;
+  }
+
+  .principle-title {
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    color: var(--color-foreground);
+    margin: 0 0 0.35rem;
+  }
+
+  .principle-body {
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--color-muted);
+    margin: 0;
+  }
+
+  .desk-objects {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .desk-object {
+    font-family: var(--font-serif);
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    color: var(--color-foreground);
+    padding-left: 1.25rem;
+    position: relative;
+  }
+
+  .desk-object::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--color-forest-floor);
+  }
+
+  .contact-line {
+    border-top: 1px solid var(--color-rule);
+    padding-top: 2.5rem;
+    margin-top: 2.5rem;
+  }
+</style>
