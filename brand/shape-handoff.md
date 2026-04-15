@@ -138,14 +138,14 @@ If a project can't sustain a "the move" paragraph, it's probably retired. Fewer,
 2. **Astro 5.16 + View Transitions idioms.** Confirm current best practices for project detail pages and the new writing surface. Surface any 5.x-specific patterns to follow.
 3. **Content collection shape for the writing surface.** Astro content collections schema for essays — frontmatter fields, slug strategy, draft handling, rendering pipeline. One-time structural decision.
 4. **Component surface audit.** Of the current components (`MainNav`, `ProjectCard`, `ContactCard`, `SkillIcon`, `SectionDivider`), which survive into the new design, which transform, which retire. Define the smallest set of new primitives needed for the redesign.
-5. **Palette implementation in Tailwind v4.** Bind the brand hex codes (Ink Well `#0B1221`, Legal Pad `#F4EEE1`, Terracotta Signal `#C1502E`, Forest Floor `#2F5D50`, Terminal Green `#7AE582`) into the Tailwind v4 token system. Confirm light/dark behavior — the brand defaults to Legal Pad backgrounds with Ink Well type, but a dark mode (Ink Well background, Legal Pad type) may be desirable.
+5. **Palette implementation in Tailwind v4.** Bind the brand hex codes (Ink Well `#1A1F2E`, Legal Pad `#F4EEE1`, Terracotta Signal `#C1502E`, Forest Floor `#2F5D50`, Terminal Green `#7AE582`) into the Tailwind v4 token system. Confirm light/dark behavior — the brand defaults to Legal Pad backgrounds with Ink Well type, but a dark mode (Ink Well background, Legal Pad type) may be desirable.
 
 ---
 
 ## Impositions (external; can't change)
 
 1. **The canonical brand document** at `brand/chris-lacey-brand-storyboard.md` is source of truth for palette, typography intent, totems, adjective stack, and anti-brand. Downstream decisions defer to it.
-2. **Palette is fixed.** Ink Well `#0B1221` · Legal Pad `#F4EEE1` · Terracotta Signal `#C1502E` · Forest Floor `#2F5D50` · Terminal Green `#7AE582`. No gradients, no glass, no neon, no purple.
+2. **Palette is fixed.** Ink Well `#1A1F2E` · Legal Pad `#F4EEE1` · Terracotta Signal `#C1502E` · Forest Floor `#2F5D50` · Terminal Green `#7AE582`. No gradients, no glass, no neon, no purple.
 3. **Anti-brand list is a hard filter.** Cursor trails, confetti, hoodie-hacker aesthetic, rocket emojis, 2021 SaaS-gradient energy — ruled out.
 4. **Astro stays.** No framework re-platforming.
 5. **Chris does not relocate.** Target market is remote / regional AI product roles.

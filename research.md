@@ -229,7 +229,7 @@ Tailwind v4 uses CSS-first configuration via the `@theme` block. The existing `s
 ```css
 @theme {
   /* Brand palette */
-  --color-ink-well: #0B1221;
+  --color-ink-well: #1A1F2E;
   --color-legal-pad: #F4EEE1;
   --color-terracotta: #C1502E;
   --color-forest-floor: #2F5D50;

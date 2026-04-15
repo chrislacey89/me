@@ -9,7 +9,7 @@
 Before anything else, name the thing. This brand has two surfaces:
 
 - **Chris Lacey, the practitioner.** Consulting, writing, GitHub, the public face of how you work. Terse, heron-like, annotated.
-- **Lembas, the product.** B2C decision-making software. Shares DNA with the practitioner brand but runs a touch warmer, a touch more inviting. The practitioner brand is the *workshop*. Lembas is what leaves the workshop.
+- *Fulcra, the product.** B2C decision-making software. Shares DNA with the practitioner brand but runs a touch warmer, a touch more inviting. The practitioner brand is the *workshop*. Lembas is what leaves the workshop.
 
 Everything below is tuned for the practitioner brand. Notes in *italics* flag where Lembas should flex warmer.
 
@@ -29,7 +29,7 @@ Heading-level promise: **every heading is a promise the paragraph keeps.** If th
 
 | Swatch    | Name              | Role                                                           |
 | --------- | ----------------- | -------------------------------------------------------------- |
-| `#0B1221` | Ink Well          | Primary — thinking in the dark                                 |
+| `#1A1F2E` | Ink Well          | Primary — thinking in the dark                                 |
 | `#F4EEE1` | Legal Pad         | Background — warmth, teaching, paper-not-screen                |
 | `#C1502E` | Terracotta Signal | Accent — the one thing you should look at                      |
 | `#2F5D50` | Forest Floor      | Secondary — considered, unhurried                              |
@@ -43,14 +43,11 @@ Heading-level promise: **every heading is a promise the paragraph keeps.** If th
 
 ## Frame 3 — The Bestiary
 
-🐝 **Primary totem: the honeybee.**
-Tiny commits. A hexagonal pipeline. Honey that compounds in `docs/solutions/`. Bees don't improvise — they protocol. The hive gets stronger every season, not louder.
-
-🪶 **Shadow totem: the grey heron.**
+🪶 **Primary totem: the grey heron.**
 Stands for forty minutes. Strikes once. Doesn't miss. "Predictable over clever" has a beak.
 
-🐕 **Working-dog totem: the border collie.**
-The teaching animal. Herds chaos into order with eye contact, not barking. Restless if the flock isn't moving. Would absolutely build a PRD pipeline.
+🐝 **Secondary totem: the honeybee.**
+Tiny commits. A hexagonal pipeline. Honey that compounds in `docs/solutions/`. Bees don't improvise — they protocol. The hive gets stronger every season, not louder.
 
 **Explicitly not:**
 - 🦊 Fox (too clever — you're suspicious of cleverness)
@@ -97,10 +94,10 @@ The teaching animal. Herds chaos into order with eye contact, not barking. Restl
 
 ## Frame 7 — The Six-Panel Storyboard
 
-1. **Wide shot.** A desk. One monitor, terminal open, three books stacked (*The Pragmatic Programmer*, *A Philosophy of Software Design*, something by Tufte). A honeybee does something useful at the edge of the frame.
+1. **Wide shot.** A desk. One monitor, terminal open, three books stacked (*The Pragmatic Programmer*, *A Philosophy of Software Design*, something by Tufte). A grey heron stands motionless just past the window, watching.
 2. **Close-up.** A hand sketching a boundary map in a Moleskine: Produces / Consumes / Contracts. The pen doesn't lift.
 3. **Split screen.** Left: a Slack channel full of "let's ship fast!" Right: you, calm, annotating a `research.md`. Caption: *"Tests green ≠ done."*
-4. **Cut to.** A `confidence_score` field in a database schema, glowing Terminal Green. The heron, off-screen, nods once.
+4. **Cut to.** A `confidence_score` field in a database schema, glowing Terminal Green. The heron strikes — once, clean. A honeybee, at the edge of frame, keeps working.
 5. **Pull back.** A whiteboard reading `/shape → /research → /write-a-prd → /execute → /compound`. Someone off-screen asks, "Is that BMAD?" You sip coffee. You do not answer.
 6. **Final frame.** A small sticker on a laptop lid: **"Predictable over clever."** Fade out.
 
@@ -129,7 +126,7 @@ If a competitor did it, you probably shouldn't.
 
 A single composition:
 
-> A Moleskine, open flat. Left page: a hexagonal system diagram drawn in Ink Well. Right page: three lines in Berkeley Mono — one of them highlighted in Terracotta Signal. A honeybee is doing something useful in the corner. The whole thing photographed on Legal Pad paper, 45° raking light, no Photoshop.
+> A Moleskine, open flat. Left page: a single ink study of a grey heron, mid-strike, drawn in Ink Well. Right page: three lines in Berkeley Mono — one of them highlighted in Terracotta Signal. A honeybee is doing something useful in the corner. The whole thing photographed on Legal Pad paper, 45° raking light, no Photoshop.
 
 Caption, set in Source Serif, small:
 

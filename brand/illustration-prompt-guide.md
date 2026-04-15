@@ -37,7 +37,7 @@ The rules that survive any tool change. If we swap generators, this section stay
 ### Canvas
 
 - **Aspect ratio:** 16:9 for project-card illustrations. 1200×630 for OG. 1080×1080 for square social. 1500×500 for wide banners.
-- **Background:** `#0B1221` Ink Well, fills the entire canvas.
+- **Background:** `#1A1F2E` Ink Well, fills the entire canvas.
 
 ### Line color and stroke
 
@@ -108,7 +108,7 @@ The grammar above is tuned for project-card illustrations on an Ink Well backgro
 ### Palette inversion
 
 - **Background:** `#F4EEE1` Legal Pad (not Ink Well).
-- **Foreground lines and text:** `#0B1221` Ink Well (not Legal Pad).
+- **Foreground lines and text:** `#1A1F2E` Ink Well (not Legal Pad).
 - **Accent:** `#C1502E` Terracotta, unchanged.
 - **Confidence marker:** `#7AE582` Terminal Green, unchanged. Still at most one.
 
@@ -152,7 +152,7 @@ Every hex value appears paired with the one role it plays. No hex ever appears w
 
 ```
 Color palette (use exactly these hex values for the roles stated, nothing else):
-- Background: #0B1221 (deep navy — fills the entire canvas)
+- Background: #1A1F2E (deep navy — fills the entire canvas)
 - Line color: #F4EEE1 (warm off-white — every structural line)
 - Accent fill: #C1502E (terracotta — fills the one chosen shape, one use)
 - Secondary accent: #2F5D50 (muted forest green — supporting marker role)
@@ -341,7 +341,7 @@ stroke weight across every line. Every outer hexagon is an open outline;
 the central hexagon is the only filled shape.
 
 Color palette (use exactly these hex values for the roles stated, nothing else):
-- Background: #0B1221 (deep navy — fills the entire canvas)
+- Background: #1A1F2E (deep navy — fills the entire canvas)
 - Line color: #F4EEE1 (warm off-white — every hex outline, every connection
   line, and most score tick marks inside the outer hexagons)
 - Accent fill: #C1502E (terracotta — fills the central hexagon only, one use)
@@ -426,7 +426,7 @@ arrows between the rows, no vertical connecting lines between the rows.
 
 Color palette (use exactly these hex values for the roles stated,
 nothing else):
-- Background: #0B1221 (deep navy — fills the entire canvas)
+- Background: #1A1F2E (deep navy — fills the entire canvas)
 - Primary text color: #F4EEE1 (warm off-white — every character of
   every slash-command on every row, including "/write-a-prd" set
   inside the terracotta bar on row 3)
@@ -543,7 +543,7 @@ glyphs, no kerning adjustments, no ligatures.
 
 Color palette (use exactly these hex values for the roles stated,
 nothing else):
-- Background: #0B1221 (deep navy — fills the entire canvas)
+- Background: #1A1F2E (deep navy — fills the entire canvas)
 - Line color: #F4EEE1 (warm off-white — every tile outline, every label
   on the five unfilled tiles, every mini-diagram line on the five
   unfilled tiles, and the label "agents" plus the mini-diagram inside
@@ -590,7 +590,7 @@ Use for standard Ink Well-background project-card illustrations. Swap the role d
 
 ```
 Color palette (use exactly these hex values for the roles stated, nothing else):
-- Background: #0B1221 (deep navy — fills the entire canvas)
+- Background: #1A1F2E (deep navy — fills the entire canvas)
 - Line color: #F4EEE1 (warm off-white — every structural line, every outline,
   every text character on unfilled elements)
 - Accent fill: #C1502E (terracotta — fills the one chosen shape only, one use)
@@ -641,7 +641,7 @@ Use for OG images and social cards. Replaces B.1 in the prompt.
 ```
 Color palette (use exactly these hex values for the roles stated, nothing else):
 - Background: #F4EEE1 (warm off-white Legal Pad — fills the entire canvas)
-- Foreground: #0B1221 (deep navy Ink Well — every structural line, every
+- Foreground: #1A1F2E (deep navy Ink Well — every structural line, every
   character of serif or mono text, every outline)
 - Accent fill: #C1502E (terracotta — fills the one chosen shape or
   highlights the one chosen phrase, one use)

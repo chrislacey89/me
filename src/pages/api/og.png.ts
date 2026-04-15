@@ -7,7 +7,7 @@ export const prerender = false
 
 // Brand palette (mirrors src/styles/global.css @theme tokens)
 const COLOR_BACKGROUND = '#F4EEE1' // Legal Pad
-const COLOR_FOREGROUND = '#0B1221' // Ink Well
+const COLOR_FOREGROUND = '#1A1F2E' // Ink Well
 const COLOR_ACCENT = '#C1502E' // Terracotta Signal
 const COLOR_FOREST = '#2F5D50' // Forest Floor
 const COLOR_RULE = 'rgba(47, 93, 80, 0.25)'
