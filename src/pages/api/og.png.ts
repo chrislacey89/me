@@ -62,25 +62,30 @@ async function resolveFontData(key: keyof typeof FONT_FILES): Promise<Buffer | A
   return fetchJsdelivrWoff(JSDELIVR_FALLBACK[key])
 }
 
+type FontKey = keyof typeof FONT_FILES
+type FontBuffer = Buffer | ArrayBuffer
+
+const FONT_META = {
+  serif400: { name: 'Source Serif 4', weight: 400 },
+  serif500: { name: 'Source Serif 4', weight: 500 },
+  mono400: { name: 'IBM Plex Mono', weight: 400 },
+  mono500: { name: 'IBM Plex Mono', weight: 500 },
+} as const satisfies Record<FontKey, { name: string; weight: number }>
+
 // Cache resolved font buffers at module scope so warm invocations skip both the
 // filesystem read and any fallback fetch.
-let cachedFonts: {
-  serif400: Buffer | ArrayBuffer
-  serif500: Buffer | ArrayBuffer
-  mono400: Buffer | ArrayBuffer
-  mono500: Buffer | ArrayBuffer
-} | null = null
+let cachedFonts: Record<FontKey, FontBuffer> | null = null
 
-async function loadFonts() {
+async function loadFonts(): Promise<Record<FontKey, FontBuffer>> {
   if (cachedFonts) return cachedFonts
-  const [serif400, serif500, mono400, mono500] = await Promise.all([
-    resolveFontData('serif400'),
-    resolveFontData('serif500'),
-    resolveFontData('mono400'),
-    resolveFontData('mono500'),
-  ])
-  cachedFonts = { serif400, serif500, mono400, mono500 }
-  return cachedFonts
+  const keys = Object.keys(FONT_FILES) as FontKey[]
+  const buffers = await Promise.all(keys.map((k) => resolveFontData(k)))
+  const result = Object.fromEntries(keys.map((k, i) => [k, buffers[i]])) as Record<
+    FontKey,
+    FontBuffer
+  >
+  cachedFonts = result
+  return result
 }
 
 export const GET: APIRoute = async ({ request }) => {
@@ -88,34 +93,12 @@ export const GET: APIRoute = async ({ request }) => {
   const title = url.searchParams.get('title') || 'Chris Lacey'
   const subtitle = url.searchParams.get('subtitle') || 'Full-stack AI product engineer'
 
-  const { serif400, serif500, mono400, mono500 } = await loadFonts()
-
-  const fonts = [
-    {
-      name: 'Source Serif 4',
-      data: serif400,
-      weight: 400 as const,
-      style: 'normal' as const,
-    },
-    {
-      name: 'Source Serif 4',
-      data: serif500,
-      weight: 500 as const,
-      style: 'normal' as const,
-    },
-    {
-      name: 'IBM Plex Mono',
-      data: mono400,
-      weight: 400 as const,
-      style: 'normal' as const,
-    },
-    {
-      name: 'IBM Plex Mono',
-      data: mono500,
-      weight: 500 as const,
-      style: 'normal' as const,
-    },
-  ]
+  const cached = await loadFonts()
+  const fonts = (Object.keys(FONT_META) as FontKey[]).map((k) => ({
+    ...FONT_META[k],
+    data: cached[k],
+    style: 'normal' as const,
+  }))
 
   const html = {
     type: 'div',
@@ -252,7 +235,7 @@ export const GET: APIRoute = async ({ request }) => {
     },
   }
 
-  return new ImageResponse(html as React.ReactElement, {
+  return new ImageResponse(html as unknown as React.ReactElement, {
     width: 1200,
     height: 630,
     fonts,
