@@ -2,12 +2,10 @@
   "hero": {
     "name": "Chris Lacey",
     "role": "Full-stack AI product engineer",
-    "tagline": "Close the gap between intent and outcome.",
-    "lede": "I work on the seams — where intent, data, and interface usually disagree.",
+    "lede": "I work on the seams where intent, data, and interface disagree.",
     "availability": {
       "status": "Available",
-      "focus": "senior AI product roles",
-      "location": "Bloomington IN · remote"
+      "focus": "senior AI product roles"
     },
     "avatar": "/headshot.jpeg",
     "ctas": [
