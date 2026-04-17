@@ -61,7 +61,7 @@ function renderInlineMarkdown(text: string): string {
     <section class="section">
       <h2 class="section-label">Receipts</h2>
       <ul class="receipts">
-        {detail.receipts.map((line) => <li>{line}</li>)}
+        {detail.receipts.map((line) => <li set:html={renderInlineMarkdown(line)}></li>)}
       </ul>
       {(project.github || project.liveUrl) && (
         <ul class="receipts receipts--links">
@@ -178,7 +178,8 @@ function renderInlineMarkdown(text: string): string {
     line-height: 1.65;
   }
 
-  .prose :global(code) {
+  .prose :global(code),
+  .receipts :global(code) {
     font-family: var(--font-mono);
     font-size: 0.9em;
     color: var(--color-foreground);
@@ -188,7 +189,7 @@ function renderInlineMarkdown(text: string): string {
   }
 
   .prose :global(a) {
-    color: inherit;
+    color: var(--color-forest-floor);
     text-decoration: none;
     border-bottom: 1px solid var(--color-rule);
     transition:
@@ -199,6 +200,12 @@ function renderInlineMarkdown(text: string): string {
   .prose :global(a:hover) {
     color: var(--color-accent);
     border-bottom-color: var(--color-accent);
+  }
+
+  .prose :global(a code) {
+    background: transparent;
+    padding: 0;
+    color: inherit;
   }
 
   .receipts {

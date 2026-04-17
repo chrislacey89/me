@@ -90,7 +90,7 @@ export const leadProjects: LeadProject[] = [
         'All PRDs, slices, and lineage live in GitHub issues and PRs',
         'Personal library of distilled engineering references consulted by the pipeline (Ousterhout, Meadows, Beck, Kahneman, Singer, Evans, Fowler, …)',
         '/compound → docs/solutions/ → /research reads it on the next feature',
-        "npx skills@latest add chrislacey89/skills --skill '*'",
+        "`npx skills@latest add chrislacey89/skills --skill '*'`",
         'MIT · github.com/chrislacey89/skills',
       ],
       pullQuote: "The books aren't decoration — they're dependencies.",
