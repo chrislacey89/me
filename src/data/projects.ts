@@ -45,7 +45,7 @@ export interface SupportingProject {
 export const leadProjects: LeadProject[] = [
   {
     id: 'fulcrum',
-    title: 'Fulcrum',
+    title: 'Fulcra',
     blurb:
       'AI advisory platform that applies mental models and structured reasoning to high-stakes decisions.',
     image: fulcrumImage,
@@ -54,12 +54,12 @@ export const leadProjects: LeadProject[] = [
     github: 'https://github.com/chrislacey89/fulcrum',
     detail: {
       claim:
-        "Fulcrum grounds every high-stakes decision in a named framework — not in the model's vibes.",
+        "Fulcra grounds every high-stakes decision in a named framework — not in the model's vibes.",
       context:
         "Ask a chatbot for guidance on a hard decision and it flatters you, equivocates, and pads the answer with bullet points. Deliberate decisions don't come from that. They come from being clear about two things: the assumptions behind the situation, and the framework you're using to reason through it. Most chat interfaces name neither, so nothing is auditable and the user has no real basis to trust the recommendation.",
-      move: "The spark was Ray Dalio's Principles: good decisions come from being explicit about the frameworks you're using, not from situational improvisation. The move was to wire that discipline into a chat agent. Most assistants expand the conversation. Fulcrum funnels. It picks a named framework from a curated library for the situation you've brought it (razors, mental models, cognitive-bias checks), surfaces it for your assent, and reasons strictly inside it. The alternative is a universal assistant willing to opine on anything — which flatters the user and washes out the recommendation. Naming the framework first makes the reasoning auditable. It gives you something concrete to push back on before you accept the answer.",
+      move: "The spark was Ray Dalio's Principles: good decisions come from being explicit about the frameworks you're using, not from situational improvisation. The move was to wire that discipline into a chat agent. Most assistants expand the conversation. Fulcra funnels. It picks a named framework from a curated library for the situation you've brought it (razors, mental models, cognitive-bias checks), surfaces it for your assent, and reasons strictly inside it. The alternative is a universal assistant willing to opine on anything — which flatters the user and washes out the recommendation. Naming the framework first makes the reasoning auditable. It gives you something concrete to push back on before you accept the answer.",
       artifact:
-        "Fulcrum is a decision-assistant app with two halves: a curated library of 151 frameworks across seven categories (decision-making, risk, strategic thinking, mental clarity, problem-solving, communication, learning), and an agent that reasons strictly inside the framework you've picked. Responses follow a fixed shape: recommendation, clarifying questions, low-cost experiments to run, a risk watchlist of cognitive biases to watch for, and citations back to the frameworks consulted. Two depth modes right-size the work: Decision mode for a 150–300 word action-oriented answer, Strategy mode for a 600–1000 word multi-viewpoint read with second-order thinking. Retrieval uses intent detection, HyDE, Reciprocal Rank Fusion, and LLM reranking, so the framework chosen for your problem isn't the first vector-search hit.",
+        "Fulcra is a decision-assistant app with two halves: a curated library of 151 frameworks across seven categories (decision-making, risk, strategic thinking, mental clarity, problem-solving, communication, learning), and an agent that reasons strictly inside the framework you've picked. Responses follow a fixed shape: recommendation, clarifying questions, low-cost experiments to run, a risk watchlist of cognitive biases to watch for, and citations back to the frameworks consulted. Two depth modes right-size the work: Decision mode for a 150–300 word action-oriented answer, Strategy mode for a 600–1000 word multi-viewpoint read with second-order thinking. Retrieval uses intent detection, HyDE, Reciprocal Rank Fusion, and LLM reranking, so the framework chosen for your problem isn't the first vector-search hit.",
       costReturn:
         'Without it, a fluent-sounding recommendation you have no way to audit or push back against. With it, a named framework you can argue with, a recommendation grounded in it, and the same frame available the next time a similar decision comes up.',
       receipts: [
@@ -118,7 +118,7 @@ export const leadProjects: LeadProject[] = [
         "Plenty of companies have performative AI: leaders throw a tool at every problem because they can, and the workflows underneath stay the same. The fluency is real; the leverage isn't. On a digital-transformation team of marketers and project managers, the question wasn't which model or which app. It was where this actually pays back. Nobody had built the scaffolding to answer it, and no one had been tasked to. I pitched the education effort myself.",
       move: "Everyone has access to the tools now. The differentiator is a solid grasp of the fundamentals plus the judgment to apply them at the highest-leverage bottleneck in your actual workflow. So the teaching is a progression, not a toolbox. Six framework layers, in order: foundation, prompt, context, MCP, skills, agents. Each names the bottleneck it solves and the scarce resource it unlocks. The alternative is performative AI: throw a tool at every problem because you can, leave the workflow underneath untouched. A progression gives people a map — they know which bottleneck they're standing on, what comes before and after it, and what kind of problem belongs at which layer. The cost is slower initial lift. The return is that teammates leave with a lens for spotting leverage, not a shopping list of tools.",
       artifact:
-        'The site is a six-tile framework tour. Each pillar (foundation, prompt, context, MCP, skills, agents) gets a hand-drawn line-art glyph, a one-sentence claim of what bottleneck it removes, and a deeper read if you want it. Three of the six layers carry an "In Practice" panel pointing to a working artifact: the 8-part prompt structure at the prompt layer, Skill Kit at the skills layer, Fulcrum at the agents layer. Over 25 custom visualizations, not stock icons or flowcharts, carry the explanatory weight.',
+        'The site is a six-tile framework tour. Each pillar (foundation, prompt, context, MCP, skills, agents) gets a hand-drawn line-art glyph, a one-sentence claim of what bottleneck it removes, and a deeper read if you want it. Three of the six layers carry an "In Practice" panel pointing to a working artifact: the 8-part prompt structure at the prompt layer, Skill Kit at the skills layer, Fulcra at the agents layer. Over 25 custom visualizations, not stock icons or flowcharts, carry the explanatory weight.',
       costReturn:
         'Without it, enthusiasm that decays by Friday. With it, a shared map of where AI earns its keep: a team that can place the next new tool themselves.',
       receipts: [
@@ -126,7 +126,7 @@ export const leadProjects: LeadProject[] = [
         '25+ custom visualizations; no stock icons, no stock flowcharts',
         'Self-initiated lunch-and-learn inside my digital-transformation team',
         'Strategist reached out afterward; prototyping AI applications together since',
-        '3 "in practice" panels link to working artifacts (8-part prompt, Skill Kit, Fulcrum)',
+        '3 "in practice" panels link to working artifacts (8-part prompt, Skill Kit, Fulcra)',
         'Live · ai-enablement-gamma.vercel.app',
       ],
       pullQuote: 'AI makes abundance cheap. Value still concentrates at the bottlenecks.',
