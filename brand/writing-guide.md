@@ -22,6 +22,7 @@ That sentence is the piece. Every paragraph is defending it. Passing the test is
 - **Cut the tutorial throat-clearing.** *"Let's walk through…"*, *"In this post we'll…"*, *"First, a bit of background…"* — all gone.
 - **Chronology is for journals.** Don't tell it as you lived it. Reshape for clarity.
 - **Every section reminds the reader what's at stake.** Transitions carry weight; stakes carry forward. A section that doesn't renew the stakes is a section the reader abandons.
+- **Em-dashes are load-bearing.** Each one earns its place by doing something a colon, period, or comma couldn't. Sparingly: one or two per long-form page. The em-dash is the most flexible mark in English, which is why it's the most overused — ask each one whether it's doing unique work.
 - **Bias to density.** Fewer sections, stronger transitions, shorter sentences that pull more weight.
 
 ---
