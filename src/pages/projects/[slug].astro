@@ -31,7 +31,15 @@ function renderInlineMarkdown(text: string): string {
     <header class="project-header">
       {project.image && (
         <div class="project-image">
-          <Image src={project.image} alt={project.imageAlt ?? ''} width={1200} height={600} />
+          <Image
+            src={project.image}
+            alt={project.imageAlt ?? ''}
+            widths={[500, 800, 1100, 1400, 1800]}
+            sizes="(min-width: 768px) 704px, 100vw"
+            width={1800}
+            height={1012}
+            quality={90}
+          />
         </div>
       )}
       <p class="section-label">Claim</p>
