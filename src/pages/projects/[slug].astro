@@ -13,13 +13,16 @@ export function getStaticPaths() {
 const { project } = Astro.props as { project: LeadProject }
 const { detail } = project
 
+// Supports author-controlled inline markdown: `[label](url)` links (http/https or
+// root-relative only) and `` `code` `` chips. Inputs come from typed data in
+// src/data/projects.ts — no user-generated content passes through here.
 function renderInlineMarkdown(text: string): string {
   const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   return escaped
-    .replace(
-      /\[([^\]]+)\]\(([^)]+)\)/g,
-      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>',
-    )
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, label: string, url: string) => {
+      if (!/^(https?:\/\/|\/)/.test(url)) return label
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`
+    })
     .replace(/`([^`]+)`/g, '<code>$1</code>')
 }
 ---
