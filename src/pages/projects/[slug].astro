@@ -12,6 +12,11 @@ export function getStaticPaths() {
 
 const { project } = Astro.props as { project: LeadProject }
 const { detail } = project
+
+function renderInlineCode(text: string): string {
+  const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  return escaped.replace(/`([^`]+)`/g, '<code>$1</code>')
+}
 ---
 
 <BaseLayout title={`${project.title} | Chris Lacey`} description={project.blurb}>
@@ -30,22 +35,22 @@ const { detail } = project
 
     <section class="section">
       <h2 class="section-label">Context</h2>
-      <p class="prose">{detail.context}</p>
+      <p class="prose" set:html={renderInlineCode(detail.context)}></p>
     </section>
 
     <section class="section section--move">
       <h2 class="section-label">The move</h2>
-      <p class="prose prose--lead">{detail.move}</p>
+      <p class="prose prose--lead" set:html={renderInlineCode(detail.move)}></p>
     </section>
 
     <section class="section">
       <h2 class="section-label">Artifact</h2>
-      <p class="prose">{detail.artifact}</p>
+      <p class="prose" set:html={renderInlineCode(detail.artifact)}></p>
     </section>
 
     <section class="section">
       <h2 class="section-label">Cost / return</h2>
-      <p class="prose">{detail.costReturn}</p>
+      <p class="prose" set:html={renderInlineCode(detail.costReturn)}></p>
     </section>
 
     <section class="section">
@@ -166,6 +171,12 @@ const { detail } = project
   .prose--lead {
     font-size: 1.1875rem;
     line-height: 1.65;
+  }
+
+  .prose code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    color: var(--color-forest-floor);
   }
 
   .receipts {
