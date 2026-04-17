@@ -42,18 +42,6 @@ export interface SupportingProject {
   external?: boolean
 }
 
-const PLACEHOLDER: ProjectDetail = {
-  claim: 'Placeholder claim — replaced by content pass in slice #8.',
-  context:
-    'Placeholder context paragraph. Slice #8 fills in the situation the project was a response to.',
-  move: 'Placeholder move paragraph. The load-bearing paragraph arrives in slice #8 and is gated on senior-comp read quality before launch.',
-  artifact:
-    'Placeholder artifact description — what was built and its interesting structural choices.',
-  costReturn: 'Placeholder cost and return — time spent, outcome delivered, what compounded.',
-  receipts: ['Placeholder receipt', 'Populated in slice #8'],
-  pullQuote: 'Placeholder pull quote.',
-}
-
 export const leadProjects: LeadProject[] = [
   {
     id: 'fulcrum',
@@ -64,7 +52,26 @@ export const leadProjects: LeadProject[] = [
     imageAlt:
       'Stylized hexagonal network — a central terracotta hex surrounded by six outlined hexes holding lines of code, suggesting structured reasoning pulled from many models.',
     github: 'https://github.com/chrislacey89/fulcrum',
-    detail: PLACEHOLDER,
+    detail: {
+      claim:
+        "Fulcrum grounds every high-stakes decision in a named framework — not in the model's vibes.",
+      context:
+        "Ask a chatbot for guidance on a hard decision and it flatters you, equivocates, and pads the answer with bullet points. Deliberate decisions don't come from that. They come from being clear about two things: the assumptions behind the situation, and the framework you're using to reason through it. Most chat interfaces name neither, so nothing is auditable and the user has no real basis to trust the recommendation.",
+      move: "The spark was Ray Dalio's Principles: good decisions come from being explicit about the frameworks you're using, not from situational improvisation. The move was to wire that discipline into a chat agent. Most assistants expand the conversation. Fulcrum funnels. It picks a named framework from a curated library for the situation you've brought it (razors, mental models, cognitive-bias checks), surfaces it for your assent, and reasons strictly inside it. The alternative is a universal assistant willing to opine on anything — which flatters the user and washes out the recommendation. Naming the framework first makes the reasoning auditable. It gives you something concrete to push back on before you accept the answer.",
+      artifact:
+        "Fulcrum is a decision-assistant app with two halves: a curated library of 151 frameworks across seven categories (decision-making, risk, strategic thinking, mental clarity, problem-solving, communication, learning), and an agent that reasons strictly inside the framework you've picked. Responses follow a fixed shape: recommendation, clarifying questions, low-cost experiments to run, a risk watchlist of cognitive biases to watch for, and citations back to the frameworks consulted. Two depth modes right-size the work: Decision mode for a 150–300 word action-oriented answer, Strategy mode for a 600–1000 word multi-viewpoint read with second-order thinking. Retrieval uses intent detection, HyDE, Reciprocal Rank Fusion, and LLM reranking, so the framework chosen for your problem isn't the first vector-search hit.",
+      costReturn:
+        'Without it, a fluent-sounding recommendation you have no way to audit or push back against. With it, a named framework you can argue with, a recommendation grounded in it, and the same frame available the next time a similar decision comes up.',
+      receipts: [
+        '151 frameworks across 7 categories: decision-making, risk, strategic thinking, mental clarity, problem-solving, communication, learning',
+        'Response shape: recommendation · clarifying questions · experiments · risk watchlist · framework citations',
+        'Decision mode (150–300 words) and Strategy mode (600–1000 words, multi-viewpoint)',
+        'Retrieval: intent detection → HyDE → Reciprocal Rank Fusion → LLM reranking',
+        'Built on Mastra, Next.js, Drizzle, Clerk; Playwright e2e',
+        'github.com/chrislacey89/fulcrum',
+      ],
+      pullQuote: 'You can argue with a framework. You cannot argue with vibes.',
+    },
   },
   {
     id: 'skills',
