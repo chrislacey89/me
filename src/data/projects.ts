@@ -105,7 +105,25 @@ export const leadProjects: LeadProject[] = [
     imageAlt:
       'Six labeled framework tiles arranged in a grid — foundation, prompt, context, mcp, skills, and agents — each with a small line-art glyph; the agents tile is filled terracotta with a checkmark.',
     liveUrl: 'https://ai-enablement-gamma.vercel.app/',
-    detail: PLACEHOLDER,
+    detail: {
+      claim: 'Most AI training teaches tools — this one teaches where to point them.',
+      context:
+        "Plenty of companies have performative AI: leaders throw a tool at every problem because they can, and the workflows underneath stay the same. The fluency is real; the leverage isn't. On a digital-transformation team of marketers and project managers, the question wasn't which model or which app. It was where this actually pays back. Nobody had built the scaffolding to answer it, and no one had been tasked to. I pitched the education effort myself.",
+      move: "Everyone has access to the tools now. The differentiator is a solid grasp of the fundamentals plus the judgment to apply them at the highest-leverage bottleneck in your actual workflow. So the teaching is a progression, not a toolbox. Six framework layers, in order: foundation, prompt, context, MCP, skills, agents. Each names the bottleneck it solves and the scarce resource it unlocks. The alternative is performative AI: throw a tool at every problem because you can, leave the workflow underneath untouched. A progression gives people a map — they know which bottleneck they're standing on, what comes before and after it, and what kind of problem belongs at which layer. The cost is slower initial lift. The return is that teammates leave with a lens for spotting leverage, not a shopping list of tools.",
+      artifact:
+        'The site is a six-tile framework tour. Each pillar (foundation, prompt, context, MCP, skills, agents) gets a hand-drawn line-art glyph, a one-sentence claim of what bottleneck it removes, and a deeper read if you want it. Three of the six layers carry an "In Practice" panel pointing to a working artifact: the 8-part prompt structure at the prompt layer, Skill Kit at the skills layer, Fulcrum at the agents layer. Over 25 custom visualizations, not stock icons or flowcharts, carry the explanatory weight.',
+      costReturn:
+        'Without it, enthusiasm that decays by Friday. With it, a shared map of where AI earns its keep: a team that can place the next new tool themselves.',
+      receipts: [
+        '6 pillars, ordered as a progression: foundation → prompt → context → MCP → skills → agents',
+        '25+ custom visualizations; no stock icons, no stock flowcharts',
+        'Self-initiated lunch-and-learn inside my digital-transformation team',
+        'Strategist reached out afterward; prototyping AI applications together since',
+        '3 "in practice" panels link to working artifacts (8-part prompt, Skill Kit, Fulcrum)',
+        'Live · ai-enablement-gamma.vercel.app',
+      ],
+      pullQuote: 'AI makes abundance cheap. Value still concentrates at the bottlenecks.',
+    },
   },
 ]
 
