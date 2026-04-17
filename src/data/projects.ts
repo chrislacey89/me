@@ -44,7 +44,7 @@ export interface SupportingProject {
 
 export const leadProjects: LeadProject[] = [
   {
-    id: 'fulcrum',
+    id: 'fulcra',
     title: 'Fulcra',
     blurb:
       'AI advisory platform that applies mental models and structured reasoning to high-stakes decisions.',
