@@ -68,14 +68,33 @@ export const leadProjects: LeadProject[] = [
   },
   {
     id: 'skills',
-    title: 'skills',
+    title: 'Skill Kit',
     blurb:
       'A Claude Code skill pipeline that turns shaped engineering work into reusable, invocable skills.',
     image: skillsImage,
     imageAlt:
       'A vertical list of slash-command skills — /shape and /research checked off, /write-a-prd highlighted in terracotta, with /execute and /compound still queued below.',
     github: 'https://github.com/chrislacey89/skills',
-    detail: PLACEHOLDER,
+    detail: {
+      claim:
+        "Skill Kit grounds every Claude Code decision in the industry's best thinking — not gut feelings.",
+      context:
+        "Most LLM-assisted workflows treat each feature as an isolated prompt: shape it, ship it, forget it. Two opportunities get left on the table: each feature could leave the system smarter about the codebase, and the pipeline's decisions could be grounded in engineering literature rather than improvised from memory and training data. Skill Kit wires both in.",
+      move: "The interesting choice wasn't the plumbing of shippable skills. That pattern is well-trodden. It was wiring each stage to reach into distilled book knowledge rather than its own invented conventions. `/triage-issue` reaches for Meadows' systems archetypes and Zeller's systematic debugging when a bug hits. `/pre-merge` reviews architecture against Ousterhout's A Philosophy of Software Design, not a generic checklist. `/shape` works off Kahneman's debiasing frames and Duke's decision-quality-vs-outcome-quality split. Most prompt libraries work the other way: their \"best practice\" is whatever the author could remember writing down. Distillation-first is what turns the reference from decorative to load-bearing.",
+      artifact:
+        'Skill Kit ships 23 skills across seven pipeline stages plus nine side-route skills for orientation, recovery, and review. Each is a standalone `SKILL.md` with explicit preconditions, installable as a pack. Alongside the main pack, `content-to-skill` converts PDFs and EPUBs into progressive-disclosure reference skills that populate a personal library the pipeline reaches into when a stage calls for expert grounding. `/pre-merge` runs an eight-dimension architecture review against that library, not a generic PR checklist.',
+      costReturn:
+        "Without it, you're YOLO-ing: shipping whatever best practice you happened to remember and hoping it's the one that mattered. With it, compounding knowledge: the same mistake never gets made twice.",
+      receipts: [
+        '23 skills across 7 pipeline stages + 9 side routes',
+        'All PRDs, slices, and lineage live in GitHub issues and PRs',
+        'Personal library of distilled engineering references consulted by the pipeline (Ousterhout, Meadows, Beck, Kahneman, Singer, Evans, Fowler, …)',
+        '/compound → docs/solutions/ → /research reads it on the next feature',
+        "npx skills@latest add chrislacey89/skills --skill '*'",
+        'MIT · github.com/chrislacey89/skills',
+      ],
+      pullQuote: "The books aren't decoration — they're dependencies.",
+    },
   },
   {
     id: 'empowerment-brief',
