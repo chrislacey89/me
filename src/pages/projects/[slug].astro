@@ -33,7 +33,7 @@ function renderInlineMarkdown(text: string): string {
 
     <header class="project-header">
       {project.image && (
-        <div class="project-image">
+        <div class="project-image" transition:name={`project-image-${project.id}`}>
           <Image
             src={project.image}
             alt={project.imageAlt ?? ''}

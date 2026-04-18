@@ -28,7 +28,7 @@ const {
 <article class:list={['project-card-wrapper h-full', className]} transition:name={id ? `project-card-${id}` : undefined}>
   <a href={href} class="project-card group">
     {imageSrc && (
-      <div class="card-image">
+      <div class="card-image" transition:name={id ? `project-image-${id}` : undefined}>
         <Image
           src={imageSrc}
           alt={imageAlt}
@@ -45,7 +45,7 @@ const {
       <h3 class="card-title" transition:name={id ? `project-title-${id}` : undefined}>
         {title}
       </h3>
-      <p class="card-description" transition:name={id ? `project-desc-${id}` : undefined}>
+      <p class="card-description">
         {description}
       </p>
       <div class="card-footer">
