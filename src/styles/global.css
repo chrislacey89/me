@@ -82,6 +82,17 @@ body {
   outline-offset: 2px;
 }
 
+/* Keep morphing project pieces above sibling card-wrapper groups during
+   the card ↔ detail view transition. Without this, neighboring cards
+   (which are their own view-transition-groups) paint on top of the
+   morphing image and title because the default group order is document
+   order — most visible on the detail → cards back-navigation, where the
+   title animates across sibling-card territory. */
+::view-transition-group(.project-image),
+::view-transition-group(.project-title) {
+  z-index: 10;
+}
+
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *,
