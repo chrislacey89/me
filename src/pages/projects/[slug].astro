@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets'
 import { type LeadProject, leadProjects } from '../../data/projects'
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import { projectDetailImageConfig } from '../../lib/project-image'
 
 export function getStaticPaths() {
   return leadProjects.map((project) => ({
@@ -37,11 +38,9 @@ function renderInlineMarkdown(text: string): string {
           <Image
             src={project.image}
             alt={project.imageAlt ?? ''}
-            widths={[500, 800, 1100, 1400, 1800]}
-            sizes="(min-width: 768px) 704px, 100vw"
-            width={1800}
-            height={1012}
-            quality={90}
+            {...projectDetailImageConfig}
+            loading="eager"
+            fetchpriority="high"
           />
         </div>
       )}

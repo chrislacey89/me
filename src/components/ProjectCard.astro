@@ -1,6 +1,7 @@
 ---
-import { Image } from 'astro:assets'
+import { getImage, Image } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
+import { projectDetailImageConfig } from '../lib/project-image'
 
 interface Props {
   href: string
@@ -23,9 +24,29 @@ const {
   id,
   class: className,
 } = Astro.props
+
+// Prefetch the detail-page hero variant for lead-project cards. The detail
+// page requests a larger srcset than the card, so without this hint the
+// first click always pays a network round-trip for the bigger variant
+// mid-morph — causing a visible flash. Matching widths/sizes/quality to
+// projectDetailImageConfig ensures the preload URL equals the URL the
+// detail page's <Image> will select, so the cache hits.
+const shouldPreloadDetail = Boolean(imageSrc && href.startsWith('/projects/'))
+const detailPreload = shouldPreloadDetail
+  ? await getImage({ src: imageSrc!, ...projectDetailImageConfig })
+  : null
 ---
 
 <article class:list={['project-card-wrapper h-full', className]} transition:name={id ? `project-card-${id}` : undefined}>
+  {detailPreload?.srcSet.attribute && (
+    <link
+      rel="preload"
+      as="image"
+      imagesrcset={detailPreload.srcSet.attribute}
+      imagesizes={projectDetailImageConfig.sizes}
+      fetchpriority="low"
+    />
+  )}
   <a href={href} class="project-card group">
     {imageSrc && (
       <div class="card-image" transition:name={id ? `project-image-${id}` : undefined}>
