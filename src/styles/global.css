@@ -82,6 +82,14 @@ body {
   outline-offset: 2px;
 }
 
+/* Keep the morphing project image above sibling card groups during the
+   card → detail view transition. Without this, neighboring cards (which
+   are their own view-transition-groups) paint on top of the morphing
+   image because the default group order is document order. */
+::view-transition-group(.project-image) {
+  z-index: 10;
+}
+
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *,
