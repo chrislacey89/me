@@ -16,7 +16,7 @@ const { hero, skills } = homeData
     <div class="relative mx-auto max-w-7xl px-6 py-12 md:px-12 md:py-20 lg:py-24 space-y-20">
       <!-- Hero Section -->
       <section class="hero">
-        <div class="hero-grid" transition:name="intro-text">
+        <div class="hero-grid">
           <!-- Left Column: Avatar -->
           <div class="hero-avatar">
             <Image
@@ -38,7 +38,7 @@ const { hero, skills } = homeData
             </h1>
             <p class="hero-role">{hero.role}</p>
 
-            <p class="hero-lede">{hero.lede}</p>
+            <p class="hero-lede" transition:name="page-lede">{hero.lede}</p>
 
             <p class="hero-availability" aria-label="Availability">
               <span class="hero-availability-status">{hero.availability.status}</span>
