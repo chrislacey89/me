@@ -81,28 +81,6 @@ const jsonLd = {
     <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
     <ClientRouter />
-
-    <!-- Disable View Transitions on touch devices (iOS Safari workaround) -->
-    <script is:inline>
-      (function () {
-        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
-        if (isTouchDevice) {
-          function disableViewTransitions() {
-            document.querySelectorAll('a[href^="/"]').forEach(function (link) {
-              if (!link.hasAttribute('data-astro-reload')) {
-                link.setAttribute('data-astro-reload', '')
-              }
-            })
-          }
-          if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', disableViewTransitions)
-          } else {
-            disableViewTransitions()
-          }
-          document.addEventListener('astro:page-load', disableViewTransitions)
-        }
-      })()
-    </script>
   </head>
   <body class="min-h-screen">
     <a href="#main-content" class="skip-link">Skip to main content</a>
