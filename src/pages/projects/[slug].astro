@@ -44,32 +44,32 @@ function renderInlineMarkdown(text: string): string {
           />
         </div>
       )}
-      <p class="section-label">Claim</p>
+      <p class="section-label" transition:name={`project-label-claim-${project.id}`}>Claim</p>
       <h1 class="claim" transition:name={`project-title-${project.id}`}>{detail.claim}</h1>
     </header>
 
     <section class="section">
-      <h2 class="section-label">Context</h2>
+      <h2 class="section-label" transition:name={`project-label-context-${project.id}`}>Context</h2>
       <p class="prose prose--context" transition:name={`project-description-${project.id}`} set:html={renderInlineMarkdown(detail.context)}></p>
     </section>
 
     <section class="section section--move">
-      <h2 class="section-label">The move</h2>
+      <h2 class="section-label" transition:name={`project-label-move-${project.id}`}>The move</h2>
       <p class="prose prose--lead" set:html={renderInlineMarkdown(detail.move)}></p>
     </section>
 
     <section class="section">
-      <h2 class="section-label">Artifact</h2>
+      <h2 class="section-label" transition:name={`project-label-artifact-${project.id}`}>Artifact</h2>
       <p class="prose" set:html={renderInlineMarkdown(detail.artifact)}></p>
     </section>
 
     <section class="section">
-      <h2 class="section-label">Cost / return</h2>
+      <h2 class="section-label" transition:name={`project-label-cost-${project.id}`}>Cost / return</h2>
       <p class="prose" set:html={renderInlineMarkdown(detail.costReturn)}></p>
     </section>
 
     <section class="section">
-      <h2 class="section-label">Receipts</h2>
+      <h2 class="section-label" transition:name={`project-label-receipts-${project.id}`}>Receipts</h2>
       <ul class="receipts">
         {detail.receipts.map((line) => <li set:html={renderInlineMarkdown(line)}></li>)}
       </ul>
