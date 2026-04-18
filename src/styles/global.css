@@ -89,7 +89,9 @@ body {
    order — most visible on the detail → cards back-navigation, where the
    title animates across sibling-card territory. */
 ::view-transition-group(.project-image),
-::view-transition-group(.project-title) {
+::view-transition-group(.project-title),
+::view-transition-group(.project-description),
+::view-transition-group(.project-section) {
   z-index: 10;
 }
 

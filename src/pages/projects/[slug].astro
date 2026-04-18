@@ -44,31 +44,33 @@ function renderInlineMarkdown(text: string): string {
           />
         </div>
       )}
-      <p class="section-label">Claim</p>
-      <h1 class="claim" transition:name={`project-title-${project.id}`}>{detail.claim}</h1>
+      <div class="claim-group" transition:name={`project-title-${project.id}`}>
+        <p class="section-label">Claim</p>
+        <h1 class="claim">{detail.claim}</h1>
+      </div>
     </header>
 
-    <section class="section">
+    <section class="section section--context" transition:name={`project-description-${project.id}`}>
       <h2 class="section-label">Context</h2>
       <p class="prose" set:html={renderInlineMarkdown(detail.context)}></p>
     </section>
 
-    <section class="section section--move">
+    <section class="section section--move" transition:name={`project-section-move-${project.id}`}>
       <h2 class="section-label">The move</h2>
       <p class="prose prose--lead" set:html={renderInlineMarkdown(detail.move)}></p>
     </section>
 
-    <section class="section">
+    <section class="section" transition:name={`project-section-artifact-${project.id}`}>
       <h2 class="section-label">Artifact</h2>
       <p class="prose" set:html={renderInlineMarkdown(detail.artifact)}></p>
     </section>
 
-    <section class="section">
+    <section class="section" transition:name={`project-section-cost-${project.id}`}>
       <h2 class="section-label">Cost / return</h2>
       <p class="prose" set:html={renderInlineMarkdown(detail.costReturn)}></p>
     </section>
 
-    <section class="section">
+    <section class="section" transition:name={`project-section-receipts-${project.id}`}>
       <h2 class="section-label">Receipts</h2>
       <ul class="receipts">
         {detail.receipts.map((line) => <li set:html={renderInlineMarkdown(line)}></li>)}
@@ -155,6 +157,10 @@ function renderInlineMarkdown(text: string): string {
     margin: 0 0 0.75rem;
   }
 
+  .claim-group {
+    view-transition-class: project-title;
+  }
+
   .claim {
     font-family: var(--font-serif);
     font-size: clamp(1.75rem, 4vw, 2.5rem);
@@ -163,11 +169,11 @@ function renderInlineMarkdown(text: string): string {
     letter-spacing: -0.01em;
     color: var(--color-foreground);
     margin: 0;
-    view-transition-class: project-title;
   }
 
   .section {
     margin-top: 3rem;
+    view-transition-class: project-section;
   }
 
   .section--move {
@@ -188,6 +194,10 @@ function renderInlineMarkdown(text: string): string {
   .prose--lead {
     font-size: 1.25rem;
     line-height: 1.6;
+  }
+
+  .section--context {
+    view-transition-class: project-description;
   }
 
   .prose :global(code),
