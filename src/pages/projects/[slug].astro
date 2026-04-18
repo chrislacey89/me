@@ -49,7 +49,7 @@ function renderInlineMarkdown(text: string): string {
       </div>
     </header>
 
-    <section class="section section--context" transition:name={`project-description-${project.id}`}>
+    <section class="section section--context">
       <h2 class="section-label">Context</h2>
       <p class="prose" set:html={renderInlineMarkdown(detail.context)}></p>
     </section>
@@ -193,10 +193,6 @@ function renderInlineMarkdown(text: string): string {
   .prose--lead {
     font-size: 1.25rem;
     line-height: 1.6;
-  }
-
-  .section--context {
-    view-transition-class: project-description;
   }
 
   .prose :global(code),
