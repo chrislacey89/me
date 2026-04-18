@@ -300,15 +300,6 @@ function isActive(href: string, current: string): boolean {
         },
         { signal },
       )
-
-      this.details.addEventListener(
-        'click',
-        (e) => {
-          const link = (e.target as HTMLElement).closest('a.mobile-nav-link')
-          if (link) this.close()
-        },
-        { signal },
-      )
     }
 
     private handleToggle = () => {
