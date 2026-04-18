@@ -39,8 +39,7 @@ function renderInlineMarkdown(text: string): string {
             src={project.image}
             alt={project.imageAlt ?? ''}
             {...projectDetailImageConfig}
-            loading="eager"
-            fetchpriority="high"
+            priority
           />
         </div>
       )}
