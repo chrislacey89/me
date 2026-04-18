@@ -90,7 +90,8 @@ body {
    title animates across sibling-card territory. */
 ::view-transition-group(.project-image),
 ::view-transition-group(.project-title),
-::view-transition-group(.project-description) {
+::view-transition-group(.project-description),
+::view-transition-group(.project-section) {
   z-index: 10;
 }
 
