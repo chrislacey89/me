@@ -66,7 +66,7 @@ const detailPreload = shouldPreloadDetail
       <h3 class="card-title" transition:name={id ? `project-title-${id}` : undefined}>
         {title}
       </h3>
-      <p class="card-description">
+      <p class="card-description" transition:name={id ? `project-description-${id}` : undefined}>
         {description}
       </p>
       <div class="card-footer">
@@ -136,6 +136,7 @@ const detailPreload = shouldPreloadDetail
     color: var(--color-muted);
     margin: 0;
     flex: 1;
+    view-transition-class: project-description;
   }
 
   .card-footer {
