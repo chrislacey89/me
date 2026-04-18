@@ -100,7 +100,11 @@ body {
    old and new snapshots, mirroring what the UA does for the root
    transition. For non-matched groups (the other two cards that exist only
    on the grid side), there is no overlap, so plus-lighter is a no-op and
-   they cross-fade normally with the page. */
+   they cross-fade normally with the page.
+
+   Browser fallback: plus-lighter ships in Chromium 112+ and Safari 16+.
+   Firefox ignores it and falls back to the default cross-fade — same
+   behavior as before this rule. No @supports guard needed. */
 ::view-transition-old(.project-image),
 ::view-transition-new(.project-image) {
   mix-blend-mode: plus-lighter;
