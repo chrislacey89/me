@@ -147,15 +147,16 @@ body {
 }
 
 /* The nav's old and new snapshots are effectively identical (the active
-   underline is extracted into its own `nav-underline` group), so the
-   default cross-fade is visually a no-op. We intentionally let it run
-   instead of using `animation: none` — an early-teardown bug lets the
-   morphing project image briefly paint above the live header at the
-   end of the transition otherwise. Keeping the nav snapshot alive for
-   the full duration stacks things correctly until every group dismounts. */
+   underline is extracted into its own `nav-underline` group). The
+   default cross-fade would drop opacity to ~50% mid-animation, letting
+   the morphing image behind show through translucent header pixels —
+   and a hard swap with animation:none produces its own visible flicker.
+   plus-lighter sums the alphas of the overlapping old+new snapshots to
+   1.0 throughout the cross-fade, so the header stays visually opaque
+   the whole transition. Same technique we use for the project image. */
 ::view-transition-old(site-nav),
 ::view-transition-new(site-nav) {
-  mix-blend-mode: normal;
+  mix-blend-mode: plus-lighter;
 }
 
 /* The active-tab underline is a separate named VT group so the browser
