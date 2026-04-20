@@ -48,7 +48,7 @@ const repoDisplay = repoLink?.replace(/^https?:\/\//, '').replace(/\/$/, '')
         <span class="accent">{project.kicker}</span>
       </div>
       <h1 class="detail-title" transition:name={`project-title-${project.id}`}>{project.title}</h1>
-      <p class="detail-claim serif">{detail.claim}</p>
+      <p class="detail-claim serif" transition:name={`project-claim-${project.id}`}>{detail.claim}</p>
     </header>
 
     <div class="detail-body">
