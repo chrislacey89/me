@@ -124,7 +124,9 @@ body {
 ::view-transition-group(.project-image),
 ::view-transition-group(.project-title),
 ::view-transition-group(.project-claim),
-::view-transition-group(.project-section) {
+::view-transition-group(.project-section),
+::view-transition-group(page-title),
+::view-transition-group(page-lede) {
   z-index: 10;
 }
 
