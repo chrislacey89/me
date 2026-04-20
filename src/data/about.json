@@ -1,8 +1,8 @@
 {
-  "lede": "I'm a software engineer working at the seams where intent, data, and interface disagree. Years of front-end craft are the proof, not the caveat.",
-  "how": "My work follows a small pipeline: shape, research, write, execute, compound. Each feature leaves the system smarter than it found it. I optimize for correctness and stability first; explicit state, clear data flow, minimal magic.",
+  "lede": "I'm a software engineer drawn to the seams — where intent, data, and interface disagree. Most of that work has been on the front end, and it's where I learned to take those disagreements seriously.",
+  "how": "My work follows a small pipeline: shape, research, write, execute, compound. The goal is that each feature makes the next one easier to build. Explicit state, clear data flow, few clever tricks — correctness and stability first.",
   "pipeline": ["/shape", "/research", "/write-a-prd", "/execute", "/compound"],
-  "where": "Bloomington, Indiana. Remote-first by choice — the work is portable, and this is where it gets done well.",
+  "where": "Bloomington, Indiana. Remote by choice — the work travels, and this is home.",
   "objects": [
     "Field notebook whose first page is an index",
     "Lamy 2000, medium nib",
