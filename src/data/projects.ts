@@ -23,6 +23,10 @@ export interface ProjectDetail {
 export interface LeadProject {
   id: string
   title: string
+  /** Release year, used in meta rows and detail headers. */
+  year: string
+  /** Short category label (e.g. "Decision software") shown in mono meta strips. */
+  kicker: string
   /** Short card blurb on the projects index and evidence strip. */
   blurb: string
   image?: ImageMetadata
@@ -46,6 +50,8 @@ export const leadProjects: LeadProject[] = [
   {
     id: 'fulcra',
     title: 'Fulcra',
+    year: '2025',
+    kicker: 'Decision software',
     blurb:
       'AI advisory platform that applies mental models and structured reasoning to high-stakes decisions.',
     image: fulcrumImage,
@@ -76,6 +82,8 @@ export const leadProjects: LeadProject[] = [
   {
     id: 'skills',
     title: 'Skill Kit',
+    year: '2025',
+    kicker: 'Claude Code pipeline',
     blurb:
       'A Claude Code skill pipeline that turns shaped engineering work into reusable, invocable skills.',
     image: skillsImage,
@@ -106,6 +114,8 @@ export const leadProjects: LeadProject[] = [
   {
     id: 'empowerment-brief',
     title: 'AI Empowerment Brief',
+    year: '2024',
+    kicker: 'Educational platform',
     blurb:
       'Interactive educational platform teaching a structured AI methodology through 25+ custom visualizations.',
     image: empowermentBriefImage,

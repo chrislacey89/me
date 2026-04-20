@@ -1,349 +1,340 @@
 ---
-import { Image } from 'astro:assets'
-import headshot from '../assets/headshot.jpeg'
-import InteractiveSkillIcon from '../components/InteractiveSkillIcon.astro'
-import ProjectCard from '../components/ProjectCard.astro'
-import SectionDivider from '../components/SectionDivider.astro'
+import SiteFooter from '../components/SiteFooter.astro'
 import homeData from '../data/home.json'
 import { leadProjects } from '../data/projects'
 import BaseLayout from '../layouts/BaseLayout.astro'
 
-const { hero, skills } = homeData
+const { hero, now } = homeData
 ---
 
-<BaseLayout title="Chris Lacey | Full-stack AI product engineer">
-  <div class="min-h-[calc(100vh-60px)]">
-    <div class="relative mx-auto max-w-7xl px-6 py-12 md:px-12 md:py-20 lg:py-24 space-y-20">
-      <!-- Hero Section -->
-      <section class="hero">
-        <div class="hero-grid">
-          <!-- Left Column: Avatar -->
-          <div class="hero-avatar">
-            <Image
-              src={headshot}
-              alt={`Portrait of ${hero.name}`}
-              class="hero-avatar-img"
-              width={288}
-              height={288}
-              densities={[1, 2]}
-              quality={90}
-              priority
-            />
-          </div>
-
-          <!-- Right Column: Text Content -->
-          <div class="hero-text">
-            <h1 class="hero-name" transition:name="page-title">
-              {hero.name}
-            </h1>
-            <p class="hero-role">{hero.role}</p>
-
-            <p class="hero-lede" transition:name="page-lede">{hero.lede}</p>
-
-            <p class="hero-availability" aria-label="Availability">
-              <span class="hero-availability-status">{hero.availability.status}</span>
-              <span class="hero-availability-sep" aria-hidden="true">·</span>
-              <span>{hero.availability.focus}</span>
-            </p>
-
-            <!-- CTA Buttons -->
-            <div class="hero-ctas">
-              {hero.ctas.map((cta) => (
-                <a
-                  href={cta.href}
-                  download={cta.download}
-                  data-variant={cta.variant === 'primary' ? 'primary' : 'secondary'}
-                  class="cta-link"
-                >
-                  {cta.label}
-                </a>
-              ))}
-            </div>
-          </div>
+<BaseLayout title="Chris Lacey — full-stack AI product engineer">
+  <div class="cl-page">
+    <!-- Editorial hero -->
+    <section class="hero">
+      <div class="hero-kicker mono">{hero.kicker}</div>
+      <h1 class="hero-name" transition:name="page-title">
+        Full-stack AI<br />product engineer<span class="hero-accent">.</span>
+      </h1>
+      <p class="hero-thesis serif" transition:name="page-lede">
+        <em>{hero.thesis}</em>
+      </p>
+      <div class="hero-foot">
+        <div class="avail" aria-label="Availability">
+          <span class="avail-dot" aria-hidden="true"></span>
+          <span>{hero.availability.status}</span>
+          <span class="avail-sep" aria-hidden="true">·</span>
+          <span>{hero.availability.location}</span>
         </div>
-      </section>
-
-      <SectionDivider />
-
-      <div class="space-y-12" transition:name="main-content">
-        <!-- Skills Section -->
-        <section class="stack-section" aria-labelledby="skills-heading">
-          <h2 id="skills-heading" class="stack-label">Stack</h2>
-
-          <div class="stack-grid">
-            {skills.map((skill) => (
-              <InteractiveSkillIcon icon={skill.icon} name={skill.name} />
-            ))}
-          </div>
-        </section>
-
-        <!-- Selected Projects Section -->
-        <section class="space-y-6" aria-labelledby="projects-heading">
-          <div class="flex items-center justify-between">
-            <h2 id="projects-heading" class="text-sm font-semibold tracking-widest uppercase text-[color:var(--color-muted)]">Selected Projects</h2>
-            <a
-              href="/projects"
-              class="projects-link group flex items-center gap-2 text-sm font-medium"
-            >
-              View all projects
-              <svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-          </div>
-
-          <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {leadProjects.map((project) => (
-              <ProjectCard
-                href={`/projects/${project.id}`}
-                title={project.title}
-                description={project.blurb}
-                imageSrc={project.image}
-                imageAlt={project.imageAlt}
-                id={project.id}
-              />
-            ))}
-          </div>
-        </section>
+        <div class="hero-avail mono">{hero.availability.focus}</div>
       </div>
+    </section>
 
-    </div>
+    <!-- Evidence of method -->
+    <section class="section-evidence">
+      <div class="rule"><span class="rule-label">Evidence of method</span></div>
+      <div class="evidence-grid">
+        {
+          leadProjects.map((p, i) => (
+            <a href={`/projects/${p.id}`} class="evidence-item">
+              <div class="evidence-head">
+                <span class="mono mono-tiny muted">0{i + 1}</span>
+                <span class="mono mono-tiny muted">
+                  {p.year} · {p.kicker}
+                </span>
+              </div>
+              <h3 class="evidence-title">{p.title}</h3>
+              <p class="evidence-blurb serif">{p.blurb}</p>
+              <div class="evidence-link mono">
+                <span>Read the move</span>
+                <span class="arrow">→</span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- /now -->
+    <section class="section-now">
+      <div class="rule"><span class="rule-label">/now</span></div>
+      <div class="now-grid">
+        <div class="now-lede serif">
+          Three things true of <em>this week</em>, not six months ago.
+        </div>
+        <ul class="now-list">
+          {
+            now.map((n) => (
+              <li class="now-item">
+                <span class="mono mono-tiny muted">{n.date}</span>
+                <span>{n.text}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <SiteFooter />
   </div>
 </BaseLayout>
 
 <style>
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    justify-items: center;
-    text-align: center;
+  .cl-page {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 clamp(24px, 5vw, 80px) 120px;
   }
 
-  @media (min-width: 768px) {
-    .hero-grid {
-      grid-template-columns: auto 1fr;
-      gap: 3rem;
-      justify-items: start;
-      text-align: left;
-      align-items: start;
-    }
+  /* Hero */
+  .hero {
+    padding: clamp(56px, 12vw, 140px) 0 clamp(64px, 10vw, 120px);
+    position: relative;
   }
 
-  @media (min-width: 1024px) {
-    .hero-grid {
-      gap: 4rem;
-    }
-  }
-
-  .hero-avatar {
-    width: 10rem;
-    height: 10rem;
-  }
-
-  @media (min-width: 768px) {
-    .hero-avatar {
-      width: 14rem;
-      height: 14rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .hero-avatar {
-      width: 16rem;
-      height: 16rem;
-    }
-  }
-
-  .hero-avatar-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 9999px;
-    border: 1px solid var(--color-rule);
-  }
-
-  .hero-text {
-    display: flex;
-    flex-direction: column;
-    max-width: 42rem;
+  .hero-kicker {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
   }
 
   .hero-name {
     font-family: var(--font-display);
-    font-size: clamp(2.25rem, 5vw, 3.5rem);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.05;
-    margin: 0;
+    font-size: clamp(56px, 9vw, 128px);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    font-weight: 500;
+    margin: 22px 0 0;
+    max-width: 16ch;
     color: var(--color-foreground);
   }
 
-  .hero-role {
-    font-family: var(--font-display);
-    font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
-    font-weight: 500;
-    letter-spacing: 0.005em;
-    color: var(--color-forest-floor);
-    margin: 0.5rem 0 0;
+  .hero-accent {
+    color: var(--color-accent);
   }
 
-  .hero-lede {
-    font-family: var(--font-display);
-    font-size: 1.0625rem;
-    line-height: 1.6;
-    color: var(--color-muted);
-    margin: 2rem 0 0;
-    max-width: 34rem;
+  .hero-thesis {
+    font-size: clamp(22px, 2.4vw, 34px);
+    line-height: 1.35;
+    margin: 40px 0 0;
+    max-width: 28ch;
+    font-weight: 400;
   }
 
-  .hero-availability {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-muted);
-    margin: 2rem 0 0;
+  .hero-foot {
+    margin-top: 72px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem 0.6rem;
+    gap: 16px 32px;
+    align-items: center;
+    padding-top: 28px;
+    border-top: 1px solid var(--color-rule);
   }
 
-  @media (min-width: 768px) {
-    .hero-availability {
-      justify-content: flex-start;
-    }
-  }
-
-  .hero-availability-status {
-    color: var(--color-forest-floor);
-    position: relative;
-    padding-left: 1rem;
-  }
-
-  .hero-availability-status::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 9999px;
-    background: var(--color-confidence);
-  }
-
-  .hero-availability-sep {
-    color: var(--color-rule);
-  }
-
-  .hero-ctas {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 1rem;
-    justify-content: center;
-  }
-
-  @media (min-width: 768px) {
-    .hero-ctas {
-      justify-content: flex-start;
-    }
-  }
-
-  .cta-link {
+  .avail {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    padding: 0.75rem 1.25rem;
+    gap: 10px;
     font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    font-weight: 500;
-    text-transform: uppercase;
+    font-size: 12px;
     letter-spacing: 0.04em;
-    text-decoration: none;
-    border: 1px solid transparent;
-    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   }
 
-  .cta-link[data-variant="primary"] {
-    background: var(--color-accent);
-    color: var(--color-legal-pad);
-    border-color: var(--color-accent);
+  .avail-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--color-confidence);
+    box-shadow: 0 0 0 3px
+      color-mix(in srgb, var(--color-confidence) 28%, transparent);
+    animation: cl-pulse 2.4s ease-in-out infinite;
   }
 
-  .cta-link[data-variant="primary"]:hover {
-    background: var(--color-ink-well);
-    border-color: var(--color-ink-well);
+  .avail-sep {
+    color: var(--color-muted-2);
   }
 
-  .cta-link[data-variant="secondary"] {
-    background: transparent;
-    color: var(--color-foreground);
-    border-color: var(--color-foreground);
-  }
-
-  .cta-link[data-variant="secondary"]:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-  }
-
-  .projects-link {
-    color: var(--color-foreground);
-    transition: color 0.2s ease;
-  }
-
-  .projects-link:hover {
-    color: var(--color-accent);
-  }
-
-  .stack-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .stack-label {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--color-forest-floor);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin: 0;
-    text-align: center;
-  }
-
-  @media (min-width: 768px) {
-    .stack-label {
-      text-align: left;
+  @keyframes cl-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 3px
+        color-mix(in srgb, var(--color-confidence) 28%, transparent);
+    }
+    50% {
+      box-shadow: 0 0 0 6px
+        color-mix(in srgb, var(--color-confidence) 10%, transparent);
     }
   }
 
-  .stack-grid {
+  .hero-avail {
+    font-size: 12px;
+    color: var(--color-muted);
+    letter-spacing: 0.02em;
+  }
+
+  /* Rule */
+  .rule {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: clamp(56px, 9vw, 120px) 0 32px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .rule::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--color-foreground);
+  }
+
+  .rule::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--color-rule);
+  }
+
+  .rule-label {
+    white-space: nowrap;
+  }
+
+  /* Evidence strip */
+  .evidence-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.75rem;
-    justify-items: center;
+    gap: 0;
+    border-top: 1px solid var(--color-rule);
   }
 
-  @media (min-width: 480px) {
-    .stack-grid {
-      grid-template-columns: repeat(4, 1fr);
+  @media (max-width: 900px) {
+    .evidence-grid {
+      grid-template-columns: 1fr;
     }
   }
 
-  @media (min-width: 768px) {
-    .stack-grid {
-      grid-template-columns: repeat(6, 1fr);
+  .evidence-item {
+    padding: 32px 24px 28px;
+    border-right: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+    transition: background 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: relative;
+    text-decoration: none;
+    color: var(--color-foreground);
+  }
+
+  .evidence-item:last-child {
+    border-right: none;
+  }
+
+  @media (max-width: 900px) {
+    .evidence-item {
+      border-right: none;
     }
   }
 
-  @media (min-width: 1024px) {
-    .stack-grid {
-      grid-template-columns: repeat(9, 1fr);
+  .evidence-item:hover {
+    background: var(--color-tint);
+  }
+
+  .evidence-item:hover .arrow {
+    transform: translateX(6px);
+    color: var(--color-accent);
+  }
+
+  .evidence-head {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .mono-tiny {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+
+  .muted {
+    color: var(--color-muted);
+  }
+
+  .evidence-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    margin: 0;
+  }
+
+  .evidence-blurb {
+    font-size: 17px;
+    line-height: 1.5;
+    margin: 0;
+    color: var(--color-foreground);
+  }
+
+  .evidence-link {
+    margin-top: auto;
+    padding-top: 16px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-muted);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .arrow {
+    display: inline-block;
+    transition: transform 0.25s ease, color 0.2s ease;
+  }
+
+  /* Now */
+  .now-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .now-grid {
+      grid-template-columns: 1fr;
     }
+  }
+
+  .now-lede {
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--color-foreground);
+  }
+
+  .now-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .now-item {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 24px;
+    align-items: baseline;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--color-rule);
+    font-size: 17px;
+    line-height: 1.45;
+    font-family: var(--font-serif);
+  }
+
+  .now-item:first-child {
+    border-top: 1px solid var(--color-rule);
   }
 </style>
