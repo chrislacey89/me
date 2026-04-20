@@ -143,6 +143,17 @@ body {
   background: var(--color-background);
 }
 
+/* The nav is persisted across navigations; its old and new snapshots are
+   effectively identical, so the default cross-fade is pure cost — you see
+   it as a subtle flicker, especially when the active-tab underline differs
+   between pages. Suppress the animation entirely so the header just stays
+   in place during the transition. */
+::view-transition-old(site-nav),
+::view-transition-new(site-nav) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
 /* Keep the morphing project image visually solid through the cross-fade.
    Both card and detail sides render the same source, so when the pair is
    matched we want their complementary fades to look opaque rather than
