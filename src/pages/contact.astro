@@ -1,181 +1,150 @@
 ---
+import SiteFooter from '../components/SiteFooter.astro'
 import contactData from '../data/contact.json'
 import BaseLayout from '../layouts/BaseLayout.astro'
 
 const { intro, links } = contactData
+
+function displayValue(link: (typeof links)[number]): string {
+  if (link.icon === 'email') return 'chrislacey89@gmail.com'
+  return link.href.replace(/^https?:\/\//, '').replace(/\/$/, '')
+}
 ---
 
 <BaseLayout title="Contact | Chris Lacey" description="Get in touch with Chris Lacey.">
-  <div class="contact-page">
-    <header class="page-header">
-      <p class="eyebrow">Contact</p>
-      <h1 class="lede" transition:name="page-lede">{intro}</h1>
+  <div class="cl-page">
+    <header class="page-head">
+      <div class="mono mono-tiny muted">Contact · replies in two business days</div>
+      <h1 class="page-title serif" transition:name="page-lede">Say the specific thing.</h1>
+      <p class="page-sub serif">{intro}</p>
     </header>
 
-    <section class="contact-card" aria-labelledby="contact-heading">
-      <h2 id="contact-heading" class="sr-only">Ways to reach me</h2>
+    <section class="contact-body">
       <ul class="contact-list">
         {
-          links.map((link) => {
+          links.map((link, i) => {
             const isExternal = link.icon !== 'email'
             return (
-              <li class="contact-item">
+              <li class="contact-row">
+                <span class="mono mono-tiny muted">0{i + 1}</span>
+                <span class="mono contact-label">{link.label}</span>
                 <a
-                  class="contact-link"
+                  class="mono contact-value"
                   href={link.href}
                   target={isExternal ? '_blank' : undefined}
                   rel={isExternal ? 'noopener noreferrer' : undefined}
                 >
-                  <span class="contact-label">{link.label}</span>
-                  <span class="contact-value">
-                    {link.icon === 'email' && 'chrislacey89@gmail.com'}
-                    {link.icon === 'linkedin' && 'linkedin.com/in/chrislacey89'}
-                    {link.icon === 'github' && 'github.com/chrislacey89'}
-                    {isExternal && <span class="sr-only"> (opens in new tab)</span>}
-                  </span>
+                  {displayValue(link)} <span class="accent" aria-hidden="true">↗</span>
+                  {isExternal && <span class="sr-only"> (opens in new tab)</span>}
                 </a>
               </li>
             )
           })
         }
       </ul>
-      <p class="response-note">
-        <span class="response-label">Response</span>
-        <span>I'll respond within two business days.</span>
+      <p class="contact-note serif">
+        <em>Sent.</em> I'll respond within two business days.
       </p>
     </section>
+
+    <SiteFooter />
   </div>
 </BaseLayout>
 
 <style>
-  .contact-page {
-    max-width: 60rem;
+  .cl-page {
+    max-width: 80rem;
     margin: 0 auto;
-    padding: 3rem 1.5rem 6rem;
+    padding: 0 clamp(24px, 5vw, 80px) 120px;
   }
 
-  @media (min-width: 768px) {
-    .contact-page {
-      padding: 4.5rem 2rem 8rem;
-    }
+  .page-head {
+    padding: clamp(56px, 10vw, 120px) 0 48px;
   }
 
-  .page-header {
-    max-width: 44rem;
-    margin-bottom: 3.5rem;
+  .mono-tiny {
+    font-size: 11px;
+    letter-spacing: 0.08em;
   }
 
-  .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
+  .muted {
+    color: var(--color-muted);
+  }
+
+  .accent {
+    color: var(--color-accent);
+    font-style: normal;
     font-weight: 500;
-    color: var(--color-forest-floor);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin: 0 0 1rem;
   }
 
-  .lede {
-    font-family: var(--font-serif);
-    font-size: clamp(1.625rem, 4vw, 2.25rem);
-    font-weight: 400;
-    line-height: 1.25;
-    letter-spacing: -0.015em;
+  .page-title {
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    font-weight: 500;
+    margin: 16px 0 0;
+    max-width: 22ch;
     color: var(--color-foreground);
-    margin: 0;
   }
 
-  .contact-card {
-    border: 1px solid var(--color-rule);
-    padding: 0 1.5rem;
-    max-width: 42rem;
-  }
-
-  @media (min-width: 768px) {
-    .contact-card {
-      padding: 0 2rem;
-    }
+  .page-sub {
+    font-size: 22px;
+    line-height: 1.5;
+    margin: 24px 0 0;
+    max-width: 60ch;
+    color: var(--color-foreground);
   }
 
   .contact-list {
     list-style: none;
     margin: 0;
     padding: 0;
+    border-top: 1px solid var(--color-foreground);
   }
 
-  .contact-item {
+  .contact-row {
+    display: grid;
+    grid-template-columns: 60px 120px 1fr;
+    gap: 24px;
+    align-items: baseline;
+    padding: 20px 0;
     border-bottom: 1px solid var(--color-rule);
+    font-size: 15px;
   }
 
-  .contact-item:last-child {
-    border-bottom: none;
+  @media (max-width: 640px) {
+    .contact-row {
+      grid-template-columns: 80px 1fr;
+    }
+
+    .contact-row > .mono-tiny {
+      display: none;
+    }
   }
 
-  .contact-link {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    padding: 1.25rem 0;
+  .contact-label {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 11px;
+    color: var(--color-muted);
+  }
+
+  .contact-value {
     text-decoration: none;
     color: var(--color-foreground);
     transition: color 0.2s ease;
   }
 
-  @media (min-width: 640px) {
-    .contact-link {
-      flex-direction: row;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 1.5rem;
-    }
-  }
-
-  .contact-link:hover {
+  .contact-value:hover {
     color: var(--color-accent);
   }
 
-  .contact-label {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--color-forest-floor);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  .contact-value {
-    font-family: var(--font-display);
-    font-size: 1.0625rem;
-    font-weight: 500;
-    letter-spacing: -0.005em;
-  }
-
-  .response-note {
+  .contact-note {
+    margin-top: 48px;
+    padding-top: 32px;
     border-top: 1px solid var(--color-rule);
-    padding: 1.25rem 0;
-    margin: 0;
-    font-family: var(--font-display);
-    font-size: 0.9375rem;
+    font-size: 20px;
     color: var(--color-muted);
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  @media (min-width: 640px) {
-    .response-note {
-      flex-direction: row;
-      align-items: baseline;
-      gap: 1.5rem;
-    }
-  }
-
-  .response-label {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--color-forest-floor);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    font-style: italic;
   }
 </style>
