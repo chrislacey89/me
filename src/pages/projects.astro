@@ -12,7 +12,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
   <div class="cl-page">
     <header class="page-head">
       <div class="mono mono-tiny muted">Projects · lead &amp; supporting</div>
-      <h1 class="page-title serif" transition:name="page-lede">
+      <h1 class="page-title serif">
         Three lead projects. <em>Chosen, not listed.</em>
       </h1>
       <p class="page-sub serif">
@@ -31,14 +31,14 @@ import BaseLayout from '../layouts/BaseLayout.astro'
               <div class="mono mono-tiny accent">{p.kicker}</div>
             </div>
             <div class="lead-body">
-              <h2 class="lead-title" transition:name={`project-title-${p.id}`}>{p.title}</h2>
-              <p class="lead-claim serif" transition:name={`project-claim-${p.id}`}>{p.detail.claim}</p>
+              <h2 class="lead-title">{p.title}</h2>
+              <p class="lead-claim serif">{p.detail.claim}</p>
               <div class="lead-more mono">
                 <span>The move</span>
                 <span class="arrow">→</span>
               </div>
             </div>
-            <div class="lead-thumb project-card-wrapper" transition:name={`project-image-${p.id}`}>
+            <div class="lead-thumb project-card-wrapper">
               {p.image ? (
                 <Image
                   src={p.image}
@@ -173,7 +173,6 @@ import BaseLayout from '../layouts/BaseLayout.astro'
     letter-spacing: -0.02em;
     margin: 0;
     color: var(--color-foreground);
-    view-transition-class: project-title;
   }
 
   .lead-claim {
@@ -181,7 +180,6 @@ import BaseLayout from '../layouts/BaseLayout.astro'
     line-height: 1.4;
     margin: 12px 0 0;
     max-width: 54ch;
-    view-transition-class: project-claim;
   }
 
   .lead-more {
@@ -205,7 +203,6 @@ import BaseLayout from '../layouts/BaseLayout.astro'
     height: 180px;
     overflow: hidden;
     border: 1px solid var(--color-rule);
-    view-transition-class: project-image;
   }
 
   @media (max-width: 900px) {

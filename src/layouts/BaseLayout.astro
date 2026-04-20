@@ -1,5 +1,4 @@
 ---
-import { ClientRouter } from 'astro:transitions'
 import MainNav from '../components/MainNav.astro'
 import '../styles/global.css'
 
@@ -95,8 +94,6 @@ const jsonLd = {
         }
       })()
     </script>
-
-    <ClientRouter />
   </head>
   <body class="min-h-screen">
     <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -104,43 +101,6 @@ const jsonLd = {
     <main id="main-content">
       <slot />
     </main>
-    <script>
-      // Native-style scroll restoration for the "← All projects" link on
-      // project detail pages. When the user clicks a project row on
-      // /projects, we remember which detail URL they're about to open. If
-      // the back link on THAT detail page is clicked, we call history.back()
-      // — which triggers the browser's own popstate scroll restoration, the
-      // same thing the browser Back button uses. For any other entry point
-      // (direct link, detail→detail via Next, etc.) we leave the link alone
-      // so it navigates forward to /projects normally.
-      const CL_BACK_FLAG = 'cl-projects-to-detail'
-
-      document.addEventListener('click', (event) => {
-        const target = event.target as HTMLElement | null
-        if (!target) return
-
-        const leadRow = target.closest<HTMLAnchorElement>('a.lead-row')
-        if (leadRow && window.location.pathname === '/projects') {
-          try {
-            const to = new URL(leadRow.href).pathname.replace(/\/$/, '')
-            sessionStorage.setItem(CL_BACK_FLAG, to)
-          } catch {}
-          return
-        }
-
-        const backLink = target.closest<HTMLAnchorElement>('a.back')
-        if (!backLink) return
-        if (backLink.getAttribute('href') !== '/projects') return
-
-        const flag = sessionStorage.getItem(CL_BACK_FLAG)
-        const here = window.location.pathname.replace(/\/$/, '')
-        if (flag && flag === here) {
-          event.preventDefault()
-          sessionStorage.removeItem(CL_BACK_FLAG)
-          window.history.back()
-        }
-      })
-    </script>
   </body>
 </html>
 

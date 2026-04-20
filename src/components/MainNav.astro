@@ -19,7 +19,7 @@ function isActive(href: string, current: string): boolean {
 }
 ---
 
-<header class="nav-header" id="nav-header" transition:persist transition:name="site-nav">
+<header class="nav-header" id="nav-header">
   <nav class="nav-container" aria-label="Primary">
     <a href="/" class="nav-mark" aria-label="Home">
       <span class="nav-mark-dot" aria-hidden="true"></span>
@@ -172,10 +172,9 @@ function isActive(href: string, current: string): boolean {
     transform: translateX(0);
     pointer-events: none;
     opacity: 0;
-    /* The slide is driven by the View Transitions FLIP on this element's
-       own named group (see global.css). No CSS transition here — the
-       browser animates between the old and new snapshot positions. */
-    view-transition-name: nav-underline;
+    transition:
+      transform 0.25s ease,
+      width 0.25s ease;
   }
 
   .nav-underline.is-ready {
@@ -436,10 +435,6 @@ function isActive(href: string, current: string): boolean {
     }
   }
 
-  // The nav is persisted across navigations (`transition:persist`), so the
-  // server-rendered `.active` class sticks to whichever page first loaded
-  // the element. Re-sync the active state from `window.location.pathname`
-  // on every page-load so the current tab is highlighted correctly.
   function syncActiveNav() {
     const path = window.location.pathname
     const isActive = (href: string) => {
@@ -500,30 +495,17 @@ function isActive(href: string, current: string): boolean {
     window.addEventListener('resize', () => positionUnderline(undefined, false))
   }
 
-  document.addEventListener('astro:page-load', () => {
+  function init() {
     initMenu()
     initThemeButtons()
     syncActiveNav()
     bindUnderlineResize()
-    // First positioning shouldn't animate from (0,0) — skip transition.
     positionUnderline(undefined, false)
-  })
-  // Sync active state right after the DOM swap (before the new VT snapshot
-  // of the persisted nav gets painted). Without this, the active underline
-  // appears to flicker from the old tab to the new tab at the end of the
-  // transition instead of updating silently inside it.
-  document.addEventListener('astro:after-swap', () => {
-    syncActiveNav()
-    positionUnderline(undefined, true)
-  })
-  document.addEventListener('astro:before-swap', (event) => {
-    menuInstance?.cleanup()
-    // Carry the current theme onto the incoming document so the swap doesn't
-    // wipe data-theme (the attribute is only set at runtime, not during SSR).
-    const e = event as Event & { newDocument: Document }
-    const theme = document.documentElement.getAttribute('data-theme')
-    if (theme) {
-      e.newDocument.documentElement.setAttribute('data-theme', theme)
-    }
-  })
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true })
+  } else {
+    init()
+  }
 </script>

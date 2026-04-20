@@ -47,14 +47,14 @@ const repoDisplay = repoLink?.replace(/^https?:\/\//, '').replace(/\/$/, '')
         <span class="dot-sep">·</span>
         <span class="accent">{project.kicker}</span>
       </div>
-      <h1 class="detail-title" transition:name={`project-title-${project.id}`}>{project.title}</h1>
-      <p class="detail-claim serif" transition:name={`project-claim-${project.id}`}>{detail.claim}</p>
+      <h1 class="detail-title">{project.title}</h1>
+      <p class="detail-claim serif">{detail.claim}</p>
     </header>
 
     <div class="detail-body">
       <div class="detail-col">
         {project.image && (
-          <div class="detail-image" transition:name={`project-image-${project.id}`}>
+          <div class="detail-image">
             <Image
               src={project.image}
               alt={project.imageAlt ?? ''}
@@ -73,21 +73,21 @@ const repoDisplay = repoLink?.replace(/^https?:\/\//, '').replace(/\/$/, '')
           </div>
         </section>
 
-        <section class="section is-accent" transition:name={`project-section-move-${project.id}`}>
+        <section class="section is-accent">
           <div class="section-label mono">The move</div>
           <div class="section-body">
             <p class="serif move" set:html={renderInlineMarkdown(detail.move)}></p>
           </div>
         </section>
 
-        <section class="section" transition:name={`project-section-artifact-${project.id}`}>
+        <section class="section">
           <div class="section-label mono">The artifact</div>
           <div class="section-body">
             <p class="serif" set:html={renderInlineMarkdown(detail.artifact)}></p>
           </div>
         </section>
 
-        <section class="section" transition:name={`project-section-cost-${project.id}`}>
+        <section class="section">
           <div class="section-label mono">Cost / return</div>
           <div class="section-body">
             <p class="serif" set:html={renderInlineMarkdown(detail.costReturn)}></p>
@@ -101,7 +101,7 @@ const repoDisplay = repoLink?.replace(/^https?:\/\//, '').replace(/\/$/, '')
       </div>
 
       <aside class="detail-side">
-        <div class="side-card" transition:name={`project-section-receipts-${project.id}`}>
+        <div class="side-card">
           <div class="mono mono-tiny muted side-label">Receipts</div>
           <ul class="receipts">
             {detail.receipts.map((r) => (
@@ -225,7 +225,6 @@ const repoDisplay = repoLink?.replace(/^https?:\/\//, '').replace(/\/$/, '')
     font-weight: 500;
     margin: 16px 0 0;
     color: var(--color-foreground);
-    view-transition-class: project-title;
   }
 
   .detail-claim {
@@ -234,7 +233,6 @@ const repoDisplay = repoLink?.replace(/^https?:\/\//, '').replace(/\/$/, '')
     margin: 28px 0 0;
     max-width: 32ch;
     font-style: italic;
-    view-transition-class: project-claim;
   }
 
   .detail-body {
@@ -260,7 +258,6 @@ const repoDisplay = repoLink?.replace(/^https?:\/\//, '').replace(/\/$/, '')
     aspect-ratio: 16 / 10;
     overflow: hidden;
     border: 1px solid var(--color-rule);
-    view-transition-class: project-image;
   }
 
   .detail-image :global(img) {
@@ -278,7 +275,6 @@ const repoDisplay = repoLink?.replace(/^https?:\/\//, '').replace(/\/$/, '')
     padding: 32px 0;
     border-bottom: 1px solid var(--color-rule);
     align-items: start;
-    view-transition-class: project-section;
   }
 
   @media (max-width: 700px) {
