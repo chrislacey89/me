@@ -105,14 +105,45 @@ const jsonLd = {
       <slot />
     </main>
     <script>
-      // Reset scroll to the top of the page after the DOM swap, so the new
-      // page always starts at the top instead of inheriting the old scroll.
-      // Runs inside the view transition so the morph is composited against
-      // the final scroll position, not the old one.
+      // Per-URL scroll memoization across View Transitions. Save the current
+      // scrollY on the outgoing page in `astro:before-preparation` (keyed by
+      // the page we're leaving), then on `astro:after-swap` restore the
+      // saved scroll for the page we just arrived on — falling back to the
+      // top if we have no record. Works for both link clicks (e.g. the
+      // "← All projects" back link) and browser back/forward.
       // https://docs.astro.build/en/guides/view-transitions/#astroafter-swap
-      document.addEventListener('astro:after-swap', () =>
-        window.scrollTo({ left: 0, top: 0, behavior: 'instant' }),
-      )
+      const CL_SCROLL_KEY = 'cl-scroll'
+
+      function clLoadScrollMap(): Record<string, number> {
+        try {
+          return JSON.parse(sessionStorage.getItem(CL_SCROLL_KEY) || '{}')
+        } catch {
+          return {}
+        }
+      }
+
+      function clSaveScrollMap(map: Record<string, number>) {
+        try {
+          sessionStorage.setItem(CL_SCROLL_KEY, JSON.stringify(map))
+        } catch {}
+      }
+
+      document.addEventListener('astro:before-preparation', (event) => {
+        const e = event as unknown as { from: URL }
+        const map = clLoadScrollMap()
+        map[e.from.pathname] = window.scrollY
+        clSaveScrollMap(map)
+      })
+
+      document.addEventListener('astro:after-swap', () => {
+        const map = clLoadScrollMap()
+        const y = map[window.location.pathname]
+        window.scrollTo({
+          left: 0,
+          top: typeof y === 'number' ? y : 0,
+          behavior: 'instant',
+        })
+      })
     </script>
   </body>
 </html>
