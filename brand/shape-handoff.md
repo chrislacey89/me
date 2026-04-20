@@ -16,7 +16,7 @@ All three matter. No single-audience optimization. The home page must serve a re
 
 ## Positioning
 
-**Full-stack AI product engineer.** A decade of FE experience is the proof of craft, not a caveat. The AI/full-stack framing is forward-looking; the site supports it credibly without overclaiming.
+**Full-stack AI product engineer.** Years of FE craft (self-taught since ~2017, professional since 2020) are the proof, not a caveat. The AI/full-stack framing is forward-looking; the site supports it credibly without overclaiming.
 
 ## Success
 

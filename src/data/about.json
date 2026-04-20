@@ -1,5 +1,5 @@
 {
-  "lede": "I'm a software engineer working at the seams where intent, data, and interface disagree. A decade on the front end is the proof of craft, not the caveat.",
+  "lede": "I'm a software engineer working at the seams where intent, data, and interface disagree. Years of front-end craft are the proof, not the caveat.",
   "how": "My work follows a small pipeline: shape, research, write, execute, compound. Each feature leaves the system smarter than it found it. I optimize for correctness and stability first; explicit state, clear data flow, minimal magic.",
   "pipeline": ["/shape", "/research", "/write-a-prd", "/execute", "/compound"],
   "where": "Bloomington, Indiana. Remote-first by choice — the work is portable, and this is where it gets done well.",
