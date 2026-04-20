@@ -144,14 +144,15 @@ body {
   background: var(--color-background);
 }
 
-/* The nav is persisted across navigations; its old and new snapshots are
-   effectively identical, so the default cross-fade is pure cost — you see
-   it as a subtle flicker, especially when the active-tab underline differs
-   between pages. Suppress the animation entirely so the header just stays
-   in place during the transition. */
+/* The nav's old and new snapshots are effectively identical (the active
+   underline is extracted into its own `nav-underline` group), so the
+   default cross-fade is visually a no-op. We intentionally let it run
+   instead of using `animation: none` — an early-teardown bug lets the
+   morphing project image briefly paint above the live header at the
+   end of the transition otherwise. Keeping the nav snapshot alive for
+   the full duration stacks things correctly until every group dismounts. */
 ::view-transition-old(site-nav),
 ::view-transition-new(site-nav) {
-  animation: none;
   mix-blend-mode: normal;
 }
 
