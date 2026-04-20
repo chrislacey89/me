@@ -36,9 +36,11 @@
   /* Semantic aliases — prefer these in components over raw palette names */
   --color-background: var(--color-legal-pad);
   --color-foreground: var(--color-ink-well);
-  --color-muted: hsla(224, 50%, 9%, 0.6);
-  --color-rule: hsla(166, 33%, 27%, 0.25);
-  --color-tint: hsla(166, 33%, 27%, 0.08);
+  --color-muted: hsla(224, 50%, 9%, 0.62);
+  --color-muted-2: hsla(224, 50%, 9%, 0.38);
+  --color-rule: hsla(166, 33%, 27%, 0.22);
+  --color-rule-strong: hsla(166, 33%, 27%, 0.45);
+  --color-tint: hsla(166, 33%, 27%, 0.07);
   --color-accent: var(--color-terracotta);
   --color-confidence: var(--color-terminal-green);
 
@@ -47,6 +49,18 @@
   --font-serif: "Source Serif 4 Variable", "Source Serif 4", ui-serif, Georgia, serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
   --font-sans: var(--font-display);
+}
+
+/* Dark theme — applied by <html data-theme="dark"> */
+html[data-theme="dark"] {
+  --color-background: hsl(224, 27%, 10%);
+  --color-foreground: hsl(40, 52%, 92%);
+  --color-muted: hsla(40, 52%, 92%, 0.62);
+  --color-muted-2: hsla(40, 52%, 92%, 0.36);
+  --color-rule: hsla(40, 52%, 92%, 0.18);
+  --color-rule-strong: hsla(40, 52%, 92%, 0.34);
+  --color-tint: hsla(40, 52%, 92%, 0.05);
+  --color-accent: hsl(16, 70%, 56%);
 }
 
 /* Base styles */
@@ -59,8 +73,27 @@ html {
 }
 
 body {
+  background: var(--color-background);
+  color: var(--color-foreground);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+}
+
+/* Utility type helpers matched from the design prototype */
+.serif {
+  font-family: var(--font-serif);
+  font-feature-settings: "ss01", "onum";
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-feature-settings: "zero", "cv11";
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-background);
 }
 
 /* Screen reader only utility */
@@ -79,7 +112,8 @@ body {
 /* Focus visible styles for keyboard navigation */
 :focus-visible {
   outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+  outline-offset: 3px;
+  border-radius: 1px;
 }
 
 /* Keep morphing project pieces above sibling card-wrapper groups during
@@ -109,6 +143,13 @@ body {
 ::view-transition-old(.project-image),
 ::view-transition-new(.project-image) {
   mix-blend-mode: plus-lighter;
+}
+
+/* Snappier root transition matched from the design prototype */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 260ms;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 /* Reduced motion preference */

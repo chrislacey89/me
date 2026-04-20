@@ -1,0 +1,75 @@
+---
+// Three-column site footer: location, elsewhere, colophon
+---
+
+<footer class="site-footer">
+  <div>
+    <div class="footer-label">The quiet part</div>
+    <div class="footer-line">Bloomington · Indiana</div>
+    <div class="footer-line">Remote · US</div>
+  </div>
+  <div>
+    <div class="footer-label">Elsewhere</div>
+    <div class="footer-line">
+      <a href="https://github.com/chrislacey89" rel="noopener noreferrer" target="_blank"
+        >github.com/chrislacey89</a
+      >
+    </div>
+    <div class="footer-line">
+      <a href="https://linkedin.com/in/chrislacey89" rel="noopener noreferrer" target="_blank"
+        >linkedin.com/in/chrislacey89</a
+      >
+    </div>
+  </div>
+  <div>
+    <div class="footer-label">Colophon</div>
+    <div class="footer-line">Switzer · Source Serif 4 · IBM Plex Mono</div>
+    <div class="footer-line">— close the gap between intent and outcome —</div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 6rem;
+    padding: 3rem 0 2rem;
+    border-top: 1px solid var(--color-rule);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .site-footer {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+  }
+
+  .footer-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-line {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-foreground);
+    line-height: 1.7;
+  }
+
+  .footer-line a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-rule);
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .footer-line a:hover {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+</style>
