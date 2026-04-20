@@ -46,6 +46,8 @@ import BaseLayout from '../layouts/BaseLayout.astro'
                   widths={[280, 560]}
                   sizes="280px"
                   quality={85}
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  fetchpriority={i === 0 ? 'high' : 'auto'}
                 />
               ) : (
                 <div class="lead-thumb-placeholder">

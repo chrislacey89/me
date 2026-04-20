@@ -2,14 +2,26 @@
 import MainNav from '../components/MainNav.astro'
 import '../styles/global.css'
 
+interface PreloadImage {
+  href: string
+  imagesrcset?: string
+  imagesizes?: string
+  fetchpriority?: 'high' | 'low' | 'auto'
+}
+
 interface Props {
   title: string
   description?: string
+  /** Responsive image preloads emitted into <head>. Use for above-the-fold
+   *  images on the current page, or for hero images on high-intent next
+   *  routes (e.g. linked detail pages) so the next navigation paints fast. */
+  preloadImages?: PreloadImage[]
 }
 
 const {
   title,
   description = 'Chris Lacey — full-stack AI product engineer. Close the gap between intent and outcome.',
+  preloadImages = [],
 } = Astro.props
 const currentPath = Astro.url.pathname
 const siteUrl = Astro.site || new URL(Astro.url.origin)
@@ -47,7 +59,9 @@ const jsonLd = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Preload Switzer variable display face -->
+    <!-- Critical above-the-fold fonts. Order matches visual priority:
+         display face (hero name), display italic (hero thesis <em>),
+         serif variable (thesis body), mono (kicker). -->
     <link
       rel="preload"
       href="/fonts/Switzer-Variable.woff2"
@@ -55,6 +69,54 @@ const jsonLd = {
       type="font/woff2"
       crossorigin
     />
+    <link
+      rel="preload"
+      href="/fonts/Switzer-Variable-Italic.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/source-serif-4-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/ibm-plex-mono-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    {
+      preloadImages.map((img) => (
+        <link
+          rel="preload"
+          as="image"
+          href={img.href}
+          imagesrcset={img.imagesrcset}
+          imagesizes={img.imagesizes}
+          fetchpriority={img.fetchpriority}
+        />
+      ))
+    }
+
+    <!-- Speculation Rules: prerender same-origin links on hover/touchstart.
+         Moderate eagerness means we don't prerender every link on the page,
+         only the one the user is clearly about to click — complements
+         Astro's route-HTML prefetch by also warming subresources. -->
+    <script type="speculationrules" is:inline set:html={JSON.stringify({
+      prerender: [
+        {
+          source: 'document',
+          where: { and: [{ href_matches: '/*' }, { not: { href_matches: '/api/*' } }, { not: { href_matches: '/resume.pdf' } }] },
+          eagerness: 'moderate',
+        },
+      ],
+    })} />
 
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />

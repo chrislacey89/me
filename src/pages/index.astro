@@ -1,13 +1,43 @@
 ---
+import { getImage } from 'astro:assets'
 import SiteFooter from '../components/SiteFooter.astro'
 import homeData from '../data/home.json'
 import { leadProjects } from '../data/projects'
 import BaseLayout from '../layouts/BaseLayout.astro'
 
 const { hero, now } = homeData
+
+// Preload the detail-page hero image for each lead project. Settings mirror
+// the <Image> on src/pages/projects/[slug].astro so the preload URLs match
+// the ones the destination page will request — otherwise the preload is wasted.
+const detailHeroPreloads = await Promise.all(
+  leadProjects
+    .filter((p) => p.image)
+    .map(async (p) => {
+      const img = await getImage({
+        // biome-ignore lint/style/noNonNullAssertion: filtered above
+        src: p.image!,
+        widths: [640, 1280],
+        // biome-ignore lint/style/noNonNullAssertion: filtered above
+        width: p.image!.width,
+        // biome-ignore lint/style/noNonNullAssertion: filtered above
+        height: p.image!.height,
+        quality: 88,
+      })
+      return {
+        href: img.src,
+        imagesrcset: img.srcSet.attribute,
+        imagesizes: '(min-width: 900px) 640px, 100vw',
+        fetchpriority: 'low' as const,
+      }
+    }),
+)
 ---
 
-<BaseLayout title="Chris Lacey — full-stack AI product engineer">
+<BaseLayout
+  title="Chris Lacey — full-stack AI product engineer"
+  preloadImages={detailHeroPreloads}
+>
   <div class="cl-page">
     <!-- Editorial hero -->
     <section class="hero">
