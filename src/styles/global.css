@@ -127,6 +127,16 @@ body {
   z-index: 10;
 }
 
+/* Keep the sticky nav on top of morphing project pieces during the
+   card ↔ detail view transition. Without this, the snapshot tree renders
+   above the live header and the morphing image/title/claim briefly paints
+   over the nav as they travel up or down the viewport. Paired with
+   `transition:persist` + `transition:name="site-nav"` on the header so
+   the element has a stable group in the view-transition tree. */
+::view-transition-group(site-nav) {
+  z-index: 100;
+}
+
 /* Keep the morphing project image visually solid through the cross-fade.
    Both card and detail sides render the same source, so when the pair is
    matched we want their complementary fades to look opaque rather than
