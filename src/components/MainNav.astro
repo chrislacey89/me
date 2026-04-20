@@ -6,7 +6,7 @@ interface Props {
 const { currentPath } = Astro.props
 
 const navItems = [
-  { label: 'Home', href: '/' },
+  { label: 'Index', href: '/' },
   { label: 'Projects', href: '/projects' },
   { label: 'Writing', href: '/writing' },
   { label: 'About', href: '/about' },
@@ -21,7 +21,10 @@ function isActive(href: string, current: string): boolean {
 
 <header class="nav-header" id="nav-header">
   <nav class="nav-container" aria-label="Primary">
-    <a href="/" class="nav-logo">Chris Lacey</a>
+    <a href="/" class="nav-mark" aria-label="Home">
+      <span class="nav-mark-dot" aria-hidden="true"></span>
+      <span class="nav-mark-name">Chris Lacey</span>
+    </a>
 
     <!-- Desktop navigation -->
     <ul class="nav-desktop" role="list">
@@ -39,6 +42,17 @@ function isActive(href: string, current: string): boolean {
           </li>
         ))
       }
+      <li>
+        <button
+          type="button"
+          class="theme-btn"
+          id="theme-btn"
+          aria-label="Toggle color theme"
+          data-theme-label
+        >
+          moon
+        </button>
+      </li>
     </ul>
 
     <!-- Mobile: native <details>/<summary> baseline, progressively enhanced -->
@@ -68,6 +82,17 @@ function isActive(href: string, current: string): boolean {
               </li>
             ))
           }
+          <li>
+            <button
+              type="button"
+              class="mobile-theme-btn"
+              id="mobile-theme-btn"
+              aria-label="Toggle color theme"
+              data-theme-label
+            >
+              moon
+            </button>
+          </li>
         </ul>
       </div>
     </details>
@@ -78,8 +103,9 @@ function isActive(href: string, current: string): boolean {
   .nav-header {
     position: sticky;
     top: 0;
-    z-index: 100;
-    background: var(--color-background);
+    z-index: 30;
+    backdrop-filter: blur(14px);
+    background: color-mix(in oklab, var(--color-background) 78%, transparent);
     border-bottom: 1px solid var(--color-rule);
   }
 
@@ -89,33 +115,37 @@ function isActive(href: string, current: string): boolean {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 1.5rem;
+    padding: 20px clamp(24px, 5vw, 80px);
   }
 
-  @media (min-width: 768px) {
-    .nav-container {
-      padding: 1rem 3rem;
-    }
-  }
-
-  .nav-logo {
-    font-family: var(--font-display);
-    font-size: 1.0625rem;
-    font-weight: 600;
+  .nav-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     color: var(--color-foreground);
     text-decoration: none;
-    letter-spacing: -0.01em;
   }
 
-  .nav-logo:hover {
-    color: var(--color-accent);
+  .nav-mark-dot {
+    display: block;
+    width: 10px;
+    height: 10px;
+    background: var(--color-accent);
+  }
+
+  .nav-mark-name {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: inherit;
   }
 
   /* Desktop navigation */
   .nav-desktop {
     display: none;
     list-style: none;
-    gap: 2rem;
+    gap: 28px;
+    align-items: center;
     margin: 0;
     padding: 0;
   }
@@ -129,19 +159,16 @@ function isActive(href: string, current: string): boolean {
   .nav-link {
     position: relative;
     display: inline-block;
-    padding: 0.5rem 0;
-    font-family: var(--font-display);
-    font-size: 0.9375rem;
-    font-weight: 500;
-    color: var(--color-foreground);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-muted);
     text-decoration: none;
     transition: color 0.2s ease;
   }
 
-  .nav-link:hover {
-    color: var(--color-accent);
-  }
-
+  .nav-link:hover,
   .nav-link.active {
     color: var(--color-foreground);
   }
@@ -151,9 +178,27 @@ function isActive(href: string, current: string): boolean {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: -6px;
     height: 2px;
     background: var(--color-accent);
+  }
+
+  .theme-btn {
+    background: none;
+    border: 1px solid var(--color-rule);
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .theme-btn:hover {
+    color: var(--color-foreground);
+    border-color: var(--color-rule-strong);
   }
 
   /* Mobile menu — <details>/<summary> baseline */
@@ -167,7 +212,6 @@ function isActive(href: string, current: string): boolean {
     }
   }
 
-  /* Remove the default disclosure triangle */
   .mobile-menu > summary {
     list-style: none;
   }
@@ -222,9 +266,6 @@ function isActive(href: string, current: string): boolean {
     transform: translateY(-8px) rotate(-45deg);
   }
 
-  /* The overlay: no-JS baseline positions it absolutely below the header.
-     JS-enhanced path promotes it to a full-screen panel via body scroll lock
-     and a class toggle on <body>. CSS-only still fully reachable. */
   .mobile-overlay {
     position: fixed;
     top: 0;
@@ -260,6 +301,20 @@ function isActive(href: string, current: string): boolean {
 
   .mobile-nav-link.active {
     color: var(--color-accent);
+  }
+
+  .mobile-theme-btn {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 10px 16px;
+    background: none;
+    border: 1px solid var(--color-rule);
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    cursor: pointer;
   }
 
   :global(body.menu-open) {
@@ -332,7 +387,37 @@ function isActive(href: string, current: string): boolean {
     menuInstance = new MobileMenu()
   }
 
-  document.addEventListener('astro:page-load', initMenu)
+  // Theme toggle — reads stored preference (or system) and exposes a click
+  // handler on any element with [data-theme-label]. Button label mirrors the
+  // action: "moon" when currently light, "sun" when currently dark.
+  function applyTheme(theme: 'light' | 'dark') {
+    document.documentElement.setAttribute('data-theme', theme)
+    try {
+      localStorage.setItem('cl-theme', theme)
+    } catch {}
+    for (const el of document.querySelectorAll<HTMLElement>('[data-theme-label]')) {
+      el.textContent = theme === 'dark' ? 'sun' : 'moon'
+    }
+  }
+
+  function currentTheme(): 'light' | 'dark' {
+    const attr = document.documentElement.getAttribute('data-theme')
+    return attr === 'dark' ? 'dark' : 'light'
+  }
+
+  function initThemeButtons() {
+    applyTheme(currentTheme())
+    for (const el of document.querySelectorAll<HTMLButtonElement>('[data-theme-label]')) {
+      el.addEventListener('click', () => {
+        applyTheme(currentTheme() === 'dark' ? 'light' : 'dark')
+      })
+    }
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    initMenu()
+    initThemeButtons()
+  })
   document.addEventListener('astro:before-swap', () => {
     menuInstance?.cleanup()
   })

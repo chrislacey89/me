@@ -1,209 +1,329 @@
 ---
-import ProjectCard from '../components/ProjectCard.astro'
+import { Image } from 'astro:assets'
+import SiteFooter from '../components/SiteFooter.astro'
 import { leadProjects, supportingProjects } from '../data/projects'
 import BaseLayout from '../layouts/BaseLayout.astro'
 ---
 
 <BaseLayout
   title="Projects | Chris Lacey"
-  description="Three lead projects and a supporting strip — each case study frames the claim, the move, and what it cost."
+  description="Three lead projects, chosen not listed. Each carries the move paragraph."
 >
-  <div class="projects-page">
-    <header class="page-header">
-      <p class="eyebrow">Projects</p>
-      <h1 class="lede" transition:name="page-lede">Three lead projects, one supporting strip.</h1>
-      <p class="sub">
-        Each lead page works through the same seven-part structure. Supporting entries are claim
-        plus link — no detail route.
+  <div class="cl-page">
+    <header class="page-head">
+      <div class="mono mono-tiny muted">Projects · lead &amp; supporting</div>
+      <h1 class="page-title serif" transition:name="page-lede">
+        Three lead projects. <em>Chosen, not listed.</em>
+      </h1>
+      <p class="page-sub serif">
+        The brief is "how I think," not "what I built." If a project can't carry the <em>move</em> paragraph,
+        it isn't here.
       </p>
     </header>
 
-    <section aria-labelledby="lead-heading" class="lead">
-      <h2 id="lead-heading" class="sr-only">Lead projects</h2>
-      <div class="lead-grid">
-        {leadProjects.map((project) => (
-          <ProjectCard
-            href={`/projects/${project.id}`}
-            title={project.title}
-            description={project.blurb}
-            imageSrc={project.image}
-            imageAlt={project.imageAlt}
-            id={project.id}
-          />
-        ))}
+    <section class="lead-list" aria-label="Lead projects">
+      {
+        leadProjects.map((p, i) => (
+          <a href={`/projects/${p.id}`} class="lead-row project-card">
+            <div class="lead-meta">
+              <div class="mono mono-tiny muted">0{i + 1} · Lead</div>
+              <div class="mono mono-tiny muted">{p.year}</div>
+              <div class="mono mono-tiny accent">{p.kicker}</div>
+            </div>
+            <div class="lead-body">
+              <h2 class="lead-title">{p.title}</h2>
+              <p class="lead-claim serif">{p.detail.claim}</p>
+              <div class="lead-more mono">
+                <span>The move</span>
+                <span class="arrow">→</span>
+              </div>
+            </div>
+            <div class="lead-thumb project-card-wrapper" transition:name={`project-image-${p.id}`}>
+              {p.image ? (
+                <Image
+                  src={p.image}
+                  alt={p.imageAlt ?? ''}
+                  widths={[280, 560]}
+                  sizes="280px"
+                  quality={85}
+                />
+              ) : (
+                <div class="lead-thumb-placeholder">
+                  <span>{p.id} · artifact</span>
+                </div>
+              )}
+            </div>
+          </a>
+        ))
+      }
+    </section>
+
+    <section class="support" aria-label="Supporting work">
+      <div class="rule"><span class="rule-label">Supporting</span></div>
+      <div class="support-list">
+        {
+          supportingProjects.map((s, i) => (
+            <a
+              class="support-row"
+              href={s.href}
+              target={s.external ? '_blank' : undefined}
+              rel={s.external ? 'noopener noreferrer' : undefined}
+            >
+              <span class="mono mono-tiny muted">0{i + 1}</span>
+              <span class="support-title">{s.title}</span>
+              <span class="serif support-claim">{s.claim}</span>
+              <span class="mono mono-tiny accent support-href">
+                {s.href.replace(/^https?:\/\//, '').replace(/\/$/, '')} ↗
+              </span>
+            </a>
+          ))
+        }
       </div>
     </section>
 
-    <section aria-labelledby="supporting-heading" class="supporting">
-      <h2 id="supporting-heading" class="supporting-heading">Supporting work</h2>
-      <ul class="supporting-strip">
-        {supportingProjects.map((project) => (
-          <li class="supporting-item">
-            <a
-              href={project.href}
-              target={project.external ? '_blank' : undefined}
-              rel={project.external ? 'noopener noreferrer' : undefined}
-              class="supporting-link"
-            >
-              <span class="supporting-title">{project.title}</span>
-              <span class="supporting-claim">{project.claim}</span>
-              <span class="supporting-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </section>
+    <SiteFooter />
   </div>
 </BaseLayout>
 
 <style>
-  .projects-page {
-    max-width: 72rem;
+  .cl-page {
+    max-width: 80rem;
     margin: 0 auto;
-    padding: 3rem 1.5rem 6rem;
+    padding: 0 clamp(24px, 5vw, 80px) 120px;
   }
 
-  @media (min-width: 768px) {
-    .projects-page {
-      padding: 4.5rem 2rem 8rem;
-    }
+  .page-head {
+    padding: clamp(56px, 10vw, 120px) 0 48px;
   }
 
-  .page-header {
-    max-width: 44rem;
-    margin-bottom: 4rem;
+  .mono-tiny {
+    font-size: 11px;
+    letter-spacing: 0.08em;
   }
 
-  .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--color-forest-floor);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin: 0 0 1rem;
-  }
-
-  .lede {
-    font-family: var(--font-serif);
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 400;
-    line-height: 1.15;
-    letter-spacing: -0.015em;
-    color: var(--color-foreground);
-    margin: 0 0 1.25rem;
-  }
-
-  .sub {
-    font-family: var(--font-display);
-    font-size: 1.0625rem;
-    line-height: 1.6;
+  .muted {
     color: var(--color-muted);
-    margin: 0;
-    max-width: 38rem;
   }
 
-  .lead-grid {
-    display: grid;
-    gap: 1.5rem;
-    grid-template-columns: 1fr;
+  .accent {
+    color: var(--color-accent);
   }
 
-  @media (min-width: 720px) {
-    .lead-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .lead-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  .supporting {
-    margin-top: 5rem;
-    padding-top: 3rem;
-    border-top: 1px solid var(--color-rule);
-  }
-
-  .supporting-heading {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
+  .page-title {
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
     font-weight: 500;
-    color: var(--color-forest-floor);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin: 0 0 1.5rem;
+    margin: 16px 0 0;
+    max-width: 22ch;
+    color: var(--color-foreground);
   }
 
-  .supporting-strip {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
+  .page-sub {
+    font-size: 22px;
+    line-height: 1.5;
+    margin: 24px 0 0;
+    max-width: 60ch;
+    color: var(--color-foreground);
   }
 
-  .supporting-item {
-    border-bottom: 1px solid var(--color-rule);
+  .lead-list {
+    border-top: 1px solid var(--color-foreground);
   }
 
-  .supporting-item:first-child {
-    border-top: 1px solid var(--color-rule);
-  }
-
-  .supporting-link {
+  .lead-row {
     display: grid;
-    grid-template-columns: minmax(10rem, 14rem) 1fr auto;
-    gap: 1.5rem;
-    align-items: baseline;
-    padding: 1.25rem 0;
+    grid-template-columns: 180px 1fr 280px;
+    gap: 48px;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--color-rule);
+    transition: background 0.25s ease;
+    align-items: start;
     text-decoration: none;
     color: var(--color-foreground);
+  }
+
+  .lead-row:hover {
+    background: var(--color-tint);
+  }
+
+  .lead-row:hover .arrow {
+    transform: translateX(6px);
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 900px) {
+    .lead-row {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+
+  .lead-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 8px;
+  }
+
+  .lead-title {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: var(--color-foreground);
+  }
+
+  .lead-claim {
+    font-size: 22px;
+    line-height: 1.4;
+    margin: 12px 0 0;
+    max-width: 54ch;
+  }
+
+  .lead-more {
+    margin-top: 20px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-muted);
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .arrow {
+    display: inline-block;
+    transition: transform 0.25s ease, color 0.2s ease;
+  }
+
+  .lead-thumb {
+    width: 280px;
+    height: 180px;
+    overflow: hidden;
+    border: 1px solid var(--color-rule);
+    view-transition-class: project-image;
+  }
+
+  @media (max-width: 900px) {
+    .lead-thumb {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 280 / 180;
+    }
+  }
+
+  .lead-thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .lead-thumb-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: repeating-linear-gradient(
+      135deg,
+      hsla(166, 33%, 27%, 0.08) 0 8px,
+      hsla(166, 33%, 27%, 0.14) 8px 16px
+    );
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: var(--color-muted);
+  }
+
+  /* Rule */
+  .rule {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: clamp(56px, 9vw, 120px) 0 32px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .rule::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--color-foreground);
+  }
+
+  .rule::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--color-rule);
+  }
+
+  .rule-label {
+    white-space: nowrap;
+  }
+
+  /* Supporting list */
+  .support {
+    margin-top: 24px;
+  }
+
+  .support-list {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .support-row {
+    display: grid;
+    grid-template-columns: 48px 200px 1fr 220px;
+    gap: 24px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--color-rule);
+    align-items: baseline;
+    text-decoration: none;
+    color: inherit;
     transition: color 0.2s ease;
   }
 
-  @media (max-width: 639px) {
-    .supporting-link {
-      grid-template-columns: 1fr auto;
-      gap: 0.5rem 1rem;
-    }
-
-    .supporting-title {
-      grid-column: 1 / -1;
-    }
-  }
-
-  .supporting-link:hover {
+  .support-row:hover {
     color: var(--color-accent);
   }
 
-  .supporting-title {
-    font-family: var(--font-display);
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: -0.005em;
+  @media (max-width: 900px) {
+    .support-row {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
   }
 
-  .supporting-claim {
+  .support-title {
+    font-size: 20px;
+    font-weight: 500;
     font-family: var(--font-display);
-    font-size: 0.9375rem;
-    color: var(--color-muted);
+  }
+
+  .support-claim {
+    font-size: 16px;
     line-height: 1.45;
+    color: var(--color-foreground);
   }
 
-  .supporting-link:hover .supporting-claim {
+  .support-row:hover .support-claim {
     color: inherit;
   }
 
-  .supporting-arrow {
-    font-family: var(--font-mono);
-    font-size: 0.9375rem;
-    color: var(--color-forest-floor);
+  .support-href {
+    justify-self: end;
   }
 
-  .supporting-link:hover .supporting-arrow {
-    color: var(--color-accent);
+  @media (max-width: 900px) {
+    .support-href {
+      justify-self: start;
+    }
   }
 </style>

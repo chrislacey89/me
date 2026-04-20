@@ -2,45 +2,17 @@
   "hero": {
     "name": "Chris Lacey",
     "role": "Full-stack AI product engineer",
-    "lede": "I work on the seams where intent, data, and interface disagree.",
+    "thesis": "Close the gap between intent and outcome.",
+    "kicker": "Chris Lacey · est. 2014",
     "availability": {
       "status": "Available",
-      "focus": "senior AI product roles"
-    },
-    "avatar": "/headshot.jpeg",
-    "ctas": [
-      {
-        "label": "View Projects",
-        "href": "/projects",
-        "variant": "primary"
-      },
-      {
-        "label": "Download Resume",
-        "href": "/resume.pdf",
-        "variant": "secondary",
-        "download": true
-      }
-    ]
+      "location": "Remote · US",
+      "focus": "open to senior AI product engineering roles"
+    }
   },
-  "skills": [
-    { "id": "react", "name": "React", "icon": "react" },
-    { "id": "vue", "name": "Vue", "icon": "vue" },
-    { "id": "typescript", "name": "TypeScript", "icon": "typescript" },
-    { "id": "nextjs", "name": "Next.js", "icon": "nextjs" },
-    { "id": "vercel", "name": "Vercel AI SDK", "icon": "vercel" },
-    { "id": "tanstack", "name": "TanStack Query", "icon": "tanstack" },
-    { "id": "reactrouter", "name": "React Router", "icon": "reactrouter" },
-    { "id": "storybook", "name": "Storybook", "icon": "storybook" },
-    { "id": "css", "name": "CSS", "icon": "css" },
-    { "id": "sass", "name": "Sass", "icon": "sass" },
-    { "id": "tailwind", "name": "Tailwind", "icon": "tailwind" },
-    { "id": "vitest", "name": "Vitest", "icon": "vitest" },
-    { "id": "jest", "name": "Jest", "icon": "jest" },
-    { "id": "playwright", "name": "Playwright", "icon": "playwright" },
-    { "id": "cypress", "name": "Cypress", "icon": "cypress" },
-    { "id": "nodejs", "name": "Node.js", "icon": "nodejs" },
-    { "id": "prisma", "name": "Prisma", "icon": "prisma" },
-    { "id": "drizzle", "name": "Drizzle", "icon": "drizzle" }
-  ],
-  "softClose": "For a deeper look at how I think and build, see my projects or resume."
+  "now": [
+    { "date": "2026-04", "text": "Shipping Fulcra's strategy mode to a closed alpha." },
+    { "date": "2026-03", "text": "Publishing a quarterly essay on confidence markers in LLM UIs." },
+    { "date": "2026-02", "text": "Reading: Ousterhout, A Philosophy of Software Design (re-read)." }
+  ]
 }

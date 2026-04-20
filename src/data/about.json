@@ -1,40 +1,12 @@
 {
-  "intro": "I'm a software engineer focused on architecture, complex systems, and long-term maintainability. I've owned complete implementations on multi-person teams and served as the sole developer on large production projects. My work tends to live where product complexity and technical rigor meet.",
-  "principles": [
-    {
-      "id": "predictability",
-      "title": "Predictable over clever",
-      "description": "I optimize for correctness and stability first. Explicit state, clear data flow, minimal magic. Code should be easy to understand and maintain six months later."
-    },
-    {
-      "id": "constraints",
-      "title": "Thinking in constraints",
-      "description": "I start by identifying failure modes and second-order effects. Understanding what can go wrong leads to more durable solutions than assuming everything will work."
-    },
-    {
-      "id": "clarity",
-      "title": "Clarity over persuasion",
-      "description": "My teaching background shows up in how I write, explain, and document systems. I care more about being understood than sounding impressive."
-    },
-    {
-      "id": "tradeoffs",
-      "title": "Tradeoffs, not best practices",
-      "description": "Every decision has costs. I prefer discussing real tradeoffs rather than defaulting to dogma. Context matters more than convention."
-    },
-    {
-      "id": "trust",
-      "title": "Trust the person closest to the problem",
-      "description": "The operator, the customer, the developer. They know their context better than any system can. I build software that gives people real control and clear information, not interfaces that make decisions for them."
-    },
-    {
-      "id": "respect",
-      "title": "Clarity is a form of respect",
-      "description": "When someone is navigating a complex system under pressure, every moment of confusion is a moment they might lose trust. Clear design isn't a nice-to-have."
-    },
-    {
-      "id": "intent",
-      "title": "Close the gap between intent and outcome",
-      "description": "When someone knows what they want but the tool makes it hard to get there, that's a design failure, not a user failure. I treat that gap as the most important thing to shrink."
-    }
+  "lede": "I'm a software engineer working at the seams where intent, data, and interface disagree. A decade on the front end is the proof of craft, not the caveat.",
+  "how": "My work follows a small pipeline: shape, research, write, execute, compound. Each feature leaves the system smarter than it found it. I optimize for correctness and stability first; explicit state, clear data flow, minimal magic.",
+  "pipeline": ["/shape", "/research", "/write-a-prd", "/execute", "/compound"],
+  "where": "Bloomington, Indiana. Remote-first by choice — the work is portable, and this is where it gets done well.",
+  "objects": [
+    "Field notebook whose first page is an index",
+    "Lamy 2000, medium nib",
+    "Plex Mono on a tactile keyboard",
+    "One small plant that has survived three moves"
   ]
 }
