@@ -80,6 +80,22 @@ const jsonLd = {
     <!-- JSON-LD Structured Data -->
     <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
+    <!-- Read persisted theme before paint to avoid flash on first load -->
+    <script is:inline>
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('cl-theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.setAttribute('data-theme', stored)
+          } else {
+            document.documentElement.setAttribute('data-theme', 'light')
+          }
+        } catch (_) {
+          document.documentElement.setAttribute('data-theme', 'light')
+        }
+      })()
+    </script>
+
     <ClientRouter />
   </head>
   <body class="min-h-screen">
