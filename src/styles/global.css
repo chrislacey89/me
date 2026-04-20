@@ -135,6 +135,12 @@ body {
    the element has a stable group in the view-transition tree. */
 ::view-transition-group(site-nav) {
   z-index: 100;
+  /* The nav uses backdrop-filter + a semi-transparent background, which
+     snapshots as partially transparent pixels. Paint a solid layer behind
+     the snapshot during the transition so morphing content doesn't bleed
+     through the header. Only applies inside the VT tree — the live nav
+     keeps its blur effect during normal scrolling. */
+  background: var(--color-background);
 }
 
 /* Keep the morphing project image visually solid through the cross-fade.
