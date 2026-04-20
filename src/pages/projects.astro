@@ -31,7 +31,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
               <div class="mono mono-tiny accent">{p.kicker}</div>
             </div>
             <div class="lead-body">
-              <h2 class="lead-title">{p.title}</h2>
+              <h2 class="lead-title" transition:name={`project-title-${p.id}`}>{p.title}</h2>
               <p class="lead-claim serif">{p.detail.claim}</p>
               <div class="lead-more mono">
                 <span>The move</span>
