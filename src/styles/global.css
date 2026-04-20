@@ -154,6 +154,14 @@ body {
   mix-blend-mode: normal;
 }
 
+/* The active-tab underline is a separate named VT group so the browser
+   FLIP-animates it from the old active link's position to the new one's
+   during the transition. Has to paint above the nav group so the line is
+   visible over the header's solid backdrop. */
+::view-transition-group(nav-underline) {
+  z-index: 101;
+}
+
 /* Keep the morphing project image visually solid through the cross-fade.
    Both card and detail sides render the same source, so when the pair is
    matched we want their complementary fades to look opaque rather than

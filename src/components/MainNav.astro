@@ -170,13 +170,12 @@ function isActive(href: string, current: string): boolean {
     height: 2px;
     background: var(--color-accent);
     transform: translateX(0);
-    transition:
-      transform 260ms cubic-bezier(0.2, 0.7, 0.2, 1),
-      width 260ms cubic-bezier(0.2, 0.7, 0.2, 1),
-      opacity 180ms ease;
     pointer-events: none;
     opacity: 0;
-    will-change: transform, width;
+    /* The slide is driven by the View Transitions FLIP on this element's
+       own named group (see global.css). No CSS transition here — the
+       browser animates between the old and new snapshot positions. */
+    view-transition-name: nav-underline;
   }
 
   .nav-underline.is-ready {
@@ -494,22 +493,6 @@ function isActive(href: string, current: string): boolean {
     }
   }
 
-  // Intercept nav-link clicks so the underline slides the moment the user
-  // clicks, not after the navigation completes. The .active class is
-  // updated optimistically; astro:after-swap + syncActiveNav confirm it.
-  function bindNavClicks() {
-    const links = document.querySelectorAll<HTMLAnchorElement>('.nav-desktop .nav-link')
-    for (const link of links) {
-      if (link.dataset.underlineBound === '1') continue
-      link.dataset.underlineBound = '1'
-      link.addEventListener('click', () => {
-        for (const other of links) other.classList.remove('active')
-        link.classList.add('active')
-        positionUnderline(link, true)
-      })
-    }
-  }
-
   let underlineResizeBound = false
   function bindUnderlineResize() {
     if (underlineResizeBound) return
@@ -521,7 +504,6 @@ function isActive(href: string, current: string): boolean {
     initMenu()
     initThemeButtons()
     syncActiveNav()
-    bindNavClicks()
     bindUnderlineResize()
     // First positioning shouldn't animate from (0,0) — skip transition.
     positionUnderline(undefined, false)
