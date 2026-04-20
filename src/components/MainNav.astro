@@ -414,9 +414,33 @@ function isActive(href: string, current: string): boolean {
     }
   }
 
+  // The nav is persisted across navigations (`transition:persist`), so the
+  // server-rendered `.active` class sticks to whichever page first loaded
+  // the element. Re-sync the active state from `window.location.pathname`
+  // on every page-load so the current tab is highlighted correctly.
+  function syncActiveNav() {
+    const path = window.location.pathname
+    const isActive = (href: string) => {
+      if (href === '/') return path === '/'
+      return path.startsWith(href)
+    }
+    const selector = '.nav-link[href], .mobile-nav-link[href]'
+    for (const link of document.querySelectorAll<HTMLAnchorElement>(selector)) {
+      const href = link.getAttribute('href') ?? ''
+      const active = isActive(href)
+      link.classList.toggle('active', active)
+      if (active) {
+        link.setAttribute('aria-current', 'page')
+      } else {
+        link.removeAttribute('aria-current')
+      }
+    }
+  }
+
   document.addEventListener('astro:page-load', () => {
     initMenu()
     initThemeButtons()
+    syncActiveNav()
   })
   document.addEventListener('astro:before-swap', (event) => {
     menuInstance?.cleanup()
