@@ -19,7 +19,7 @@ function isActive(href: string, current: string): boolean {
 }
 ---
 
-<header class="nav-header" id="nav-header">
+<header class="nav-header" id="nav-header" transition:persist transition:name="site-nav">
   <nav class="nav-container" aria-label="Primary">
     <a href="/" class="nav-mark" aria-label="Home">
       <span class="nav-mark-dot" aria-hidden="true"></span>
@@ -52,6 +52,9 @@ function isActive(href: string, current: string): boolean {
         >
           moon
         </button>
+      </li>
+      <li class="nav-underline-slot" aria-hidden="true">
+        <span class="nav-underline" id="nav-underline"></span>
       </li>
     </ul>
 
@@ -148,6 +151,35 @@ function isActive(href: string, current: string): boolean {
     align-items: center;
     margin: 0;
     padding: 0;
+    position: relative;
+  }
+
+  .nav-underline-slot {
+    position: static;
+    width: 0;
+    height: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  .nav-underline {
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    background: var(--color-accent);
+    transform: translateX(0);
+    pointer-events: none;
+    opacity: 0;
+    /* The slide is driven by the View Transitions FLIP on this element's
+       own named group (see global.css). No CSS transition here — the
+       browser animates between the old and new snapshot positions. */
+    view-transition-name: nav-underline;
+  }
+
+  .nav-underline.is-ready {
+    opacity: 1;
   }
 
   @media (min-width: 768px) {
@@ -171,16 +203,6 @@ function isActive(href: string, current: string): boolean {
   .nav-link:hover,
   .nav-link.active {
     color: var(--color-foreground);
-  }
-
-  .nav-link.active::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -6px;
-    height: 2px;
-    background: var(--color-accent);
   }
 
   .theme-btn {
@@ -414,11 +436,94 @@ function isActive(href: string, current: string): boolean {
     }
   }
 
+  // The nav is persisted across navigations (`transition:persist`), so the
+  // server-rendered `.active` class sticks to whichever page first loaded
+  // the element. Re-sync the active state from `window.location.pathname`
+  // on every page-load so the current tab is highlighted correctly.
+  function syncActiveNav() {
+    const path = window.location.pathname
+    const isActive = (href: string) => {
+      if (href === '/') return path === '/'
+      return path.startsWith(href)
+    }
+    const selector = '.nav-link[href], .mobile-nav-link[href]'
+    for (const link of document.querySelectorAll<HTMLAnchorElement>(selector)) {
+      const href = link.getAttribute('href') ?? ''
+      const active = isActive(href)
+      link.classList.toggle('active', active)
+      if (active) {
+        link.setAttribute('aria-current', 'page')
+      } else {
+        link.removeAttribute('aria-current')
+      }
+    }
+  }
+
+  // Single shared underline slides between active tabs instead of each
+  // tab rendering its own ::after. Positioning is relative to the
+  // `.nav-desktop` <ul>, which has `position: relative`, so we can use
+  // each link's offsetLeft/offsetWidth directly.
+  function positionUnderline(target?: HTMLAnchorElement | null, animate = true) {
+    const underline = document.getElementById('nav-underline') as HTMLElement | null
+    if (!underline) return
+    const active =
+      target ??
+      (document.querySelector('.nav-desktop .nav-link.active') as HTMLAnchorElement | null)
+    if (!active) {
+      underline.classList.remove('is-ready')
+      underline.style.width = '0px'
+      return
+    }
+    const apply = () => {
+      underline.style.transform = `translateX(${active.offsetLeft}px)`
+      underline.style.width = `${active.offsetWidth}px`
+      underline.classList.add('is-ready')
+    }
+    if (animate) {
+      apply()
+    } else {
+      // First paint or resize — skip the transition so we don't animate
+      // from (0,0) or between old and new resized positions.
+      const prev = underline.style.transition
+      underline.style.transition = 'none'
+      apply()
+      // Force reflow so the no-transition state applies before we restore.
+      void underline.offsetWidth
+      underline.style.transition = prev
+    }
+  }
+
+  let underlineResizeBound = false
+  function bindUnderlineResize() {
+    if (underlineResizeBound) return
+    underlineResizeBound = true
+    window.addEventListener('resize', () => positionUnderline(undefined, false))
+  }
+
   document.addEventListener('astro:page-load', () => {
     initMenu()
     initThemeButtons()
+    syncActiveNav()
+    bindUnderlineResize()
+    // First positioning shouldn't animate from (0,0) — skip transition.
+    positionUnderline(undefined, false)
   })
-  document.addEventListener('astro:before-swap', () => {
+  // Sync active state right after the DOM swap (before the new VT snapshot
+  // of the persisted nav gets painted). Without this, the active underline
+  // appears to flicker from the old tab to the new tab at the end of the
+  // transition instead of updating silently inside it.
+  document.addEventListener('astro:after-swap', () => {
+    syncActiveNav()
+    positionUnderline(undefined, true)
+  })
+  document.addEventListener('astro:before-swap', (event) => {
     menuInstance?.cleanup()
+    // Carry the current theme onto the incoming document so the swap doesn't
+    // wipe data-theme (the attribute is only set at runtime, not during SSR).
+    const e = event as Event & { newDocument: Document }
+    const theme = document.documentElement.getAttribute('data-theme')
+    if (theme) {
+      e.newDocument.documentElement.setAttribute('data-theme', theme)
+    }
   })
 </script>

@@ -105,25 +105,40 @@ const jsonLd = {
       <slot />
     </main>
     <script>
-      // Before card → detail morph, snap the tapped card's wrapper near the
-      // top of the viewport so the snapshot pair travels a short distance and
-      // the matched image + title stay on-screen throughout the transition.
-      // Runs only for /projects → /projects/:slug; other navigations are
-      // untouched and keep Astro's default scroll behavior.
-      document.addEventListener('astro:before-preparation', (event) => {
-        const e = event as unknown as { from: URL; to: URL }
-        if (e.from.pathname !== '/projects') return
-        const match = e.to.pathname.match(/^\/projects\/([^/]+)\/?$/)
-        if (!match) return
-        const slug = match[1]
-        const link = document.querySelector<HTMLAnchorElement>(
-          `a.project-card[href="/projects/${slug}"], a.project-card[href="/projects/${slug}/"]`,
-        )
-        if (!link) return
-        const wrapper = link.closest<HTMLElement>('.project-card-wrapper') ?? link
-        const navOffset = 80
-        const target = window.scrollY + wrapper.getBoundingClientRect().top - navOffset
-        window.scrollTo({ top: Math.max(0, target), behavior: 'instant' })
+      // Native-style scroll restoration for the "← All projects" link on
+      // project detail pages. When the user clicks a project row on
+      // /projects, we remember which detail URL they're about to open. If
+      // the back link on THAT detail page is clicked, we call history.back()
+      // — which triggers the browser's own popstate scroll restoration, the
+      // same thing the browser Back button uses. For any other entry point
+      // (direct link, detail→detail via Next, etc.) we leave the link alone
+      // so it navigates forward to /projects normally.
+      const CL_BACK_FLAG = 'cl-projects-to-detail'
+
+      document.addEventListener('click', (event) => {
+        const target = event.target as HTMLElement | null
+        if (!target) return
+
+        const leadRow = target.closest<HTMLAnchorElement>('a.lead-row')
+        if (leadRow && window.location.pathname === '/projects') {
+          try {
+            const to = new URL(leadRow.href).pathname.replace(/\/$/, '')
+            sessionStorage.setItem(CL_BACK_FLAG, to)
+          } catch {}
+          return
+        }
+
+        const backLink = target.closest<HTMLAnchorElement>('a.back')
+        if (!backLink) return
+        if (backLink.getAttribute('href') !== '/projects') return
+
+        const flag = sessionStorage.getItem(CL_BACK_FLAG)
+        const here = window.location.pathname.replace(/\/$/, '')
+        if (flag && flag === here) {
+          event.preventDefault()
+          sessionStorage.removeItem(CL_BACK_FLAG)
+          window.history.back()
+        }
       })
     </script>
   </body>
