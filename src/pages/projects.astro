@@ -43,9 +43,9 @@ import BaseLayout from '../layouts/BaseLayout.astro'
                 <Image
                   src={p.image}
                   alt={p.imageAlt ?? ''}
-                  widths={[280, 560]}
-                  sizes="280px"
-                  quality={85}
+                  widths={[280, 560, 840, 1120]}
+                  sizes="(min-width: 900px) 280px, 100vw"
+                  quality={90}
                   loading={i === 0 ? 'eager' : 'lazy'}
                   fetchpriority={i === 0 ? 'high' : 'auto'}
                 />

@@ -16,10 +16,10 @@ const detailHeroPreloads = await Promise.all(
     .map(async (p) => {
       const img = await getImage({
         src: p.image!,
-        widths: [640, 1280],
+        widths: [640, 1280, 1920],
         width: p.image!.width,
         height: p.image!.height,
-        quality: 88,
+        quality: 90,
       })
       return {
         href: img.src,
