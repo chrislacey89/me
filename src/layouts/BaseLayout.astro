@@ -104,28 +104,6 @@ const jsonLd = {
     <main id="main-content">
       <slot />
     </main>
-    <script>
-      // Before card → detail morph, snap the tapped card's wrapper near the
-      // top of the viewport so the snapshot pair travels a short distance and
-      // the matched image + title stay on-screen throughout the transition.
-      // Runs only for /projects → /projects/:slug; other navigations are
-      // untouched and keep Astro's default scroll behavior.
-      document.addEventListener('astro:before-preparation', (event) => {
-        const e = event as unknown as { from: URL; to: URL }
-        if (e.from.pathname !== '/projects') return
-        const match = e.to.pathname.match(/^\/projects\/([^/]+)\/?$/)
-        if (!match) return
-        const slug = match[1]
-        const link = document.querySelector<HTMLAnchorElement>(
-          `a.project-card[href="/projects/${slug}"], a.project-card[href="/projects/${slug}/"]`,
-        )
-        if (!link) return
-        const wrapper = link.closest<HTMLElement>('.project-card-wrapper') ?? link
-        const navOffset = 80
-        const target = window.scrollY + wrapper.getBoundingClientRect().top - navOffset
-        window.scrollTo({ top: Math.max(0, target), behavior: 'instant' })
-      })
-    </script>
   </body>
 </html>
 
