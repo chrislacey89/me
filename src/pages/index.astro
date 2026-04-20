@@ -15,12 +15,9 @@ const detailHeroPreloads = await Promise.all(
     .filter((p) => p.image)
     .map(async (p) => {
       const img = await getImage({
-        // biome-ignore lint/style/noNonNullAssertion: filtered above
         src: p.image!,
         widths: [640, 1280],
-        // biome-ignore lint/style/noNonNullAssertion: filtered above
         width: p.image!.width,
-        // biome-ignore lint/style/noNonNullAssertion: filtered above
         height: p.image!.height,
         quality: 88,
       })
