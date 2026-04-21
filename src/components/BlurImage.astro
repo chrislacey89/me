@@ -1,0 +1,72 @@
+---
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
+
+type Density = number | `${number}x`
+
+interface Props {
+  src: ImageMetadata
+  alt: string
+  blurDataUri: string
+  class?: string
+  widths?: number[]
+  sizes?: string
+  width?: number
+  height?: number
+  densities?: Density[]
+  quality?: number | 'low' | 'mid' | 'high' | 'max'
+  loading?: 'lazy' | 'eager'
+  fetchpriority?: 'high' | 'low' | 'auto'
+  priority?: boolean
+}
+
+const { blurDataUri, class: className, ...imageProps } = Astro.props
+---
+
+<span
+  class:list={['blur-wrap', className]}
+  data-blur-wrap
+  style={`background-image: url('${blurDataUri}')`}
+>
+  <Image {...imageProps} />
+</span>
+
+<style>
+  .blur-wrap {
+    display: block;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+  }
+
+  .blur-wrap :global(img) {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .blur-wrap[data-loaded='true'] :global(img) {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blur-wrap :global(img) {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const mark = (el: Element) => el.setAttribute('data-loaded', 'true')
+
+  for (const wrap of document.querySelectorAll<HTMLElement>('[data-blur-wrap]')) {
+    const img = wrap.querySelector('img')
+    if (!img) continue
+    if (img.complete && img.naturalWidth > 0) {
+      mark(wrap)
+    } else {
+      img.addEventListener('load', () => mark(wrap), { once: true })
+      img.addEventListener('error', () => mark(wrap), { once: true })
+    }
+  }
+</script>

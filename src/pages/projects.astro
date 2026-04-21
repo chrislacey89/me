@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets'
+import BlurImage from '../components/BlurImage.astro'
 import SiteFooter from '../components/SiteFooter.astro'
 import { leadProjects, supportingProjects } from '../data/projects'
 import BaseLayout from '../layouts/BaseLayout.astro'
@@ -39,9 +39,10 @@ import BaseLayout from '../layouts/BaseLayout.astro'
               </div>
             </div>
             <div class="lead-thumb project-card-wrapper">
-              {p.image ? (
-                <Image
+              {p.image && p.blurDataUri ? (
+                <BlurImage
                   src={p.image}
+                  blurDataUri={p.blurDataUri}
                   alt={p.imageAlt ?? ''}
                   widths={[280, 560, 840, 1120]}
                   sizes="(min-width: 900px) 280px, 100vw"
@@ -213,6 +214,11 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       height: auto;
       aspect-ratio: 280 / 180;
     }
+  }
+
+  .lead-thumb :global(.blur-wrap) {
+    width: 100%;
+    height: 100%;
   }
 
   .lead-thumb :global(img) {

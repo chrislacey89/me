@@ -2,6 +2,11 @@ import type { ImageMetadata } from 'astro'
 import empowermentBriefImage from '../assets/projects/empowerment-brief.png'
 import fulcrumImage from '../assets/projects/fulcrum.png'
 import skillsImage from '../assets/projects/skills.png'
+import { getBlurDataUri } from '../lib/blur-placeholder'
+
+const fulcrumBlur = await getBlurDataUri('src/assets/projects/fulcrum.png')
+const skillsBlur = await getBlurDataUri('src/assets/projects/skills.png')
+const empowermentBriefBlur = await getBlurDataUri('src/assets/projects/empowerment-brief.png')
 
 export interface ProjectDetail {
   /** Serif one-sentence thesis displayed at the top of the detail page. */
@@ -31,6 +36,9 @@ export interface LeadProject {
   blurb: string
   image?: ImageMetadata
   imageAlt?: string
+  /** Inline base64 data URI of a tiny blurred webp, used as an LQIP
+   *  placeholder behind the real image while it loads. */
+  blurDataUri?: string
   github?: string
   liveUrl?: string
   detail: ProjectDetail
@@ -55,6 +63,7 @@ export const leadProjects: LeadProject[] = [
     blurb:
       'AI advisory platform that applies mental models and structured reasoning to high-stakes decisions.',
     image: fulcrumImage,
+    blurDataUri: fulcrumBlur,
     imageAlt:
       'Stylized hexagonal network — a central terracotta hex surrounded by six outlined hexes holding lines of code, suggesting structured reasoning pulled from many models.',
     github: 'https://github.com/chrislacey89/fulcrum',
@@ -87,6 +96,7 @@ export const leadProjects: LeadProject[] = [
     blurb:
       'A Claude Code skill pipeline that turns shaped engineering work into reusable, invocable skills.',
     image: skillsImage,
+    blurDataUri: skillsBlur,
     imageAlt:
       'A vertical list of slash-command skills — /shape and /research checked off, /write-a-prd highlighted in terracotta, with /execute and /compound still queued below.',
     github: 'https://github.com/chrislacey89/skills',
@@ -119,6 +129,7 @@ export const leadProjects: LeadProject[] = [
     blurb:
       'Interactive educational platform teaching a structured AI methodology through 25+ custom visualizations.',
     image: empowermentBriefImage,
+    blurDataUri: empowermentBriefBlur,
     imageAlt:
       'Six labeled framework tiles arranged in a grid — foundation, prompt, context, mcp, skills, and agents — each with a small line-art glyph; the agents tile is filled terracotta with a checkmark.',
     liveUrl: 'https://ai-enablement-gamma.vercel.app/',
